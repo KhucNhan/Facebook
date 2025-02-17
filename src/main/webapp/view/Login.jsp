@@ -54,7 +54,7 @@
         </button>
 
         <br><br>
-        <a style="width: 300px;color: #1877f2;font-size: 17px" href="">Bạn quên tài khoản ư?</a>
+            <a style="width: 300px;color: #1877f2;font-size: 17px" href="/login?action=forgotPass">Bạn quên tài khoản ư?</a>
         <br><br>
 
         <div style="border-bottom: 1px solid #96999e ;margin-top: 15px;margin-left: 15px;margin-bottom: -15px">
