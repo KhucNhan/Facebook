@@ -19,6 +19,8 @@ public class UserDAO implements IUserDAO {
 
     private static final String select_user_by_id = "SELECT * FROM users WHERE userId = ?";
 
+    private static final String delete_user_by_id = "DELETE FROM users WHERE userId = ?";
+
     @Override
     public List<User> selectAllUsers() throws SQLException {
         List<User> users = new ArrayList<>();
@@ -100,6 +102,15 @@ public class UserDAO implements IUserDAO {
         preparedStatement.setDate(5, user.getDateOfBirth());
         preparedStatement.setBoolean(6, user.isGender());
         preparedStatement.setInt(7, userId);
+
+        int rowsAffected = preparedStatement.executeUpdate();
+        return rowsAffected > 0;
+    }
+
+    @Override
+    public boolean deleteUser(int userId) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement(delete_user_by_id);
+        preparedStatement.setInt(1, userId);
 
         int rowsAffected = preparedStatement.executeUpdate();
         return rowsAffected > 0;
