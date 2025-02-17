@@ -27,11 +27,6 @@ window.onload = function () {
 };
 
 
-var users = [
-    {email: "admin@gmail.com", password: "123456"},
-    {email: "user@gmail.com", password: "654321"}
-];
-
 function validateLogin() {
 
     var emailField = document.getElementById('emailField');
@@ -48,30 +43,34 @@ function validateLogin() {
     emailError.style.display = "none";
     passwordError.style.display = "none";
 
-    var user = users.find(user => user.email === email);
 
-    if (!email) {
+
+    if (emailField.value === "") {
         emailField.classList.add('error');
         emailWarning.style.display = "inline";
-        emailError.textContent = "Vui lòng nhập email!";
+        emailError.textContent = "Vui lòng nhập email hoặc số điện thoại!";
         emailError.style.display = "block";
+        emailError.style.color = "red";
+        emailError.style.marginBottom= "-20px"
         return;
     }
-    // if (!user) {
-    //     emailField.classList.add('error');
-    //     emailWarning.style.display = "inline";
-    //     emailError.textContent = "Email hoặc số di động bạn nhập không kết nối với tài khoản nào. Hãy tìm tài khoản của bạn và đăng nhập!";
-    //     emailError.style.display = "block";
-    //     emailError.style.color = "red";
-    //     emailError.style.fontSize = "14px";
-    //     emailField.style.borderColor = "red";
-    //     emailError.style.marginBottom = "-25px";
-    //     emailError.style.marginTop = "5px";
-    //
-    //     return;
-    // }
 
-    if (!password) {
+    var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|vn|org|net|edu|gov|info)$/;
+    var phonePattern = /^[0-9]{10,11}$/;
+
+    if (!emailPattern.test(emailField.value)  && !phonePattern.test(emailField.value)) {
+        emailField.classList.add('error');
+        emailWarning.style.display = "inline";
+        emailError.textContent = "Vui lòng nhập email hợp lệ hoặc số điện thoại!";
+        emailError.style.display = "block";
+        emailError.style.marginBottom= "-20px";
+        emailError.style.color = "red";
+        emailError.style.marginBottom= "-20px";
+
+        return;
+    }
+
+    if (passwordField.value === "") {
         emailField.style.borderColor = "gainsboro";
 
         passwordField.classList.add('error');
@@ -86,6 +85,7 @@ function validateLogin() {
 
     emailField.style.borderColor = "gainsboro";
     pass.style.borderColor = "gainsboro";
+
     showModal();
 }
 
