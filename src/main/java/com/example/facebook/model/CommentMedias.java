@@ -1,4 +1,4 @@
-package model;
+package com.example.facebook.model;
 
 public class CommentMedias {
     private int commentMediaId;

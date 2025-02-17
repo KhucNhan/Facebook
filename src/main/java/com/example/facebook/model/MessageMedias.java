@@ -1,4 +1,4 @@
-package model;
+package com.example.facebook.model;
 
 public class MessageMedias {
     private int messageMediaId;

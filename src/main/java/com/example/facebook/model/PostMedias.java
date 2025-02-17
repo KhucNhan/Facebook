@@ -1,4 +1,4 @@
-package model;
+package com.example.facebook.model;
 
 public class PostMedias {
     private int postMediaId;
