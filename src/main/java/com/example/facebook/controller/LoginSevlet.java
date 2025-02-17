@@ -25,12 +25,18 @@ public class LoginSevlet extends HttpServlet {
 
         String action = req.getParameter("action");
 
-        switch (action){
-            case "forgotPass" :
+        switch (action) {
+            case "forgotPass":
                 RequestDispatcher dispatcher = req.getRequestDispatcher("view/ForgotPassword.jsp");
                 dispatcher.forward(req, resp);
                 break;
+            case "logout":
+                HttpSession session = req.getSession();
+                session.removeAttribute("userId");
 
+                RequestDispatcher dispatchers = req.getRequestDispatcher("view/Login.jsp");
+                dispatchers.forward(req, resp);
+                break;
         }
     }
 
@@ -65,13 +71,13 @@ public class LoginSevlet extends HttpServlet {
                     return;
                 }
 
-                if (role.equalsIgnoreCase("User")){
+                if (role.equalsIgnoreCase("User")) {
                     resp.getWriter().println("{\"success\": true, \"message\": \"User\"}");
 
                     HttpSession session = req.getSession();
-                    session.setAttribute("userId",userId);
+                    session.setAttribute("userId", userId);
 
-                }else {
+                } else {
                     resp.getWriter().println("{\"success\": true, \"message\": \"Admin\"}");
                 }
             } else {
