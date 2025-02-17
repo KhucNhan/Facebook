@@ -1,31 +1,31 @@
-package com.example.facebook;
+package com.example.facebook.model;
 
 import java.sql.Timestamp;
 
-public class Activities {
-    private int activityId;
+public class Reports {
+    private int reportId;
     private int userId;
-    private String type;
     private int targetId;
+    private String type;
     private Timestamp createAt;
 
-    public Activities() {
+    public Reports() {
     }
 
-    public Activities(int activityId, int userId, String type, int targetId, Timestamp createAt) {
-        this.activityId = activityId;
+    public Reports(int reportId, int userId, int targetId, String type, Timestamp createAt) {
+        this.reportId = reportId;
         this.userId = userId;
-        this.type = type;
         this.targetId = targetId;
+        this.type = type;
         this.createAt = createAt;
     }
 
-    public int getActivityId() {
-        return activityId;
+    public int getReportId() {
+        return reportId;
     }
 
-    public void setActivityId(int activityId) {
-        this.activityId = activityId;
+    public void setReportId(int reportId) {
+        this.reportId = reportId;
     }
 
     public int getUserId() {
@@ -36,20 +36,20 @@ public class Activities {
         this.userId = userId;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public int getTargetId() {
         return targetId;
     }
 
     public void setTargetId(int targetId) {
         this.targetId = targetId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Timestamp getCreateAt() {
@@ -62,11 +62,11 @@ public class Activities {
 
     @Override
     public String toString() {
-        return "Activities{" +
-                "activityId=" + activityId +
+        return "Reports{" +
+                "reportId=" + reportId +
                 ", userId=" + userId +
-                ", type='" + type + '\'' +
                 ", targetId=" + targetId +
+                ", type='" + type + '\'' +
                 ", createAt=" + createAt +
                 '}';
     }

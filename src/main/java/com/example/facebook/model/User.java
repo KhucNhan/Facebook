@@ -1,3 +1,5 @@
+package com.example.facebook.model;
+
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -132,7 +134,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "com.example.facebook.model.User{" +
                 "userId=" + userId +
                 ", image='" + image + '\'' +
                 ", name='" + name + '\'' +
