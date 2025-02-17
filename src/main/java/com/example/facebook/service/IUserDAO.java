@@ -11,4 +11,7 @@ public interface IUserDAO {
     User selectUserById(int userId) throws SQLException;
     boolean updateUser(User user, int userId) throws SQLException;
     boolean deleteUser(int userId) throws SQLException;
+    List<User> selectUsersByEmail(String value) throws SQLException;
+    List<User> selectUsersByPhone(String value) throws SQLException;
+    List<User> selectUsersByName(String value) throws SQLException;
 }

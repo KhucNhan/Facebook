@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "UserServlet", value = "/users")
@@ -73,10 +74,20 @@ public class UserServlet extends HttpServlet {
                 case "delete":
                     deleteUser(req, resp);
                     break;
+                case "search":
+                    searchUser(req, resp);
+                    break;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void searchUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
+        String value = req.getParameter("value");
+        List<User> users = userDAO.searchUsers(value);
+        req.setAttribute("users", users);
+        req.getRequestDispatcher("/admin/Users.jsp").forward(req, resp);
     }
 
     private void deleteUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
