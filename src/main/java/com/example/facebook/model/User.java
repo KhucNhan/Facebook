@@ -37,6 +37,16 @@ public class User {
         this.status = status;
     }
 
+    public User(String image, String name, String email, int phone, String password, Date dateOfBirth, boolean gender) {
+        this.image = image;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+    }
+
     public String getRole() {
         return role;
     }
