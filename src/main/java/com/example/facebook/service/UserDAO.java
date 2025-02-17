@@ -5,11 +5,15 @@ import com.example.facebook.model.User;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class UserDAO implements IUserDAO {
     private ConnectDatabase connectDatabase = new ConnectDatabase();
     private Connection connection = connectDatabase.connection();
+
+    private static UserDAO userDAO = new UserDAO();
 
     private static final String select_all_users = "select * from users";
     private static final String insert_user = "INSERT INTO users (name, email, phone, password, dateOfBirth, gender, bio, createAt, updateAt) " +
@@ -20,6 +24,12 @@ public class UserDAO implements IUserDAO {
     private static final String select_user_by_id = "SELECT * FROM users WHERE userId = ?";
 
     private static final String delete_user_by_id = "DELETE FROM users WHERE userId = ?";
+
+    private static final String select_user_by_email = "SELECT * FROM users WHERE email LIKE ?";
+
+    private static final String select_user_by_phone = "SELECT * FROM users WHERE phone LIKE ?";
+
+    private static final String select_user_by_name = "SELECT * FROM users WHERE name LIKE ?";
 
     @Override
     public List<User> selectAllUsers() throws SQLException {
@@ -114,5 +124,104 @@ public class UserDAO implements IUserDAO {
 
         int rowsAffected = preparedStatement.executeUpdate();
         return rowsAffected > 0;
+    }
+
+    public List<User> searchUsers(String value) throws SQLException {
+        Set<User> resultSet = new HashSet<>();
+
+        if (value != null) {
+            if (value.matches("^0\\d*$")) {
+                resultSet.addAll(userDAO.selectUsersByPhone(value));
+            } else {
+                resultSet.addAll(userDAO.selectUsersByName(value));
+                resultSet.addAll(userDAO.selectUsersByEmail(value));
+            }
+        }
+
+        return new ArrayList<>(resultSet);
+    }
+
+    @Override
+    public List<User> selectUsersByEmail(String value) throws SQLException {
+        List<User> users = new ArrayList<>();
+        PreparedStatement preparedStatement = connection.prepareStatement(select_user_by_email);
+        preparedStatement.setString(1, "%" + value + "%");
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        while (resultSet.next()) {
+            users.add(new User(
+                    resultSet.getInt(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getString(4),
+                    resultSet.getInt(5),
+                    resultSet.getString(6),
+                    resultSet.getDate(7),
+                    resultSet.getBoolean(8),
+                    resultSet.getString(9),
+                    resultSet.getString(10),
+                    resultSet.getTimestamp(11),
+                    resultSet.getTimestamp(12),
+                    resultSet.getBoolean(13)
+            ));
+        }
+
+        return users;
+    }
+
+    @Override
+    public List<User> selectUsersByPhone(String value) throws SQLException {
+        List<User> users = new ArrayList<>();
+        PreparedStatement preparedStatement = connection.prepareStatement(select_user_by_phone);
+        preparedStatement.setString(1, "%" + value + "%");
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        while (resultSet.next()) {
+            users.add(new User(
+                    resultSet.getInt(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getString(4),
+                    resultSet.getInt(5),
+                    resultSet.getString(6),
+                    resultSet.getDate(7),
+                    resultSet.getBoolean(8),
+                    resultSet.getString(9),
+                    resultSet.getString(10),
+                    resultSet.getTimestamp(11),
+                    resultSet.getTimestamp(12),
+                    resultSet.getBoolean(13)
+            ));
+        }
+
+        return users;
+    }
+
+    @Override
+    public List<User> selectUsersByName(String value) throws SQLException {
+        List<User> users = new ArrayList<>();
+        PreparedStatement preparedStatement = connection.prepareStatement(select_user_by_name);
+        preparedStatement.setString(1, "%" + value + "%");
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        while (resultSet.next()) {
+            users.add(new User(
+                    resultSet.getInt(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getString(4),
+                    resultSet.getInt(5),
+                    resultSet.getString(6),
+                    resultSet.getDate(7),
+                    resultSet.getBoolean(8),
+                    resultSet.getString(9),
+                    resultSet.getString(10),
+                    resultSet.getTimestamp(11),
+                    resultSet.getTimestamp(12),
+                    resultSet.getBoolean(13)
+            ));
+        }
+
+        return users;
     }
 }
