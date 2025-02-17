@@ -2,7 +2,7 @@ package com.example.facebook.model;
 
 import java.sql.Timestamp;
 
-public class Comments {
+public class Comment {
     private int commentId;
     private int postId;
     private int userId;
@@ -12,10 +12,10 @@ public class Comments {
     private Timestamp createAt;
     private Timestamp updateAt;
 
-    public Comments() {
+    public Comment() {
     }
 
-    public Comments(int commentId, int postId, int userId, int parentId, String content, String privacy, Timestamp createAt, Timestamp updateAt) {
+    public Comment(int commentId, int postId, int userId, int parentId, String content, String privacy, Timestamp createAt, Timestamp updateAt) {
         this.commentId = commentId;
         this.postId = postId;
         this.userId = userId;

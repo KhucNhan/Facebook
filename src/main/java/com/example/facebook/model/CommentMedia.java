@@ -1,15 +1,15 @@
 package com.example.facebook.model;
 
-public class CommentMedias {
+public class CommentMedia {
     private int commentMediaId;
     private int commentId;
     private String url;
     private String type;
 
-    public CommentMedias(){
+    public CommentMedia(){
 
     }
-    public CommentMedias(int commentMediaId, int commentId, String url, String type){
+    public CommentMedia(int commentMediaId, int commentId, String url, String type){
         this.commentMediaId = commentMediaId;
         this.commentId = commentId;
         this.url = url;

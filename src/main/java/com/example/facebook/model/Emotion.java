@@ -1,13 +1,13 @@
 package com.example.facebook.model;
 
-public class Emotions {
+public class Emotion {
     private int emotionId;
     private String name;
 
-    public Emotions(){
+    public Emotion(){
 
     }
-    public Emotions(int emotionId, String name){
+    public Emotion(int emotionId, String name){
         this.emotionId = emotionId;
         this.name = name;
     }

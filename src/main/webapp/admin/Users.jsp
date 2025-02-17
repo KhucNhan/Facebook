@@ -135,6 +135,13 @@
             tableBody.innerHTML += row;
         });
 
+        const rowsToAdd = rowsPerPage - paginatedUsers.length;
+        for (let i = 0; i < rowsToAdd; i++) {
+            const emptyRow = '<tr class="d-flex" style="height: 106.336px;">' +
+                '<td colspan="9" class="text-center"></td>' +
+                '</tr>';
+            tableBody.innerHTML += emptyRow;
+        }
     }
 
     function setupPagination() {

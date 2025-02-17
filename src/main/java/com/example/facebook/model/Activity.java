@@ -2,17 +2,17 @@ package com.example.facebook.model;
 
 import java.sql.Timestamp;
 
-public class Activities {
+public class Activity {
     private int activityId;
     private int userId;
     private String type;
     private int targetId;
     private Timestamp createAt;
 
-    public Activities() {
+    public Activity() {
     }
 
-    public Activities(int activityId, int userId, String type, int targetId, Timestamp createAt) {
+    public Activity(int activityId, int userId, String type, int targetId, Timestamp createAt) {
         this.activityId = activityId;
         this.userId = userId;
         this.type = type;
