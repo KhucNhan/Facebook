@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -23,16 +24,29 @@ public class UserServlet extends HttpServlet {
         if (action == null) {
             action = "";
         }
-
-        switch (action) {
-            default:
-                try {
+        try {
+            switch (action) {
+                case "add":
+                    showAddUser(req, resp);
+                    break;
+                case "update":
+                    showUpdateUser(req, resp);
+                    break;
+                default:
                     showUserList(req, resp);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-                break;
+                    break;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
+    }
+
+    private void showUpdateUser(HttpServletRequest req, HttpServletResponse resp) {
+
+    }
+
+    private void showAddUser(HttpServletRequest req, HttpServletResponse resp) {
+
     }
 
     private void showUserList(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
@@ -41,5 +55,65 @@ public class UserServlet extends HttpServlet {
         req.getRequestDispatcher("/admin/Users.jsp").forward(req, resp);
     }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
 
+        if (action == null) {
+            action = "";
+        }
+        try {
+            switch (action) {
+                case "add":
+                    addUser(req, resp);
+                    break;
+                case "update":
+                    updateUser(req, resp);
+                    break;
+                case "delete":
+                    deleteUser(req, resp);
+                    break;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void deleteUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+        String userId = req.getParameter("userId");
+        userDAO.deleteUser(Integer.parseInt(userId));
+    }
+
+    private void addUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+        String image = req.getParameter("image");
+        String name = req.getParameter("name");
+        String email = req.getParameter("email");
+        String phone = req.getParameter("phone");
+        String password = req.getParameter("password");
+        String dateOfBirth = req.getParameter("dateOfBirth");
+        boolean gender = Boolean.parseBoolean(req.getParameter("gender"));
+
+        User user = new User(image, name, email, Integer.parseInt(phone), password, Date.valueOf(dateOfBirth), gender);
+        userDAO.insertUser(user);
+    }
+
+    private void updateUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+        String userId = req.getParameter("userId");
+        String image = req.getParameter("image");
+        String name = req.getParameter("name");
+        String email = req.getParameter("email");
+        String phone = req.getParameter("phone");
+        String dateOfBirth = req.getParameter("dateOfBirth");
+        boolean gender = Boolean.parseBoolean(req.getParameter("gender"));
+
+        User user = userDAO.selectUserById(Integer.parseInt(userId));
+        user.setImage(image);
+        user.setName(name);
+        user.setEmail(email);
+        user.setPhone(Integer.parseInt(phone));
+        user.setDateOfBirth(Date.valueOf(dateOfBirth));
+        user.setGender(gender);
+
+        userDAO.updateUser(user, Integer.parseInt(userId));
+    }
 }
