@@ -1,5 +1,7 @@
+package com.example.facebook.model;
+
 import java.sql.Timestamp;
-import java.util.Date;
+import java.sql.Date;
 
 public class User {
     private int userId;
@@ -11,6 +13,7 @@ public class User {
     private Date dateOfBirth;
     private boolean gender;
     private String bio;
+    private String role;
     private Timestamp createAt;
     private Timestamp updateAt;
     private boolean status;
@@ -18,8 +21,7 @@ public class User {
     public User() {
     }
 
-    public User(int userId, String image, String name, String email, int phone, String password, Date dateOfBirth,
-                boolean gender, String bio, Timestamp createAt, Timestamp updateAt, boolean status) {
+    public User(int userId, String image, String name, String email, int phone, String password, Date dateOfBirth, boolean gender, String bio, String role, Timestamp createAt, Timestamp updateAt, boolean status) {
         this.userId = userId;
         this.image = image;
         this.name = name;
@@ -29,9 +31,18 @@ public class User {
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
         this.bio = bio;
+        this.role = role;
         this.createAt = createAt;
         this.updateAt = updateAt;
         this.status = status;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public int getUserId() {
@@ -132,7 +143,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "com.example.facebook.model.User{" +
                 "userId=" + userId +
                 ", image='" + image + '\'' +
                 ", name='" + name + '\'' +

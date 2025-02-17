@@ -1,4 +1,4 @@
-package com.example.facebook;
+package com.example.facebook.model;
 
 import java.sql.Timestamp;
 

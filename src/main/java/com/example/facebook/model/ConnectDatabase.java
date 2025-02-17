@@ -1,4 +1,4 @@
-package com.example.facebook;
+package com.example.facebook.model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,15 +15,11 @@ public class ConnectDatabase {
     public ConnectDatabase() {
     }
 
-    public static Connection connection() {
+    public static Connection connection() throws ClassNotFoundException, SQLException {
         Connection connection = null;
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(URL, dbUsername, dbPassword);
-        } catch (ClassNotFoundException | SQLException e) {
-            throw new RuntimeException(e);
-        }
+        Class.forName("com.mysql.cj.jdbc.Driver");
 
+        connection = DriverManager.getConnection(URL, dbUsername, dbPassword);
         return connection;
     }
 

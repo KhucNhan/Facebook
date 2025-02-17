@@ -1,4 +1,4 @@
-package com.example.facebook;
+package com.example.facebook.model;
 
 public class Targets {
     private int targetId;

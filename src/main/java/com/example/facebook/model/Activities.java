@@ -1,31 +1,31 @@
-package com.example.facebook;
+package com.example.facebook.model;
 
 import java.sql.Timestamp;
 
-public class Reports {
-    private int reportId;
+public class Activities {
+    private int activityId;
     private int userId;
-    private int targetId;
     private String type;
+    private int targetId;
     private Timestamp createAt;
 
-    public Reports() {
+    public Activities() {
     }
 
-    public Reports(int reportId, int userId, int targetId, String type, Timestamp createAt) {
-        this.reportId = reportId;
+    public Activities(int activityId, int userId, String type, int targetId, Timestamp createAt) {
+        this.activityId = activityId;
         this.userId = userId;
-        this.targetId = targetId;
         this.type = type;
+        this.targetId = targetId;
         this.createAt = createAt;
     }
 
-    public int getReportId() {
-        return reportId;
+    public int getActivityId() {
+        return activityId;
     }
 
-    public void setReportId(int reportId) {
-        this.reportId = reportId;
+    public void setActivityId(int activityId) {
+        this.activityId = activityId;
     }
 
     public int getUserId() {
@@ -36,20 +36,20 @@ public class Reports {
         this.userId = userId;
     }
 
-    public int getTargetId() {
-        return targetId;
-    }
-
-    public void setTargetId(int targetId) {
-        this.targetId = targetId;
-    }
-
     public String getType() {
         return type;
     }
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public int getTargetId() {
+        return targetId;
+    }
+
+    public void setTargetId(int targetId) {
+        this.targetId = targetId;
     }
 
     public Timestamp getCreateAt() {
@@ -62,11 +62,11 @@ public class Reports {
 
     @Override
     public String toString() {
-        return "Reports{" +
-                "reportId=" + reportId +
+        return "Activities{" +
+                "activityId=" + activityId +
                 ", userId=" + userId +
-                ", targetId=" + targetId +
                 ", type='" + type + '\'' +
+                ", targetId=" + targetId +
                 ", createAt=" + createAt +
                 '}';
     }
