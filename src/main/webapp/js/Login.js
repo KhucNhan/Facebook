@@ -52,6 +52,8 @@ function validateLogin() {
         emailError.style.display = "block";
         emailError.style.color = "red";
         emailError.style.marginBottom= "-20px"
+        emailField.style.borderColor = " red";
+
         return;
     }
 
@@ -65,7 +67,8 @@ function validateLogin() {
         emailError.style.display = "block";
         emailError.style.marginBottom= "-20px";
         emailError.style.color = "red";
-        emailError.style.marginBottom= "-20px";
+        emailError.style.borderColor = " red";
+
 
         return;
     }
@@ -86,9 +89,35 @@ function validateLogin() {
     emailField.style.borderColor = "gainsboro";
     pass.style.borderColor = "gainsboro";
 
-    showModal();
+    fetch('/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `email=${encodeURIComponent(emailField.value)}&password=${encodeURIComponent(passwordField.value)}`
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            if (data.success) {
+                if (data.message === "Admin") {
+                    console.log("Admin")
+                    // window.location.href = '/admin';
+                } else {
+                    console.log("User")
+                    // window.location.href = '/user';
+                }
+            } else {
+                passwordError.textContent = data.message;
+                passwordError.style.display = "block";
+                passwordError.style.color = "red";
+                passwordError.style.fontSize = "15px";
+            }
+        })
+        .catch(error => {
+            console.error('Lỗi kết nối:', error);
+        });
 }
-
 function showModal() {
     var modal = document.getElementById("successModal");
     modal.style.display = "block";
