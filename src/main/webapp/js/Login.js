@@ -98,7 +98,7 @@ function validateLogin() {
             if (data.success) {
                 if (data.message === "Admin") {
                     console.log("Admin")
-                    // window.location.href = '/admin';
+                    window.location.href = '/users';
                 } else {
                     console.log("User")
                     // window.location.href = '/user';
