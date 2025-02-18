@@ -75,7 +75,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">
-                            <img src="https://png.pngtree.com/png-vector/20191009/ourlarge/pngtree-user-icon-png-image_1796659.jpg"
+                            <img src="${user.image}"
                                  alt="User Icon" width="37" height="37"
                                  style="border-radius: 50%;margin-top: -10px;margin-right: -20px;position: relative">
                         </a>
@@ -97,12 +97,12 @@
     <div class="left">
         <div class="leftIcon">
             <div>
-                <img src="https://png.pngtree.com/png-vector/20191009/ourlarge/pngtree-user-icon-png-image_1796659.jpg"
+                <img src="${user.image}"
                      alt="User Icon" width="50" height="50" style="border-radius: 50%;margin-left: -62px">
             </div>
             <div>
                 <b>
-                    Khúc Nhân
+                    ${user.name}
                 </b>
             </div>
         </div>
@@ -132,7 +132,16 @@
 
     <div class="center">
         <form action="">
-            <input class="form-control" type="text" placeholder="Default input" aria-label="default input example">
+            <div class="addPost">
+                <div >
+                    <img src="${user.image}"
+                         alt="User Icon" width="60" height="60">
+                </div>
+                <div class="addPostInput" style="width: 100%">
+                    <input type="text" placeholder="Bạn đang nghĩ gì thế?" >
+                </div>
+            </div>
+
         </form>
         <div class="post-container">
             <c:forEach items="${posts}" var="post">
@@ -220,6 +229,7 @@
 </body>
 </html>
 
+
 <script>
     function showSearchInput() {
         const contactLabel = document.getElementById('contactLabel');
@@ -249,6 +259,30 @@
 
 </script>
 <style>
+
+    .addPostInput input{
+        width: 100%;
+        /*margin: auto;*/
+        align-items: center;
+        padding: 11px;
+        margin-left: 20px;
+        background: #ececec;
+        border: 0 solid white;
+        border-radius: 30px;
+    }
+    .addPost {
+        /*margin: 15px 60px;*/
+        padding: 40px;
+        margin: auto;
+        background: white;
+        border-radius: 10px;
+        display: flex;
+        width: 100%;
+        height: 60px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        align-items: center;
+    }
+
     .searchBB {
         padding-left: 30px;
     }
@@ -380,13 +414,13 @@
 
     .center {
         width: 60%;
-        padding: 60px;
+        padding: 20px 60px;
     }
 
     .post-card {
         padding: 10px;
         border-radius: 8px;
         margin-bottom: 20px;
-        box-shadow: 0 1px 4px 0;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
 </style>
