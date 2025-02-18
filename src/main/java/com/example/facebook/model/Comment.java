@@ -2,24 +2,36 @@ package com.example.facebook.model;
 
 import java.sql.Timestamp;
 
-public class Posts {
+public class Comment {
+    private int commentId;
     private int postId;
     private int userId;
+    private int parentId;
     private String content;
     private String privacy;
     private Timestamp createAt;
     private Timestamp updateAt;
 
-    public Posts() {
+    public Comment() {
     }
 
-    public Posts(int postId, int userId, String content, String privacy, Timestamp createAt, Timestamp updateAt) {
+    public Comment(int commentId, int postId, int userId, int parentId, String content, String privacy, Timestamp createAt, Timestamp updateAt) {
+        this.commentId = commentId;
         this.postId = postId;
         this.userId = userId;
+        this.parentId = parentId;
         this.content = content;
         this.privacy = privacy;
         this.createAt = createAt;
         this.updateAt = updateAt;
+    }
+
+    public int getCommentId() {
+        return commentId;
+    }
+
+    public void setCommentId(int commentId) {
+        this.commentId = commentId;
     }
 
     public int getPostId() {
@@ -36,6 +48,14 @@ public class Posts {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public int getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
     }
 
     public String getContent() {
@@ -72,9 +92,11 @@ public class Posts {
 
     @Override
     public String toString() {
-        return "Posts{" +
-                "postId=" + postId +
+        return "Comments{" +
+                "commentId=" + commentId +
+                ", postId=" + postId +
                 ", userId=" + userId +
+                ", parentId=" + parentId +
                 ", content='" + content + '\'' +
                 ", privacy='" + privacy + '\'' +
                 ", createAt=" + createAt +
@@ -82,4 +104,3 @@ public class Posts {
                 '}';
     }
 }
-

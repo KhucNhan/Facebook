@@ -2,36 +2,44 @@ package com.example.facebook.model;
 
 import java.sql.Timestamp;
 
-public class Comments {
-    private int commentId;
+public class Post {
     private int postId;
     private int userId;
-    private int parentId;
     private String content;
     private String privacy;
     private Timestamp createAt;
     private Timestamp updateAt;
+    private int totalEmotions;
+    private int totalComments;
 
-    public Comments() {
+    public Post() {
     }
 
-    public Comments(int commentId, int postId, int userId, int parentId, String content, String privacy, Timestamp createAt, Timestamp updateAt) {
-        this.commentId = commentId;
+    public Post(int postId, int userId, String content, String privacy, Timestamp createAt, Timestamp updateAt, int totalEmotions, int totalComments) {
         this.postId = postId;
         this.userId = userId;
-        this.parentId = parentId;
         this.content = content;
         this.privacy = privacy;
         this.createAt = createAt;
         this.updateAt = updateAt;
+        this.totalEmotions = totalEmotions;
+        this.totalComments = totalComments;
     }
 
-    public int getCommentId() {
-        return commentId;
+    public int getTotalEmotions() {
+        return totalEmotions;
     }
 
-    public void setCommentId(int commentId) {
-        this.commentId = commentId;
+    public void setTotalEmotions(int totalEmotions) {
+        this.totalEmotions = totalEmotions;
+    }
+
+    public int getTotalComments() {
+        return totalComments;
+    }
+
+    public void setTotalComments(int totalComments) {
+        this.totalComments = totalComments;
     }
 
     public int getPostId() {
@@ -48,14 +56,6 @@ public class Comments {
 
     public void setUserId(int userId) {
         this.userId = userId;
-    }
-
-    public int getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(int parentId) {
-        this.parentId = parentId;
     }
 
     public String getContent() {
@@ -92,11 +92,9 @@ public class Comments {
 
     @Override
     public String toString() {
-        return "Comments{" +
-                "commentId=" + commentId +
-                ", postId=" + postId +
+        return "Posts{" +
+                "postId=" + postId +
                 ", userId=" + userId +
-                ", parentId=" + parentId +
                 ", content='" + content + '\'' +
                 ", privacy='" + privacy + '\'' +
                 ", createAt=" + createAt +
@@ -104,3 +102,4 @@ public class Comments {
                 '}';
     }
 }
+

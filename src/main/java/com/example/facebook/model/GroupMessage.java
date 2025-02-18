@@ -2,17 +2,17 @@ package com.example.facebook.model;
 
 import java.sql.Timestamp;
 
-public class GroupMessages {
+public class GroupMessage {
     private int groupMessageId;
     private int groupId;
     private int senderId;
     private String content;
     private Timestamp createAt;
 
-    public GroupMessages(){
+    public GroupMessage(){
 
     }
-    public GroupMessages(int groupMessageId, int groupId, int senderId, String content, Timestamp createAt){
+    public GroupMessage(int groupMessageId, int groupId, int senderId, String content, Timestamp createAt){
         this.groupMessageId = groupMessageId;
         this.groupId = groupId;
         this.senderId = senderId;

@@ -2,21 +2,20 @@ package com.example.facebook.model;
 
 import java.sql.Timestamp;
 
-public class MessageEmotions {
+public class CommentEmotion {
     private int emotionId;
     private int userId;
-    private int messageId;
+    private int commentId;
     private Timestamp createAt;
 
-    public  MessageEmotions(){
-
+    public CommentEmotion() {
     }
-    public MessageEmotions(int emotionId, int userId, int messageId, Timestamp createAt){
+
+    public CommentEmotion(int emotionId, int userId, int commentId, Timestamp createAt) {
         this.emotionId = emotionId;
         this.userId = userId;
-        this.messageId = messageId;
+        this.commentId = commentId;
         this.createAt = createAt;
-
     }
 
     public int getEmotionId() {
@@ -35,12 +34,12 @@ public class MessageEmotions {
         this.userId = userId;
     }
 
-    public int getMessageId() {
-        return messageId;
+    public int getCommentId() {
+        return commentId;
     }
 
-    public void setMessageId(int messageId) {
-        this.messageId = messageId;
+    public void setCommentId(int commentId) {
+        this.commentId = commentId;
     }
 
     public Timestamp getCreateAt() {
@@ -49,5 +48,15 @@ public class MessageEmotions {
 
     public void setCreateAt(Timestamp createAt) {
         this.createAt = createAt;
+    }
+
+    @Override
+    public String toString() {
+        return "CommentEmotions{" +
+                "emotionId=" + emotionId +
+                ", userId=" + userId +
+                ", commentId=" + commentId +
+                ", createAt=" + createAt +
+                '}';
     }
 }

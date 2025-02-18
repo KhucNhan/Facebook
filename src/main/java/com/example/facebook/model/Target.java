@@ -1,13 +1,13 @@
 package com.example.facebook.model;
 
-public class Targets {
+public class Target {
     private int targetId;
     private String type;
 
-    public Targets() {
+    public Target() {
     }
 
-    public Targets(int targetId, String type) {
+    public Target(int targetId, String type) {
         this.targetId = targetId;
         this.type = type;
     }
