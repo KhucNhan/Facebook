@@ -2,7 +2,7 @@ package com.example.facebook.model;
 
 import java.sql.Timestamp;
 
-public class FriendShips {
+public class FriendShip {
     private int friendShipId;
     private int userId_1;
     private int userId_2;
@@ -10,10 +10,10 @@ public class FriendShips {
     private Timestamp createAt;
     private Timestamp updateAt;
 
-    public FriendShips() {
+    public FriendShip() {
     }
 
-    public FriendShips(int friendShipId, int userId_1, int userId_2, String status, Timestamp createAt, Timestamp updateAt) {
+    public FriendShip(int friendShipId, int userId_1, int userId_2, String status, Timestamp createAt, Timestamp updateAt) {
         this.friendShipId = friendShipId;
         this.userId_1 = userId_1;
         this.userId_2 = userId_2;

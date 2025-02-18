@@ -2,24 +2,50 @@ package com.example.facebook.model;
 
 import java.sql.Timestamp;
 
-public class Posts {
+public class Post {
     private int postId;
     private int userId;
     private String content;
     private String privacy;
     private Timestamp createAt;
     private Timestamp updateAt;
+    private int totalEmotions;
+    private int totalComments;
 
-    public Posts() {
+    public Post() {
     }
 
-    public Posts(int postId, int userId, String content, String privacy, Timestamp createAt, Timestamp updateAt) {
+    public Post(int postId, int userId, String content, String privacy, Timestamp createAt, Timestamp updateAt, int totalEmotions, int totalComments) {
         this.postId = postId;
         this.userId = userId;
         this.content = content;
         this.privacy = privacy;
         this.createAt = createAt;
         this.updateAt = updateAt;
+        this.totalEmotions = totalEmotions;
+        this.totalComments = totalComments;
+    }
+
+    public Post(int userId, String content, String privacy) {
+        this.userId = userId;
+        this.content = content;
+        this.privacy = privacy;
+    }
+
+    public int getTotalEmotions() {
+        return totalEmotions;
+    }
+
+    public void setTotalEmotions(int totalEmotions) {
+        this.totalEmotions = totalEmotions;
+    }
+
+    public int getTotalComments() {
+        return totalComments;
+    }
+
+    public void setTotalComments(int totalComments) {
+        this.totalComments = totalComments;
     }
 
     public int getPostId() {

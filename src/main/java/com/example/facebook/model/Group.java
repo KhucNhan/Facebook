@@ -1,18 +1,17 @@
 package com.example.facebook.model;
 
 import java.sql.Timestamp;
-import java.util.SplittableRandom;
 
-public class Groups {
+public class Group {
     private int groupId;
     private String name;
     private int createBy;
     private Timestamp createAt;
 
-    public Groups(){
+    public Group(){
 
     }
-    public Groups(int groupId, String name, int createBy, Timestamp createAt){
+    public Group(int groupId, String name, int createBy, Timestamp createAt){
         this.groupId = groupId;
         this.name = name;
         this.createBy = createBy;

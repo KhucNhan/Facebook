@@ -2,16 +2,16 @@ package com.example.facebook.model;
 
 import java.sql.Timestamp;
 
-public class GroupMembers {
+public class GroupMember {
     private int groupId;
     private int userId;
     private String role;
     private Timestamp joinAt;
 
-    public GroupMembers(){
+    public GroupMember(){
 
     }
-    public GroupMembers(int groupId, int userId, String role, Timestamp joinAt){
+    public GroupMember(int groupId, int userId, String role, Timestamp joinAt){
         this.groupId = groupId;
         this.userId = userId;
         this.role = role;
