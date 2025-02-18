@@ -101,7 +101,7 @@ function validateLogin() {
                     window.location.href = '/users';
                 } else {
                     console.log("User")
-                    // window.location.href = '/user';
+                    window.location.href = '/home';
                 }
             } else {
                 passwordError.textContent = data.message;
