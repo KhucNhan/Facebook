@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class Post {
     private int postId;
-    private int userId;
+    private User user;
     private String content;
     private String privacy;
     private Timestamp createAt;
@@ -15,9 +15,9 @@ public class Post {
     public Post() {
     }
 
-    public Post(int postId, int userId, String content, String privacy, Timestamp createAt, Timestamp updateAt, int totalEmotions, int totalComments) {
+    public Post(int postId, User user, String content, String privacy, Timestamp createAt, Timestamp updateAt, int totalEmotions, int totalComments) {
         this.postId = postId;
-        this.userId = userId;
+        this.user = user;
         this.content = content;
         this.privacy = privacy;
         this.createAt = createAt;
@@ -26,8 +26,8 @@ public class Post {
         this.totalComments = totalComments;
     }
 
-    public Post(int userId, String content, String privacy) {
-        this.userId = userId;
+    public Post(User user, String content, String privacy) {
+        this.user = user;
         this.content = content;
         this.privacy = privacy;
     }
@@ -56,12 +56,12 @@ public class Post {
         this.postId = postId;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getContent() {
@@ -96,16 +96,5 @@ public class Post {
         this.updateAt = updateAt;
     }
 
-    @Override
-    public String toString() {
-        return "Posts{" +
-                "postId=" + postId +
-                ", userId=" + userId +
-                ", content='" + content + '\'' +
-                ", privacy='" + privacy + '\'' +
-                ", createAt=" + createAt +
-                ", updateAt=" + updateAt +
-                '}';
-    }
 }
 

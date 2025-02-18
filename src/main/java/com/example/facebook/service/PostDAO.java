@@ -11,6 +11,7 @@ import java.util.List;
 public class PostDAO implements IPostDAO{
     private ConnectDatabase connectDatabase = new ConnectDatabase();
     private Connection connection = connectDatabase.connection();
+    UserDAO userDAO = new UserDAO();
 
     private static final String select_all_post = "SELECT p.postId, p.userId, p.content, p.privacy, p.createAt, p.updateAt, \n" +
             "       COALESCE(e.total_emotions, 0) AS totalEmotions,\n" +
@@ -51,7 +52,7 @@ public class PostDAO implements IPostDAO{
         while (resultSet.next()) {
             posts.add(new Post(
                     resultSet.getInt(1),
-                    resultSet.getInt(2),
+                    userDAO.selectUserById(resultSet.getInt(2)),
                     resultSet.getString(3),
                     resultSet.getString(4),
                     resultSet.getTimestamp(5),
@@ -67,7 +68,7 @@ public class PostDAO implements IPostDAO{
     @Override
     public boolean insertPost(Post post) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement(insert_post);
-        preparedStatement.setInt(1, post.getUserId());
+        preparedStatement.setInt(1, post.getUser().getUserId());
         preparedStatement.setString(2, post.getContent());
         preparedStatement.setString(3, post.getPrivacy());
 

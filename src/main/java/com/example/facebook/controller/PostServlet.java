@@ -2,6 +2,7 @@ package com.example.facebook.controller;
 
 import com.example.facebook.model.Post;
 import com.example.facebook.service.PostDAO;
+import com.example.facebook.service.UserDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +17,7 @@ import java.util.List;
 @WebServlet(name = "PostServlet", value = "/posts")
 public class PostServlet extends HttpServlet {
     PostDAO postDAO = new PostDAO();
+    UserDAO userDAO = new UserDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -66,7 +68,7 @@ public class PostServlet extends HttpServlet {
         String userIdStr = session.getAttribute("userId").toString();
         String content = req.getParameter("content");
         String privacy = req.getParameter("privacy");
-        postDAO.insertPost(new Post(Integer.parseInt(userIdStr), content, privacy));
+        postDAO.insertPost(new Post(userDAO.selectUserById(Integer.parseInt(userIdStr)), content, privacy));
         // ajax
     }
 }
