@@ -46,6 +46,7 @@ public class HomeServlet extends HttpServlet {
 
         List<Post> posts = postDAO.selectAllPosts(Integer.parseInt(userIdStr));
         req.setAttribute("posts", posts);
+        req.setAttribute("user", user);
         req.getRequestDispatcher("/user/Home.jsp").forward(req, resp);
     }
 }
