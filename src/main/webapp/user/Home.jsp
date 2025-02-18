@@ -72,9 +72,11 @@
             <div id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
                             <img src="https://png.pngtree.com/png-vector/20191009/ourlarge/pngtree-user-icon-png-image_1796659.jpg"
-                                 alt="User Icon" width="37" height="37" style="border-radius: 50%;margin-top: -10px;margin-right: -20px;position: relative">
+                                 alt="User Icon" width="37" height="37"
+                                 style="border-radius: 50%;margin-top: -10px;margin-right: -20px;position: relative">
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#">Thông tin cá nhân</a></li>
@@ -90,14 +92,143 @@
         </div>
     </div>
 </div>
+<div style="display: flex;height: 90%">
+    <div class="left">
+        <div class="leftIcon">
+            <div>
+                <img src="https://png.pngtree.com/png-vector/20191009/ourlarge/pngtree-user-icon-png-image_1796659.jpg"
+                     alt="User Icon" width="50" height="50" style="border-radius: 50%;margin-left: -62px">
+            </div>
+            <div>
+                <b>
+                    Khúc Nhân
+                </b>
+            </div>
+        </div>
+        <div class="leftIcon">
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" style="margin-left: -90px"
+                     class="bi bi-people-fill iconPeople"
+                     viewBox="0 0 16 16">
+                    <defs>
+                        <linearGradient id="gradient1" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#0badf6; stop-opacity:1"/>
+                            <stop offset="100%" style="stop-color:#7ec9ff; stop-opacity:1"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"
+                          fill="url(#gradient1)"/>
+                </svg>
+            </div>
+            <div>
+                <b style="margin-left: -30px">
+                    Bạn bè
+                </b>
+            </div>
+        </div>
 
-<div class="left"></div>
-<div class="right"></div>
+    </div>
+    <div class="centers"></div>
+    <div class="right">
+        <div class="rightMenu">
+            <div style="width: 170px" id="contactLabel">
+                <label>Người liên hệ</label>
+            </div>
+            <div id="search-container" style="display: none;">
+                <input type="text" id="searchInput" placeholder="Tìm kiếm"
+                       style="padding: 5px; border-radius: 5px; border: 0px solid #e8e8e8;width: 180px;background: #ececec">
+            </div>
+            <div class="searchBB" id="search-input">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search"
+                     viewBox="0 0 16 16" onclick="showSearchInput()">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                </svg>
+            </div>
+
+            <div style="margin-bottom: 15px;font-size: 1em;margin-left: 10px">
+                <b>...</b>
+            </div>
+        </div>
+        <div></div>
+    </div>
+</div>
 
 <div class="center"></div>
 </body>
 </html>
+
+<script>
+    function showSearchInput() {
+        const contactLabel = document.getElementById('contactLabel');
+        const searchContainer = document.getElementById('search-container');
+        const search = document.getElementById('search-input')
+
+        contactLabel.style.display = 'none';
+        searchContainer.style.display = 'block';
+        search.style.marginLeft = '-10px'
+
+    }
+
+    function hideSearchInput(event) {
+        const searchContainer = document.getElementById('search-container');
+        const contactLabel = document.getElementById('contactLabel');
+
+        if (!searchContainer.contains(event.relatedTarget) && !contactLabel.contains(event.relatedTarget)) {
+            searchContainer.style.display = 'none';
+            contactLabel.style.display = 'block';
+            contactLabel.style.marginLeft = '10px'
+        }
+    }
+
+    document.getElementById('search-container').addEventListener('mouseout', hideSearchInput);
+    document.getElementById('contactLabel').addEventListener('mouseout', hideSearchInput);
+
+
+</script>
 <style>
+    .searchBB {
+        padding-left: 30px;
+    }
+
+    .rightMenu {
+        padding: 15px;
+        font-size: 1.3em;
+        display: flex;
+        gap: 10px;
+        height: 80px;
+        align-items: center;
+    }
+
+    .centers {
+        width: 60%;
+    }
+
+    .right {
+        width: 20%;
+        height: 100%;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .leftIcon {
+        font-family: inherit;
+        font-size: 1em;
+        display: flex;
+        gap: 10px;
+        height: 70px;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .left {
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        font-family: inherit;
+        width: 20%;
+        height: 100%;
+        padding: 10px;
+        display: block;
+    }
+
     .menuRight div:hover svg {
         fill: #0866ff;
     }
