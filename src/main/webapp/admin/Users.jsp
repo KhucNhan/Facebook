@@ -89,132 +89,132 @@
 
 
 <script>
-    const users = [
-        <c:forEach var="user" items="${users}" varStatus="status">
-        {
-            userId: ${user.userId},
-            name: '${user.name}',
-            email: '${user.email}',
-            phone: '0${user.phone}',
-            gender: '${user.gender ? "Nam" : "Nữ"}',
-            dateOfBirth: '${user.dateOfBirth}',
-            image: '${user.image}',
-            status: '${user.status ? "Active" : "Blocked"}'
-        }<c:if test="${!status.last}">, </c:if>
-        </c:forEach>
-    ];
+    <%--const users = [--%>
+    <%--    <c:forEach var="user" items="${users}" varStatus="status">--%>
+    <%--    {--%>
+    <%--        userId: ${user.userId},--%>
+    <%--        name: '${user.name}',--%>
+    <%--        email: '${user.email}',--%>
+    <%--        phone: '0${user.phone}',--%>
+    <%--        gender: '${user.gender ? "Nam" : "Nữ"}',--%>
+    <%--        dateOfBirth: '${user.dateOfBirth}',--%>
+    <%--        image: '${user.image}',--%>
+    <%--        status: '${user.status ? "Active" : "Blocked"}'--%>
+    <%--    }<c:if test="${!status.last}">, </c:if>--%>
+    <%--    </c:forEach>--%>
+    <%--];--%>
 
-    const rowsPerPage = 5;
-    let currentPage = 1;
+    <%--const rowsPerPage = 5;--%>
+    <%--let currentPage = 1;--%>
 
-    function displayUsers(page) {
-        const tableBody = document.getElementById('userTable');
-        tableBody.innerHTML = '';
+    <%--function displayUsers(page) {--%>
+    <%--    const tableBody = document.getElementById('userTable');--%>
+    <%--    tableBody.innerHTML = '';--%>
 
-        const start = (page - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
-        const paginatedUsers = users.slice(start, end);
+    <%--    const start = (page - 1) * rowsPerPage;--%>
+    <%--    const end = start + rowsPerPage;--%>
+    <%--    const paginatedUsers = users.slice(start, end);--%>
 
-        if (users.length !== 0) {
-            paginatedUsers.forEach(function (user) {
-                const row = '<tr class="d-flex">' +
-                    '<td style="width: 5%;" class="text-center">' + user.userId + '</td>' +
-                    '<td style="width: 10%;" class="text-center"><img style="width: 100%;" src="' + user.image + '" /></td>' +
-                    '<td style="width: 10%;" class="text-center">' + user.name + '</td>' +
-                    '<td style="width: 15%;" class="text-center">' + user.email + '</td>' +
-                    '<td style="width: 10%;" class="text-center">' + user.phone + '</td>' +
-                    '<td style="width: 10%;" class="text-center">' + user.gender + '</td>' +
-                    '<td style="width: 10%;" class="text-center">' + user.dateOfBirth + '</td>' +
-                    '<td style="width: 15%;" class="text-center">' + (user.status ? 'Active' : 'Blocked') + '</td>' +
-                    '<td style="width: 15%;" class="text-center">' +
-                    '<a class="btn btn-warning" style="margin-right: 10px;" href="#">Edit</a>' +
-                    '<a class="btn ' + (user.status ? 'btn-danger' : 'btn-success') + '" href="#">' +
-                    (user.status ? 'Block' : 'Activate') +
-                    '</a>' +
-                    '</td>' +
-                    '</tr>';
-                tableBody.innerHTML += row;
-            });
-        } else {
-            tableBody.innerHTML = '<tr class="d-flex">' +
-                '<td style="width: 100%; text-align: center">Không tìm thấy kết quả phù hợp.</td>' +
-                '</tr>';
-        }
+    <%--    if (users.length !== 0) {--%>
+    <%--        paginatedUsers.forEach(function (user) {--%>
+    <%--            const row = '<tr class="d-flex">' +--%>
+    <%--                '<td style="width: 5%;" class="text-center">' + user.userId + '</td>' +--%>
+    <%--                '<td style="width: 10%;" class="text-center"><img style="width: 100%;" src="' + user.image + '" /></td>' +--%>
+    <%--                '<td style="width: 10%;" class="text-center">' + user.name + '</td>' +--%>
+    <%--                '<td style="width: 15%;" class="text-center">' + user.email + '</td>' +--%>
+    <%--                '<td style="width: 10%;" class="text-center">' + user.phone + '</td>' +--%>
+    <%--                '<td style="width: 10%;" class="text-center">' + user.gender + '</td>' +--%>
+    <%--                '<td style="width: 10%;" class="text-center">' + user.dateOfBirth + '</td>' +--%>
+    <%--                '<td style="width: 15%;" class="text-center">' + (user.status ? 'Active' : 'Blocked') + '</td>' +--%>
+    <%--                '<td style="width: 15%;" class="text-center">' +--%>
+    <%--                '<a class="btn btn-warning" style="margin-right: 10px;" href="#">Edit</a>' +--%>
+    <%--                '<a class="btn ' + (user.status ? 'btn-danger' : 'btn-success') + '" href="#">' +--%>
+    <%--                (user.status ? 'Block' : 'Activate') +--%>
+    <%--                '</a>' +--%>
+    <%--                '</td>' +--%>
+    <%--                '</tr>';--%>
+    <%--            tableBody.innerHTML += row;--%>
+    <%--        });--%>
+    <%--    } else {--%>
+    <%--        tableBody.innerHTML = '<tr class="d-flex">' +--%>
+    <%--            '<td style="width: 100%; text-align: center">Không tìm thấy kết quả phù hợp.</td>' +--%>
+    <%--            '</tr>';--%>
+    <%--    }--%>
 
-        const rowsToAdd = rowsPerPage - paginatedUsers.length;
-        for (let i = 0; i < rowsToAdd; i++) {
-            const emptyRow = '<tr class="d-flex" style="height: 106.336px;">' +
-                '<td colspan="9" class="text-center"></td>' +
-                '</tr>';
-            tableBody.innerHTML += emptyRow;
-        }
-    }
+    <%--    const rowsToAdd = rowsPerPage - paginatedUsers.length;--%>
+    <%--    for (let i = 0; i < rowsToAdd; i++) {--%>
+    <%--        const emptyRow = '<tr class="d-flex" style="height: 106.336px;">' +--%>
+    <%--            '<td colspan="9" class="text-center"></td>' +--%>
+    <%--            '</tr>';--%>
+    <%--        tableBody.innerHTML += emptyRow;--%>
+    <%--    }--%>
+    <%--}--%>
 
-    function setupPagination() {
-        const pagination = document.getElementById('pagination');
-        pagination.innerHTML = '';  // Xóa nội dung cũ của phân trang
-        const pageCount = Math.ceil(users.length / rowsPerPage);
+    <%--function setupPagination() {--%>
+    <%--    const pagination = document.getElementById('pagination');--%>
+    <%--    pagination.innerHTML = '';  // Xóa nội dung cũ của phân trang--%>
+    <%--    const pageCount = Math.ceil(users.length / rowsPerPage);--%>
 
-        // Thêm trang trước (Previous)
-        const prevLi = document.createElement('li');
-        prevLi.classList.add('page-item');
-        prevLi.innerHTML = '<a class="page-link" href="#">Previous</a>';
-        prevLi.addEventListener('click', function () {
-            if (currentPage > 1) {
-                currentPage--;
-                displayUsers(currentPage);
-                updateActivePage();
-            }
-        });
-        if (users.length !== 0) {
-            pagination.appendChild(prevLi);
-        }
+    <%--    // Thêm trang trước (Previous)--%>
+    <%--    const prevLi = document.createElement('li');--%>
+    <%--    prevLi.classList.add('page-item');--%>
+    <%--    prevLi.innerHTML = '<a class="page-link" href="#">Previous</a>';--%>
+    <%--    prevLi.addEventListener('click', function () {--%>
+    <%--        if (currentPage > 1) {--%>
+    <%--            currentPage--;--%>
+    <%--            displayUsers(currentPage);--%>
+    <%--            updateActivePage();--%>
+    <%--        }--%>
+    <%--    });--%>
+    <%--    if (users.length !== 0) {--%>
+    <%--        pagination.appendChild(prevLi);--%>
+    <%--    }--%>
 
-        // Thêm các trang số
-        for (let i = 1; i <= pageCount; i++) {
-            const li = document.createElement('li');
-            li.classList.add('page-item');
-            if (i === currentPage) {
-                li.classList.add('active');
-            }
-            li.innerHTML = `<a class="page-link" href="#">` + i + `</a>`;
-            li.addEventListener('click', function () {
-                currentPage = i;
-                displayUsers(currentPage);
-                updateActivePage();
-            });
-            if (users.length !== 0) {
-                pagination.appendChild(li);
-            }
-        }
+    <%--    // Thêm các trang số--%>
+    <%--    for (let i = 1; i <= pageCount; i++) {--%>
+    <%--        const li = document.createElement('li');--%>
+    <%--        li.classList.add('page-item');--%>
+    <%--        if (i === currentPage) {--%>
+    <%--            li.classList.add('active');--%>
+    <%--        }--%>
+    <%--        li.innerHTML = `<a class="page-link" href="#">` + i + `</a>`;--%>
+    <%--        li.addEventListener('click', function () {--%>
+    <%--            currentPage = i;--%>
+    <%--            displayUsers(currentPage);--%>
+    <%--            updateActivePage();--%>
+    <%--        });--%>
+    <%--        if (users.length !== 0) {--%>
+    <%--            pagination.appendChild(li);--%>
+    <%--        }--%>
+    <%--    }--%>
 
-        // Thêm trang sau (Next)
-        const nextLi = document.createElement('li');
-        nextLi.classList.add('page-item');
-        nextLi.innerHTML = '<a class="page-link" href="#">Next</a>';
-        nextLi.addEventListener('click', function () {
-            if (currentPage < pageCount) {
-                currentPage++;
-                displayUsers(currentPage);
-                updateActivePage();
-            }
-        });
-        if (users.length !== 0) {
-            pagination.appendChild(nextLi);
-        }
-    }
+    <%--    // Thêm trang sau (Next)--%>
+    <%--    const nextLi = document.createElement('li');--%>
+    <%--    nextLi.classList.add('page-item');--%>
+    <%--    nextLi.innerHTML = '<a class="page-link" href="#">Next</a>';--%>
+    <%--    nextLi.addEventListener('click', function () {--%>
+    <%--        if (currentPage < pageCount) {--%>
+    <%--            currentPage++;--%>
+    <%--            displayUsers(currentPage);--%>
+    <%--            updateActivePage();--%>
+    <%--        }--%>
+    <%--    });--%>
+    <%--    if (users.length !== 0) {--%>
+    <%--        pagination.appendChild(nextLi);--%>
+    <%--    }--%>
+    <%--}--%>
 
-    // Cập nhật lớp active cho trang hiện tại
-    function updateActivePage() {
-        const pageItems = document.querySelectorAll('.page-item');
-        pageItems.forEach(item => item.classList.remove('active'));
-        const activeItem = document.querySelectorAll('.page-item')[currentPage];
-        if (activeItem) activeItem.classList.add('active');
-    }
+    <%--// Cập nhật lớp active cho trang hiện tại--%>
+    <%--function updateActivePage() {--%>
+    <%--    const pageItems = document.querySelectorAll('.page-item');--%>
+    <%--    pageItems.forEach(item => item.classList.remove('active'));--%>
+    <%--    const activeItem = document.querySelectorAll('.page-item')[currentPage];--%>
+    <%--    if (activeItem) activeItem.classList.add('active');--%>
+    <%--}--%>
 
 
-    displayUsers(currentPage);
-    setupPagination();
+    <%--displayUsers(currentPage);--%>
+    <%--setupPagination();--%>
 </script>
 </body>
 </html>

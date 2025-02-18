@@ -110,8 +110,6 @@ function validateLogin() {
                 passwordError.style.fontSize = "15px";
                 emailField.style.borderColor = "red";
                 passwordField.style.borderColor = "red";
-
-
             }
         })
         .catch(error => {
