@@ -26,6 +26,12 @@ public class Post {
         this.totalComments = totalComments;
     }
 
+    public Post(int userId, String content, String privacy) {
+        this.userId = userId;
+        this.content = content;
+        this.privacy = privacy;
+    }
+
     public int getTotalEmotions() {
         return totalEmotions;
     }

@@ -63,9 +63,9 @@ public class PostDAO implements IPostDAO{
     }
 
     @Override
-    public boolean insertPost(Post post, int userId) throws SQLException {
+    public boolean insertPost(Post post) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement(insert_post);
-        preparedStatement.setInt(1, userId);
+        preparedStatement.setInt(1, post.getUserId());
         preparedStatement.setString(2, post.getContent());
         preparedStatement.setString(3, post.getPrivacy());
 

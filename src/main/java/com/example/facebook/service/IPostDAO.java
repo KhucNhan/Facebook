@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface IPostDAO {
     List<Post> selectAllPosts(int userId) throws SQLException;
-    boolean insertPost(Post post, int userId) throws SQLException;
+    boolean insertPost(Post post) throws SQLException;
 }

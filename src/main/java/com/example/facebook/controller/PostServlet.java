@@ -33,7 +33,6 @@ public class PostServlet extends HttpServlet {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     private void showNewsFeed(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
@@ -42,5 +41,32 @@ public class PostServlet extends HttpServlet {
         List<Post> posts = postDAO.selectAllPosts(Integer.parseInt(userIdStr));
         req.setAttribute("posts", posts);
         req.getRequestDispatcher("").forward(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
+
+        if (action == null) {
+            action = "";
+        }
+        try {
+            switch (action) {
+                case "add":
+                    addPost(req, resp);
+                    break;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void addPost(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+        HttpSession session = req.getSession();
+        String userIdStr = session.getAttribute("userId").toString();
+        String content = req.getParameter("content");
+        String privacy = req.getParameter("privacy");
+        postDAO.insertPost(new Post(Integer.parseInt(userIdStr), content, privacy));
+        // ajax
     }
 }
