@@ -2,6 +2,7 @@ package com.example.facebook.model;
 
 import java.sql.Timestamp;
 import java.sql.Date;
+import java.util.Objects;
 
 public class User {
     private int userId;
@@ -35,6 +36,16 @@ public class User {
         this.createAt = createAt;
         this.updateAt = updateAt;
         this.status = status;
+    }
+
+    public User(String image, String name, String email, int phone, String password, Date dateOfBirth, boolean gender) {
+        this.image = image;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
     }
 
     public String getRole() {
@@ -157,5 +168,18 @@ public class User {
                 ", updateAt=" + updateAt +
                 ", status=" + status +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return getUserId() == user.getUserId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUserId());
     }
 }

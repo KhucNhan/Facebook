@@ -52,8 +52,7 @@ function validateLogin() {
         emailError.style.display = "block";
         emailError.style.color = "red";
         emailError.style.marginBottom= "-20px"
-        emailField.style.borderColor = " red";
-
+        emailField.style.borderColor = "red";
         return;
     }
 
@@ -67,9 +66,7 @@ function validateLogin() {
         emailError.style.display = "block";
         emailError.style.marginBottom= "-20px";
         emailError.style.color = "red";
-        emailError.style.borderColor = " red";
-
-
+        emailField.style.borderColor = "red";
         return;
     }
 
@@ -86,8 +83,7 @@ function validateLogin() {
         return;
     }
 
-    emailField.style.borderColor = "gainsboro";
-    pass.style.borderColor = "gainsboro";
+
 
     fetch('/login', {
         method: 'POST',
@@ -102,7 +98,7 @@ function validateLogin() {
             if (data.success) {
                 if (data.message === "Admin") {
                     console.log("Admin")
-                    // window.location.href = '/admin';
+                    window.location.href = '/users';
                 } else {
                     console.log("User")
                     // window.location.href = '/user';
@@ -112,24 +108,21 @@ function validateLogin() {
                 passwordError.style.display = "block";
                 passwordError.style.color = "red";
                 passwordError.style.fontSize = "15px";
+                emailField.style.borderColor = "red";
+                passwordField.style.borderColor = "red";
+
+
             }
         })
         .catch(error => {
             console.error('Lỗi kết nối:', error);
         });
-}
-function showModal() {
-    var modal = document.getElementById("successModal");
-    modal.style.display = "block";
 
-    setTimeout(function () {
-        closeModal();
-    }, 3000);
-
+    emailField.style.borderColor = "gainsboro";
+    passwordField.style.borderColor = "gainsboro";
 }
 
-function closeModal() {
-    var modal = document.getElementById("successModal");
-    modal.style.display = "none";
-}
+
+
+
 

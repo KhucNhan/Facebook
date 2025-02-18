@@ -19,8 +19,17 @@
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
                 <li><a class="dropdown-item" href="#">Thay đổi thông tin cá nhân</a></li>
-                <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
+                <li><a class="dropdown-item" href="#" onclick="confirmLogout()">Đăng xuất</a></li>
             </ul>
         </li>
     </ul>
 </div>
+
+<script>
+    function confirmLogout() {
+        const userConfirmed = window.confirm("Bạn có chắc muốn đăng xuất không?");
+        if (userConfirmed) {
+            window.location.href = '/login?action=logout';
+        }
+    }
+</script>
