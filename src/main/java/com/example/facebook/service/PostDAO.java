@@ -12,30 +12,30 @@ public class PostDAO implements IPostDAO{
     private ConnectDatabase connectDatabase = new ConnectDatabase();
     private Connection connection = connectDatabase.connection();
 
-    private static final String select_all_post = "SELECT p.postId, p.userId, p.content, p.privacy, p.createAt, p.updateAt" +
-            "       COALESCE(e.total_emotions, 0) AS totalEmotions," +
-            "       COALESCE(c.total_comments, 0) AS totalComments" +
-            "FROM posts p" +
-            "LEFT JOIN friendships f ON (" +
-            "    (p.userId = f.senderId AND f.receiverId = ?) " +
-            "    OR (p.userId = f.receiverId AND f.senderId = ?)" +
-            ")" +
-            "LEFT JOIN (" +
-            "    SELECT postId, COUNT(*) AS total_emotions" +
-            "    FROM emotions" +
-            "    GROUP BY postId" +
-            ") e ON p.postId = e.postId" +
-            "LEFT JOIN (" +
-            "    SELECT postId, COUNT(*) AS total_comments" +
-            "    FROM comments" +
-            "    GROUP BY postId" +
-            ") c ON p.postId = c.postId" +
-            "WHERE p.privacy != 'Private'  -- Loại bỏ bài viết Private" +
-            "AND p.userId != ?  -- Loại bỏ bài viết của người dùng đang đăng nhập" +
-            "AND (" +
-            "    p.privacy = 'Public'  -- Hiển thị bài viết Public" +
-            "    OR (p.privacy = 'Friends' AND f.status = 'accepted')  -- Chỉ hiển thị bài viết Friends nếu là bạn bè" +
-            ")" +
+    private static final String select_all_post = "SELECT p.postId, p.userId, p.content, p.privacy, p.createAt, p.updateAt, \n" +
+            "       COALESCE(e.total_emotions, 0) AS totalEmotions,\n" +
+            "       COALESCE(c.total_comments, 0) AS totalComments\n" +
+            "FROM posts p\n" +
+            "LEFT JOIN friendships f ON (\n" +
+            "    (p.userId = f.senderId AND f.receiverId = ?) \n" +
+            "    OR (p.userId = f.receiverId AND f.senderId = ?)\n" +
+            ")\n" +
+            "LEFT JOIN (\n" +
+            "    SELECT postId, COUNT(*) AS total_emotions\n" +
+            "    FROM postemotions\n" +
+            "    GROUP BY postId\n" +
+            ") e ON p.postId = e.postId\n" +
+            "LEFT JOIN (\n" +
+            "    SELECT postId, COUNT(*) AS total_comments\n" +
+            "    FROM comments\n" +
+            "    GROUP BY postId\n" +
+            ") c ON p.postId = c.postId\n" +
+            "WHERE p.privacy != 'Private' \n" +
+            "AND p.userId != ?  \n" +
+            "AND (\n" +
+            "    p.privacy = 'Public' \n" +
+            "    OR (p.privacy = 'Friends' AND f.status = 'accepted')  \n" +
+            ")\n" +
             "ORDER BY p.createAt DESC;";
 
     private static final String insert_post = "insert into posts (userId, content, privacy) values (?, ?, ?)";
@@ -44,6 +44,8 @@ public class PostDAO implements IPostDAO{
         List<Post> posts = new ArrayList<>();
         PreparedStatement preparedStatement = connection.prepareStatement(select_all_post);
         preparedStatement.setInt(1, userId);
+        preparedStatement.setInt(2, userId);
+        preparedStatement.setInt(3, userId);
         ResultSet resultSet = preparedStatement.executeQuery();
 
         while (resultSet.next()) {
