@@ -115,25 +115,31 @@
         const end = start + rowsPerPage;
         const paginatedUsers = users.slice(start, end);
 
-        paginatedUsers.forEach(function (user) {
-            const row = '<tr class="d-flex">' +
-                '<td style="width: 5%;" class="text-center">' + user.userId + '</td>' +
-                '<td style="width: 10%;" class="text-center"><img style="width: 100%;" src="' + user.image + '" /></td>' +
-                '<td style="width: 10%;" class="text-center">' + user.name + '</td>' +
-                '<td style="width: 15%;" class="text-center">' + user.email + '</td>' +
-                '<td style="width: 10%;" class="text-center">' + user.phone + '</td>' +
-                '<td style="width: 10%;" class="text-center">' + user.gender + '</td>' +
-                '<td style="width: 10%;" class="text-center">' + user.dateOfBirth + '</td>' +
-                '<td style="width: 15%;" class="text-center">' + (user.status ? 'Active' : 'Blocked') + '</td>' +
-                '<td style="width: 15%;" class="text-center">' +
-                '<a class="btn btn-warning" style="margin-right: 10px;" href="#">Edit</a>' +
-                '<a class="btn ' + (user.status ? 'btn-danger' : 'btn-success') + '" href="#">' +
-                (user.status ? 'Block' : 'Activate') +
-                '</a>' +
-                '</td>' +
+        if (users.length !== 0) {
+            paginatedUsers.forEach(function (user) {
+                const row = '<tr class="d-flex">' +
+                    '<td style="width: 5%;" class="text-center">' + user.userId + '</td>' +
+                    '<td style="width: 10%;" class="text-center"><img style="width: 100%;" src="' + user.image + '" /></td>' +
+                    '<td style="width: 10%;" class="text-center">' + user.name + '</td>' +
+                    '<td style="width: 15%;" class="text-center">' + user.email + '</td>' +
+                    '<td style="width: 10%;" class="text-center">' + user.phone + '</td>' +
+                    '<td style="width: 10%;" class="text-center">' + user.gender + '</td>' +
+                    '<td style="width: 10%;" class="text-center">' + user.dateOfBirth + '</td>' +
+                    '<td style="width: 15%;" class="text-center">' + (user.status ? 'Active' : 'Blocked') + '</td>' +
+                    '<td style="width: 15%;" class="text-center">' +
+                    '<a class="btn btn-warning" style="margin-right: 10px;" href="#">Edit</a>' +
+                    '<a class="btn ' + (user.status ? 'btn-danger' : 'btn-success') + '" href="#">' +
+                    (user.status ? 'Block' : 'Activate') +
+                    '</a>' +
+                    '</td>' +
+                    '</tr>';
+                tableBody.innerHTML += row;
+            });
+        } else {
+            tableBody.innerHTML = '<tr class="d-flex">' +
+                '<td style="width: 100%; text-align: center">Không tìm thấy kết quả phù hợp.</td>' +
                 '</tr>';
-            tableBody.innerHTML += row;
-        });
+        }
 
         const rowsToAdd = rowsPerPage - paginatedUsers.length;
         for (let i = 0; i < rowsToAdd; i++) {
@@ -160,7 +166,9 @@
                 updateActivePage();
             }
         });
-        pagination.appendChild(prevLi);
+        if (users.length !== 0) {
+            pagination.appendChild(prevLi);
+        }
 
         // Thêm các trang số
         for (let i = 1; i <= pageCount; i++) {
@@ -175,7 +183,9 @@
                 displayUsers(currentPage);
                 updateActivePage();
             });
-            pagination.appendChild(li);
+            if (users.length !== 0) {
+                pagination.appendChild(li);
+            }
         }
 
         // Thêm trang sau (Next)
@@ -189,7 +199,9 @@
                 updateActivePage();
             }
         });
-        pagination.appendChild(nextLi);
+        if (users.length !== 0) {
+            pagination.appendChild(nextLi);
+        }
     }
 
     // Cập nhật lớp active cho trang hiện tại
