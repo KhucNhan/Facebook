@@ -9,17 +9,37 @@ public class Post {
     private String privacy;
     private Timestamp createAt;
     private Timestamp updateAt;
+    private int totalEmotions;
+    private int totalComments;
 
     public Post() {
     }
 
-    public Post(int postId, int userId, String content, String privacy, Timestamp createAt, Timestamp updateAt) {
+    public Post(int postId, int userId, String content, String privacy, Timestamp createAt, Timestamp updateAt, int totalEmotions, int totalComments) {
         this.postId = postId;
         this.userId = userId;
         this.content = content;
         this.privacy = privacy;
         this.createAt = createAt;
         this.updateAt = updateAt;
+        this.totalEmotions = totalEmotions;
+        this.totalComments = totalComments;
+    }
+
+    public int getTotalEmotions() {
+        return totalEmotions;
+    }
+
+    public void setTotalEmotions(int totalEmotions) {
+        this.totalEmotions = totalEmotions;
+    }
+
+    public int getTotalComments() {
+        return totalComments;
+    }
+
+    public void setTotalComments(int totalComments) {
+        this.totalComments = totalComments;
     }
 
     public int getPostId() {

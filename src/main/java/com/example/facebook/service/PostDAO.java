@@ -12,20 +12,31 @@ public class PostDAO implements IPostDAO{
     private ConnectDatabase connectDatabase = new ConnectDatabase();
     private Connection connection = connectDatabase.connection();
 
-    private static final String select_all_post = "select * from post where userId != ? and privacy != `Private`";
-//    SELECT p.postId, p.userId, p.content, p.privacy, p.createAt
-//    FROM posts p
-//    LEFT JOIN friendships f ON (
-//    (p.userId = f.senderId AND f.receiverId = ?) OR
-//    (p.userId = f.receiverId AND f.senderId = ?)
-//            )
-//    WHERE p.privacy != 'Private' -- Loại bỏ các bài viết có privacy là Private
-//    AND p.userId != ?  -- Loại bỏ bài viết của người dùng đang đăng nhập
-//    AND (
-//            p.privacy = 'Public' -- Hiển thị bài viết có privacy là Public cho tất cả
-//            OR (p.privacy = 'Friends' AND f.status = 'accepted') -- Hiển thị bài viết có privacy là Friends nếu người dùng là bạn bè (trạng thái 'accepted')
-//)
-//    ORDER BY p.createAt DESC;
+    private static final String select_all_post = "SELECT p.postId, p.userId, p.content, p.privacy, p.createAt, p.updateAt" +
+            "       COALESCE(e.total_emotions, 0) AS totalEmotions," +
+            "       COALESCE(c.total_comments, 0) AS totalComments" +
+            "FROM posts p" +
+            "LEFT JOIN friendships f ON (" +
+            "    (p.userId = f.senderId AND f.receiverId = ?) " +
+            "    OR (p.userId = f.receiverId AND f.senderId = ?)" +
+            ")" +
+            "LEFT JOIN (" +
+            "    SELECT postId, COUNT(*) AS total_emotions" +
+            "    FROM emotions" +
+            "    GROUP BY postId" +
+            ") e ON p.postId = e.postId" +
+            "LEFT JOIN (" +
+            "    SELECT postId, COUNT(*) AS total_comments" +
+            "    FROM comments" +
+            "    GROUP BY postId" +
+            ") c ON p.postId = c.postId" +
+            "WHERE p.privacy != 'Private'  -- Loại bỏ bài viết Private" +
+            "AND p.userId != ?  -- Loại bỏ bài viết của người dùng đang đăng nhập" +
+            "AND (" +
+            "    p.privacy = 'Public'  -- Hiển thị bài viết Public" +
+            "    OR (p.privacy = 'Friends' AND f.status = 'accepted')  -- Chỉ hiển thị bài viết Friends nếu là bạn bè" +
+            ")" +
+            "ORDER BY p.createAt DESC;";
 
     private static final String insert_post = "insert into posts (userId, content, privacy) values (?, ?, ?)";
     @Override
@@ -42,7 +53,9 @@ public class PostDAO implements IPostDAO{
                     resultSet.getString(3),
                     resultSet.getString(4),
                     resultSet.getTimestamp(5),
-                    resultSet.getTimestamp(6)
+                    resultSet.getTimestamp(6),
+                    resultSet.getInt(7),
+                    resultSet.getInt(8)
             ));
         }
 
