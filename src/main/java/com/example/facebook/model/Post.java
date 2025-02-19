@@ -1,6 +1,8 @@
 package com.example.facebook.model;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Post {
     private int postId;
@@ -11,6 +13,7 @@ public class Post {
     private Timestamp updateAt;
     private int totalEmotions;
     private int totalComments;
+    private List<PostMedia> mediaUrls = new ArrayList<>();
 
     public Post() {
     }
@@ -24,6 +27,14 @@ public class Post {
         this.updateAt = updateAt;
         this.totalEmotions = totalEmotions;
         this.totalComments = totalComments;
+    }
+
+    public List<PostMedia> getMediaUrls() {
+        return mediaUrls;
+    }
+
+    public void setMediaUrls(List<PostMedia> mediaUrls) {
+        this.mediaUrls = mediaUrls;
     }
 
     public Post(User user, String content, String privacy) {

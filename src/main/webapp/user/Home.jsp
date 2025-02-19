@@ -85,7 +85,7 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
+                            <li><a class="dropdown-item" onclick="confirmLogout()">Đăng xuất</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -95,10 +95,10 @@
 </div>
 <div style="display: flex;height: 90%">
     <div class="left">
-        <div class="leftIcon">
+        <div class="leftIcon" style="justify-content: left">
             <div>
                 <img src="${user.image}"
-                     alt="User Icon" width="50" height="50" style="border-radius: 50%;margin-left: -62px">
+                     alt="User Icon" width="50" height="50" style="border-radius: 50%;">
             </div>
             <div>
                 <b>
@@ -106,9 +106,9 @@
                 </b>
             </div>
         </div>
-        <div class="leftIcon">
+        <div class="leftIcon" style="justify-content: left">
             <div>
-                <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" style="margin-left: -90px"
+                <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" style=""
                      class="bi bi-people-fill iconPeople"
                      viewBox="0 0 16 16">
                     <defs>
@@ -122,7 +122,7 @@
                 </svg>
             </div>
             <div>
-                <b style="margin-left: -30px">
+                <b style="">
                     Bạn bè
                 </b>
             </div>
@@ -130,19 +130,19 @@
     </div>
 
 
-    <div class="center">
+    <div class="center" style="overflow-y: auto; scrollbar-width: none">
         <form action="">
             <div class="addPost">
                 <div >
                     <img src="${user.image}"
-                         alt="User Icon" width="60" height="60">
+                         alt="User Icon" width="60" height="60" style="border-radius: 50%">
                 </div>
                 <div class="addPostInput" style="width: 100%">
                     <input type="text" placeholder="Bạn đang nghĩ gì thế?" >
                 </div>
             </div>
-
         </form>
+
         <div class="post-container">
             <c:forEach items="${posts}" var="post">
                 <div class="post-card">
@@ -176,9 +176,11 @@
                         <p>${post.content}</p>
                     </div>
                     <div class="media-area">
-
+                        <c:forEach items="${post.mediaUrls}" var="media">
+                            <div style="height: fit-content" class="media" data-url="${media.url}" data-type="${media.type}"></div>
+                        </c:forEach>
                     </div>
-                    <div class="post-information" style="display: flex;">
+                    <div class="post-information" style="display: flex;margin-top: 15px;border-top: 1px solid lightgray;">
                         <div style="margin-right: 15px">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor"
                                  class="bi bi-hand-thumbs-up" viewBox="0 0 10 20">
@@ -223,7 +225,6 @@
                 <b>...</b>
             </div>
         </div>
-        <div></div>
     </div>
 </div>
 </body>
@@ -231,6 +232,10 @@
 
 
 <script>
+    function confirmLogout() {
+        window.location.href = '/login?action=logout';
+    }
+
     function showSearchInput() {
         const contactLabel = document.getElementById('contactLabel');
         const searchContainer = document.getElementById('search-container');
@@ -238,7 +243,7 @@
 
         contactLabel.style.display = 'none';
         searchContainer.style.display = 'block';
-        search.style.marginLeft = '-10px'
+        // search.style.marginLeft = '-10px'
 
     }
 
@@ -249,13 +254,66 @@
         if (!searchContainer.contains(event.relatedTarget) && !contactLabel.contains(event.relatedTarget)) {
             searchContainer.style.display = 'none';
             contactLabel.style.display = 'block';
-            contactLabel.style.marginLeft = '10px'
+            // contactLabel.style.marginLeft = '10px'
         }
     }
 
     document.getElementById('search-container').addEventListener('mouseout', hideSearchInput);
     document.getElementById('contactLabel').addEventListener('mouseout', hideSearchInput);
 
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".post-card").forEach(postCard => {
+            const mediaArea = postCard.querySelector(".media-area");
+            const mediaElements = mediaArea.querySelectorAll(".media");
+            let mediaList = [];
+
+            mediaElements.forEach(media => {
+                mediaList.push({
+                    url: media.dataset.url,
+                    type: media.dataset.type
+                });
+            });
+            console.log(mediaList);
+            mediaArea.innerHTML = generateMediaLayout(mediaList);
+        });
+    });
+
+    function generateMediaLayout(mediaList) {
+        if (!mediaList.length) return "";
+
+        let layoutType = getLayoutType(mediaList.length);
+        let mediaHTML = "";
+
+        mediaList.slice(0, 4).forEach((media, index) => {
+            let className = layoutType[index] || "quarter";
+            mediaHTML += createMediaElement(media, className);
+        });
+
+        if (mediaList.length > 4) {
+            let extraCount = mediaList.length - 4;
+            mediaHTML += `<div class="media extra">` + extraCount + `</div>`;
+        }
+
+        return `<div class="media-grid">` + mediaHTML + `</div>`;
+    }
+
+    function getLayoutType(count) {
+        return {
+            1: ["full"],
+            2: ["half", "half"],
+            3: ["large-left", "small-right-top", "small-right-bottom"],
+            4: ["quarter", "quarter", "quarter", "quarter"],
+        }[count] || ["large-left", "small-right-top", "small-right-bottom", "extra"];
+    }
+
+    function createMediaElement(media, className) {
+        if (media.type === "picture") {
+            return `<img src="` + media.url + `" class="media ` + className + `">`;
+        } else if (media.type === "video") {
+            return `<video src="` + media.url + `" class="media ` + className + `" controls></video>`;
+        }
+        return "";
+    }
 
 </script>
 <style>
@@ -423,4 +481,74 @@
         margin-bottom: 20px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
+
+    .media-area {
+        display: grid;
+        gap: 5px;
+        width: 100%;
+        height: fit-content;
+        position: relative;
+    }
+
+    .media-grid {
+        display: grid;
+        gap: 5px;
+        width: 100%;
+        max-width: 100%;
+        max-height: fit-content;
+        overflow: hidden;
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: auto;
+        position: relative;
+    }
+
+    .media {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    .full {
+        grid-column: span 2;
+        grid-row: span 2;
+    }
+
+    .half {
+        grid-column: span 1;
+        grid-row: span 2;
+    }
+
+    .large-left {
+        grid-column: span 1;
+        grid-row: span 2;
+    }
+
+    .small-right-top {
+        grid-column: span 1;
+        grid-row: span 1;
+    }
+
+    .small-right-bottom {
+        grid-column: span 1;
+        grid-row: span 1;
+    }
+
+    .quarter {
+        grid-column: span 1;
+        grid-row: span 1;
+    }
+
+    /* ---- Extra Media Count ---- */
+    .extra {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+        border-radius: 10px;
+    }
+
 </style>

@@ -41,8 +41,9 @@ public class PostServlet extends HttpServlet {
         HttpSession session = req.getSession();
         String userIdStr = session.getAttribute("userId").toString();
         List<Post> posts = postDAO.selectAllPosts(Integer.parseInt(userIdStr));
+
         req.setAttribute("posts", posts);
-        req.getRequestDispatcher("").forward(req, resp);
+        req.getRequestDispatcher("user/Home.jsp").forward(req, resp);
     }
 
     @Override
