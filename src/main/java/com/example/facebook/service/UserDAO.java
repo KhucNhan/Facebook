@@ -19,7 +19,7 @@ public class UserDAO implements IUserDAO {
     private static final String insert_user = "INSERT INTO users (name, email, phone, password, dateOfBirth, gender, bio, createAt, updateAt) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
 
-    private static final String update_user = "UPDATE users SET image = ?, name = ?, email = ?, phone = ?, dateOfBirth = ?, gender = ?, updateAt = NOW() WHERE userId = ?";
+    private static final String update_user = "UPDATE users SET image = ?, name = ?, email = ?, phone = ?, dateOfBirth = ?, gender = ?, updateAt = NOW(), status = ? WHERE userId = ?";
 
     private static final String select_user_by_id = "SELECT * FROM users WHERE userId = ?";
 
@@ -111,7 +111,8 @@ public class UserDAO implements IUserDAO {
         preparedStatement.setInt(4, user.getPhone());
         preparedStatement.setDate(5, user.getDateOfBirth());
         preparedStatement.setBoolean(6, user.isGender());
-        preparedStatement.setInt(7, userId);
+        preparedStatement.setBoolean(7, user.isStatus());
+        preparedStatement.setInt(8, userId);
 
         int rowsAffected = preparedStatement.executeUpdate();
         return rowsAffected > 0;

@@ -1,5 +1,7 @@
 package com.example.facebook.controller;
 
+import com.example.facebook.ConnectDatabase;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,6 +16,14 @@ import java.sql.Date;
 
 @WebServlet("/register")
 public class SignupServlet extends HttpServlet {
+    ConnectDatabase connectDatabase = new ConnectDatabase();
+    Connection connection = ConnectDatabase.connection();
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.sendRedirect("view/Login.jsp");
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
@@ -25,22 +35,16 @@ public class SignupServlet extends HttpServlet {
         String password = request.getParameter("password");
         String phone = request.getParameter("phone");
 
-        String day = request.getParameter("day");
-        String month = request.getParameter("month");
-        String year = request.getParameter("year");
-        String dateOfBirthStr = year + "-" + month + "-" + day;
+        String dateOfBirthStr = request.getParameter("dob");
         Date dateOfBirth = Date.valueOf(dateOfBirthStr);
 
         String genderStr = request.getParameter("gender");
         boolean gender = genderStr.equals("male");
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/facebook", "root", "tamtamtam");
-
             String sql = "INSERT INTO users (name, email, phone, password, dateOfBirth, gender, role, createAt, status) " +
                     "VALUES (?, ?, ?, ?, ?, ?, 'user', CURRENT_TIMESTAMP, true)";
-            PreparedStatement ps = conn.prepareStatement(sql);
+            PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, name);
             ps.setString(2, email);
             ps.setString(3, phone);
@@ -51,15 +55,12 @@ public class SignupServlet extends HttpServlet {
             int result = ps.executeUpdate();
 
             if (result > 0) {
-                response.sendRedirect("success.jsp");
-            } else {
-                response.sendRedirect("error.jsp");
+                response.sendRedirect("view/Login.jsp");
             }
 
-            conn.close();
-        } catch (ClassNotFoundException | SQLException e) {
+            connection.close();
+        } catch (SQLException e) {
             e.printStackTrace();
-            response.sendRedirect("error.jsp");
         }
     }
 }

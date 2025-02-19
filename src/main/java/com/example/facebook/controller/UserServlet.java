@@ -28,7 +28,7 @@ public class UserServlet extends HttpServlet {
         try {
             switch (action) {
                 case "add":
-                    showAddUser(req, resp);
+                    req.getRequestDispatcher("admin/Add.jsp").forward(req, resp);
                     break;
                 case "update":
                     showUpdateUser(req, resp);
@@ -42,12 +42,11 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    private void showUpdateUser(HttpServletRequest req, HttpServletResponse resp) {
-
-    }
-
-    private void showAddUser(HttpServletRequest req, HttpServletResponse resp) {
-
+    private void showUpdateUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
+        String userIdStr = req.getParameter("userId");
+        User user = userDAO.selectUserById(Integer.parseInt(userIdStr));
+        req.setAttribute("user", user);
+        req.getRequestDispatcher("admin/Edit.jsp").forward(req, resp);
     }
 
     private void showUserList(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
@@ -71,6 +70,9 @@ public class UserServlet extends HttpServlet {
                 case "update":
                     updateUser(req, resp);
                     break;
+                case "changeStatus":
+                    changeUserStatus(req, resp);
+                    break;
                 case "delete":
                     deleteUser(req, resp);
                     break;
@@ -81,6 +83,14 @@ public class UserServlet extends HttpServlet {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void changeUserStatus(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+        String userIdStr = req.getParameter("userId");
+        User user = userDAO.selectUserById(Integer.parseInt(userIdStr));
+        user.setStatus(!user.isStatus());
+        userDAO.updateUser(user, Integer.parseInt(userIdStr));
+        resp.getWriter().write(user.isStatus() ? "active" : "blocked");
     }
 
     private void searchUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {

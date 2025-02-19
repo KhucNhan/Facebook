@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="js/Login.js"></script>
+    <script src="/js/Login.js"></script>
     <title>Facebook/Đăng Nhập</title>
 </head>
 <body style="background: #f2f4f7">
@@ -65,9 +65,9 @@
         </div>
         <br>
 
-        <button style="width: 200px;border-radius: 6px;border: 1px solid gainsboro;font-size: 20px ; padding: 14px 10px;background: #42b72a; color: white">
+        <a href="/login?action=goToSignup" style="text-decoration: none;width: 200px;border-radius: 6px;border: 1px solid gainsboro;font-size: 20px ; padding: 14px 10px;background: #42b72a; color: white">
             Tạo tài khoản mới
-        </button>
+        </a>
     </div>
 </div>
 <!-- Modal -->
