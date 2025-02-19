@@ -134,11 +134,12 @@
         <form action="">
             <div class="addPost">
                 <div >
+
                     <img src="${user.image}"
                          alt="User Icon" width="60" height="60" style="border-radius: 50%">
                 </div>
                 <div class="addPostInput" style="width: 100%">
-                    <input type="text" placeholder="Bạn đang nghĩ gì thế?" >
+                    <input type="text" placeholder="Bạn đang nghĩ gì thế?">
                 </div>
             </div>
         </form>
@@ -160,7 +161,8 @@
                         </div>
                         <div style="display: flex;">
                             <div>
-                                <a href="" style="font-size: large; font-weight: bold;text-decoration: none; color: grey">...</a>
+                                <a href=""
+                                   style="font-size: large; font-weight: bold;text-decoration: none; color: grey">...</a>
                             </div>
                             <div>
                                 <a href="" style="color: grey">
@@ -224,6 +226,22 @@
             <div style="margin-bottom: 15px;font-size: 1em;margin-left: 10px">
                 <b>...</b>
             </div>
+        </div>
+        <div>
+            <c:forEach items="${usersFriendShip}" var="user">
+                <a class="frend">
+                    <div class="left_bottom">
+                        <div>
+                            <img src="${user.image}"
+                                 alt="User Icon" width="50" height="50" style="border-radius: 50%;">
+                        </div>
+                        <div style="margin-left: 20px;width: 100%">
+                            <label>${user.name}</label>
+                        </div>
+                    </div>
+                </a>
+            </c:forEach>
+
         </div>
     </div>
 </div>
@@ -317,8 +335,24 @@
 
 </script>
 <style>
+    .frend:hover {
+        background: #ececec;
+    }
 
-    .addPostInput input{
+    .frend {
+        color: black;
+        display: block;
+    }
+
+    .left_bottom {
+        align-items: center;
+        display: flex;
+        width: 100%;
+        padding-left: 15px;
+        height: 60px;
+    }
+
+    .addPostInput input {
         width: 100%;
         /*margin: auto;*/
         align-items: center;
@@ -328,8 +362,8 @@
         border: 0 solid white;
         border-radius: 30px;
     }
+
     .addPost {
-        /*margin: 15px 60px;*/
         padding: 40px;
         margin: auto;
         background: white;

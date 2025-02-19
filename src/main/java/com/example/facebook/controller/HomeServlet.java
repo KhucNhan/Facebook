@@ -2,6 +2,7 @@ package com.example.facebook.controller;
 
 import com.example.facebook.model.Post;
 import com.example.facebook.model.User;
+import com.example.facebook.service.FriendShip;
 import com.example.facebook.service.PostDAO;
 import com.example.facebook.service.UserDAO;
 
@@ -19,6 +20,7 @@ import java.util.List;
 public class HomeServlet extends HttpServlet {
     UserDAO userDAO = new UserDAO();
     PostDAO postDAO = new PostDAO();
+    FriendShip friendShip = new FriendShip();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -43,10 +45,13 @@ public class HomeServlet extends HttpServlet {
         HttpSession session = req.getSession();
         String userIdStr = session.getAttribute("userId").toString();
         User user = userDAO.selectUserById(Integer.parseInt(userIdStr));
-
+        List<User> usersFriendShip = friendShip.getAllFriendsAdded(Integer.parseInt(userIdStr));
         List<Post> posts = postDAO.selectAllPosts(Integer.parseInt(userIdStr));
+
         req.setAttribute("posts", posts);
         req.setAttribute("user", user);
+        req.setAttribute("usersFriendShip",usersFriendShip);
+
         req.getRequestDispatcher("/user/Home.jsp").forward(req, resp);
     }
 }
