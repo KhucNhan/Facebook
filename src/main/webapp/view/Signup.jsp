@@ -17,20 +17,30 @@
     </div>
     <form action="/register" method="post" class="signup-form">
         <div class="form-group">
-            <input class="name" type="text" name="name" placeholder="Họ và tên " required>
+            <input id="name" class="name" type="text" name="name" placeholder="Họ và tên " required>
+            <br>
+            <sup id="nameError" style="color: red;padding-left: 5px;"></sup>
         </div>
         <div class="form-group">
-            <input name="email" type="email" placeholder="Email" required>
+            <input id="email" name="email" type="email" placeholder="Email" required>
+            <br>
         </div>
         <div class="form-group">
-            <input name="phone" type="number" placeholder="Số điện thoại" required>
+            <input id="phone" name="phone" type="number" placeholder="Số điện thoại" required>
+            <br>
+            <sup id="phoneAndEmailError" style="color: red;padding-left: 5px;"></sup>
         </div>
         <div class="form-group">
-            <input name="password" type="password" placeholder="Mật khẩu" required>
+            <input id="password" name="password" type="password" placeholder="Mật khẩu" required>
+        </div>
+        <div class="form-group">
+            <input id="rePassword" name="rePassword" type="password" placeholder="Nhập lại mật khẩu" required>
+            <br>
+            <sup id="passwordError" style="color: red;padding-left: 5px;"></sup>
         </div>
         <div class="form-group">
             <label>Ngày sinh</label>
-            <input type="date" id="dateOfBirth" name="dob">
+            <input type="date" id="dateOfBirth" name="dob" required>
         </div>
 
         <div class="form-gender">
@@ -53,9 +63,65 @@
 </div>
 </body>
 <script type="text/javascript">
-    document.addEventListener("DOMContentLoaded",function (){
+    document.addEventListener("DOMContentLoaded", function () {
         var today = new Date().toISOString().split('T')[0];
-        document.getElementById('dateOfBirth').setAttribute('max',today);
+        document.getElementById('dateOfBirth').setAttribute('max', today);
     })
+
+    document.querySelector(".signup-form").addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const form = this;
+        const email = document.getElementById("email").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const name = document.getElementById("name").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const rePassword = document.getElementById("rePassword").value.trim();
+        const emailError = document.getElementById("phoneAndEmailError");
+        const nameError = document.getElementById("nameError");
+        const passwordError = document.getElementById("passwordError");
+
+        if (!email && !phone) {
+            form.submit();
+            return;
+        }
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "/check-register?email=" + encodeURIComponent(email) +
+            "&phone=" + encodeURIComponent(phone) +
+            "&name=" + encodeURIComponent(name) +
+            "&password=" + encodeURIComponent(password) +
+            "&rePassword=" + encodeURIComponent(rePassword), true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                if (xhr.responseText.trim() === "exists") {
+                    emailError.innerText = "Email hoặc số điện thoại đã tồn tại!";
+                } else {
+                    emailError.innerText = "";
+                }
+                if (xhr.responseText.trim() === "nameError") {
+                    nameError.innerText = "Tên không được chứa ký tự đặc biệt!";
+                } else {
+                    nameError.innerText = "";
+                }
+
+                if (xhr.responseText.trim() === "passwordLengthError") {
+                    passwordError.innerText = "Mật khẩu phải có tối thiểu 6 ký tự!";
+                } else if (xhr.responseText.trim() === "passwordError") {
+                    passwordError.innerText = "Mật khẩu không đúng!";
+                } else {
+                    passwordError.innerText = "";
+                }
+
+                if (xhr.responseText.trim() === "pass") {
+                    form.submit();
+                }
+
+            }
+        };
+        xhr.send();
+    });
+
+
 </script>
 </html>

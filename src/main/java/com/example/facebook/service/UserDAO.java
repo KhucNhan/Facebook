@@ -16,8 +16,8 @@ public class UserDAO implements IUserDAO {
     private static UserDAO userDAO = new UserDAO();
 
     private static final String select_all_users = "select * from users";
-    private static final String insert_user = "INSERT INTO users (name, email, phone, password, dateOfBirth, gender, bio, createAt, updateAt) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
+    private static final String insert_user = "INSERT INTO users (name, email, phone, password, dateOfBirth, gender, bio, image, createAt, updateAt) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
 
     private static final String update_user = "UPDATE users SET image = ?, name = ?, email = ?, phone = ?, dateOfBirth = ?, gender = ?, updateAt = NOW(), status = ? WHERE userId = ?";
 
@@ -68,8 +68,7 @@ public class UserDAO implements IUserDAO {
         preparedStatement.setDate(5, user.getDateOfBirth());
         preparedStatement.setBoolean(6, user.isGender());
         preparedStatement.setString(7, user.getBio());
-        preparedStatement.setTimestamp(8, user.getCreateAt());
-        preparedStatement.setTimestamp(9, user.getUpdateAt());
+        preparedStatement.setString(8, user.getImage());
 
         int rowsAffected = preparedStatement.executeUpdate();
         return rowsAffected > 0;
@@ -224,5 +223,17 @@ public class UserDAO implements IUserDAO {
         }
 
         return users;
+    }
+
+    @Override
+    public boolean isUserExists(String email, String phone) throws SQLException {
+        String query = "SELECT 1 FROM users WHERE email = ? OR phone = ? LIMIT 1";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, email);
+            stmt.setString(2, phone);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next();
+            }
+        }
     }
 }
