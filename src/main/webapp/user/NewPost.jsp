@@ -6,80 +6,218 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Tạo bài viết</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-            crossorigin="anonymous"></script>
-</head>
-<body style="margin-top: 30px">
 <div class="all">
-    <div class="top_nav">
-        <div style="font-size: 2em;text-align: center;border-bottom: 1px solid black">
-            <b>
-                Tạo bài viết
-            </b>
-        </div>
-        <div class="center">
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
-                     class="bi bi-person-circle" viewBox="0 0 16 16">
-                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
-                    <path fill-rule="evenodd"
-                          d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
-                </svg>
+    <form action="posts?action=newPost" method="post" enctype="multipart/form-data">
+        <!-- Header section -->
+        <div class="top_nav">
+            <div style="font-size: 2em; text-align: center; border-bottom: 1px solid black">
+                <b>Tạo bài viết</b>
             </div>
-            <div>
-                <div class="fw-bold">Khúc Nhân</div>
-                <select class="form-select form-select-sm mt-1 select" id="privacySelect" style="padding-right: 0px">
-                    <option value="private">🔒 Chỉ mình tôi</option>
-                    <option value="friends-of-friends">👥 Bạn của bạn bè</option>
-                    <option value="public">🌍 Công khai</option>
-                </select>
-            </div>
-        </div>
-        <div class="text">
-            <input type="text" placeholder="Bạn đang nghĩ gì thế?">
-        </div>
-    </div>
-    <a href="">
-        <div class="image">
-            <div class="image_div">
+            <div class="post_UI">
                 <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
-                         class="bi bi-images"
-                         viewBox="0 0 16 16">
-                        <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
-                        <path d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2M14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1M2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1z"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
+                         class="bi bi-person-circle" viewBox="0 0 16 16">
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                        <path fill-rule="evenodd"
+                              d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
                     </svg>
                 </div>
-                <div class="">
-                    <div>Thêm ảnh/video</div>
-                    <div>hoặc kéo và thả</div>
+                <div>
+                    <div class="fw-bold">Khúc Nhân</div>
+                    <select class="form-select form-select-sm mt-1 select" name="privacy" id="privacySelect"
+                            style="padding-right: 0px">
+                        <option value="Private">🔒 Chỉ mình tôi</option>
+                        <option value="Friends">👥 Bạn của bạn bè</option>
+                        <option value="Public">🌍 Công khai</option>
+                    </select>
+                </div>
+            </div>
+            <div class="text">
+                <input type="text" id="postInput" name="content" placeholder="Bạn đang nghĩ gì thế?"
+                       oninput="checkPostStatus()">
+            </div>
+        </div>
+        <div>
+            <div class="image" id="A">
+                <div>
+                    <input type="file" name="file" onchange="newImage(event)" value="Thêm ảnh/video" multiple>
+                </div>
+            </div>
+            <div class="ListImage" id="listImageInput">
+                <div id="B" style="display: none">
+                    <input type="file" name="file" onchange="newImage(event)" value="Thêm ảnh/video" multiple>
                 </div>
             </div>
         </div>
-    </a>
-    <div class="done">
-        <button>
-            Đăng
-        </button>
-    </div>
+
+        <div class="done">
+            <button type="submit" >ddawng</button>
+<%--            <button type="submit" id="postButton" disabled>Đăng</button>--%>
+        </div>
+    </form>
 </div>
-</body>
-</html>
+
+<%--</body>--%>
+<%--</html>--%>
+<script>
+
+    function newImage(event) {
+        const listImageInput = document.getElementById('listImageInput');
+        let check = document.querySelector('#A');
+        let checks = document.querySelector('#B');
+
+        if (event.target.files.length > 0) {
+
+            check.style.display = 'none';
+            checks.style.display = 'flex'
+
+            Array.from(event.target.files).forEach(file => {
+                var reader = new FileReader();
+                reader.onload = function () {
+                    var img = document.createElement("img");
+                    img.src = reader.result;
+                    img.classList.add("cricular-img");
+                    img.style.width = "350px";
+                    img.style.height = "350px";
+                    img.style.objectFit = "cover";
+                    img.style.borderRadius = "5px";
+                    listImageInput.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+        checkPostStatus();
+
+    }
+
+    function removePreview(event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        let fileInput = document.getElementById("fileInput");
+        let listImageDiv = document.querySelector(".ListImage");
+
+        fileInput.value = "";
+
+        listImageDiv.innerHTML = "";
+
+        document.querySelector(".newImagePost").style.display = "none";
+
+        document.querySelector(".image_div").style.display = "flex";
+    }
+
+
+    function checkPostStatus() {
+        let postText = document.getElementById("postInput").value.trim();
+        let fileInput = document.getElementById("fileInput").files.length > 0;
+        let postButton = document.getElementById("postButton");
+
+        if (postText || fileInput) {
+            postButton.disabled = false;
+            postButton.style.backgroundColor = "#007bff";
+            postButton.style.color = "white";
+            postButton.style.cursor = "pointer";
+        } else {
+            postButton.disabled = false;
+            postButton.style.backgroundColor = "#ccc";
+            postButton.style.color = "#666";
+            postButton.style.cursor = "not-allowed";
+        }
+    }
+
+</script>
+
 <style>
-    .done{
+    .done button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: 0.3s;
+    }
+
+    .done button:disabled {
+        background-color: #ccc;
+        color: #666;
+    }
+
+    .ListImage {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-height: 300px;
+        overflow-y: auto;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .ListImage img {
+        width: 350px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+
+
+    .image-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .delete-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: red;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 50%;
+        padding: 2px 6px;
+    }
+
+
+    .newImagePost {
+        display: none;
+    }
+
+    .image_div {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%; /* Điều chỉnh kích thước phù hợp */
+        height: 100%;
+        border: 2px dashed grey; /* Viền vùng chọn */
+        border-radius: 8px;
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .image_div:hover {
+        background-color: rgba(0, 0, 0, 0.1); /* Hiệu ứng khi trỏ vào */
+        border-color: black;
+    }
+
+    .new_image_div:hover {
+        background-color: rgba(0, 0, 0, 0.1); /* Hiệu ứng khi trỏ vào */
+        border-color: black;
+    }
+
+
+    .done {
         width: 98%;
         height: 50px;
-        margin:auto ;
+        margin: auto;
         padding: 10px;
         border-radius: 5px;
         border: 0;
     }
+
     button {
         width: 100%;
         align-items: center;
@@ -108,17 +246,6 @@
         text-align: center;
     }
 
-    .image_div {
-        width: 99%;
-        height: 99%;
-        background: #ececec;
-        border-radius: 5px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 10px;
-    }
 
     .image_div svg {
         margin-bottom: 10px;
@@ -133,7 +260,7 @@
     .image {
         width: 95%;
         padding: 5px;
-        height: 300px;
+        height: 380px;
         border: 1px solid silver;
         margin: auto;
         align-items: center;
@@ -144,11 +271,11 @@
     .text input {
         padding: 10px;
         width: 100%;
-        height: 70px;
+        height: 30px;
         border: 0;
     }
 
-    .center {
+    .post_UI {
         display: flex;
         align-items: center;
         gap: 10px;
@@ -168,16 +295,15 @@
     .top_nav {
         width: 100%;
         margin: auto;
-        padding: 20px 10px;
+        padding: 10px 10px;
     }
 
     .all {
         height: 630px;
-        width: 40%;
+        width: 100%;
         border: 1px solid silver;
         margin: auto;
         padding: 10px;
-        border-radius: 5px;
+        border-radius: 10px;
     }
 </style>
-<script></script>

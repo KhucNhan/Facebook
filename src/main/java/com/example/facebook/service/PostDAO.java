@@ -84,13 +84,19 @@ public class PostDAO implements IPostDAO{
     }
 
     @Override
-    public boolean insertPost(Post post) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement(insert_post);
+    public int insertPost(Post post) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement(insert_post, Statement.RETURN_GENERATED_KEYS);
         preparedStatement.setInt(1, post.getUser().getUserId());
         preparedStatement.setString(2, post.getContent());
         preparedStatement.setString(3, post.getPrivacy());
 
         int rowsAffected = preparedStatement.executeUpdate();
-        return rowsAffected > 0;
+        if (rowsAffected > 0) {
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        }
+        return -1;
     }
 }

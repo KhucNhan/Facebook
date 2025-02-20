@@ -132,10 +132,10 @@ public class UserServlet extends HttpServlet {
         String dateOfBirth = req.getParameter("dateOfBirth");
         boolean gender = Boolean.parseBoolean(req.getParameter("gender"));
 
-        File uploadDir = new File("C:\\Users\\ADMIN\\IdeaProjects\\Facebook\\src\\main\\webapp\\resources\\avatars");
+        File uploadDir = new File(System.getenv("localAvtUrl"));
         if (!uploadDir.exists()) uploadDir.mkdir();
 
-        String filePath = "C:\\Users\\ADMIN\\IdeaProjects\\Facebook\\src\\main\\webapp\\resources\\avatars" + File.separator + fileName;
+        String filePath = System.getenv("localAvtUrl") + File.separator + fileName;
         filePart.write(filePath);
 
         User user = new User(fileName, name, email, Integer.parseInt(phone), password, Date.valueOf(dateOfBirth), gender);
