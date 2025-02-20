@@ -81,10 +81,10 @@ public class PostServlet extends HttpServlet {
         String content = req.getParameter("content");
         String privacy = req.getParameter("privacy");
 
-        File uploadDir =new File( "D:\\DuAn_1_FaceBook\\Facebook\\src\\main\\webapp\\resources\\post");
+        File uploadDir =new File( System.getenv("localUrl"));
         if (!uploadDir.exists()) uploadDir.mkdir();
 
-        String filePath ="D:\\DuAn_1_FaceBook\\Facebook\\src\\main\\webapp\\resources\\post" + File.separator + fileName;
+        String filePath = System.getenv("localUrl") + File.separator + fileName;
         filePart.write(filePath);
 
         // tạo post -> tạo post media
