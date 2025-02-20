@@ -225,4 +225,16 @@ public class UserDAO implements IUserDAO {
 
         return users;
     }
+
+    @Override
+    public boolean isUserExists(String email, String phone) throws SQLException {
+        String query = "SELECT 1 FROM users WHERE email = ? OR phone = ? LIMIT 1";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, email);
+            stmt.setString(2, phone);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next();
+            }
+        }
+    }
 }

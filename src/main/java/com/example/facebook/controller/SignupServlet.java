@@ -8,11 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Date;
+import java.sql.*;
 
 @WebServlet("/register")
 public class SignupServlet extends HttpServlet {
@@ -29,15 +25,12 @@ public class SignupServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
 
-
         String name = request.getParameter("name");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String phone = request.getParameter("phone");
-
         String dateOfBirthStr = request.getParameter("dob");
         Date dateOfBirth = Date.valueOf(dateOfBirthStr);
-
         String genderStr = request.getParameter("gender");
         boolean gender = genderStr.equals("male");
 
@@ -64,4 +57,3 @@ public class SignupServlet extends HttpServlet {
         }
     }
 }
-
