@@ -11,11 +11,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MediaDAO implements IMediaDAO{
+public class MediaDAO implements IMediaDAO {
     ConnectDatabase connectDatabase = new ConnectDatabase();
     Connection connection = ConnectDatabase.connection();
 
     private static final String select_all_postmedia = "select * from postmedias where postId = ?";
+    private static final String insert_post_media = "insert into postmedias (postId, type, url) values (?, ?, ?)";
+
+
     @Override
     public List<PostMedia> selectAllPostMedia(int postId) throws SQLException {
         List<PostMedia> postMediaList = new ArrayList<>();
@@ -33,5 +36,16 @@ public class MediaDAO implements IMediaDAO{
         }
 
         return postMediaList;
+    }
+
+    @Override
+    public boolean insertPostMedia(int postId, String type, String url) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement(insert_post_media);
+        preparedStatement.setInt(1, postId);
+        preparedStatement.setString(2, "picture");
+        preparedStatement.setString(3, url);
+
+        int rowsAffected = preparedStatement.executeUpdate();
+        return rowsAffected > 0;
     }
 }
