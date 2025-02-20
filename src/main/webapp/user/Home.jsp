@@ -23,8 +23,13 @@
     <title>Facebook</title>
 </head>
 <body>
-
+<div id="iclusst" style="display: none;">
+    <div id="popup-content" style="width: 30%;margin-left: 1%;margin-top:1%;background: white">
+        <jsp:include page="NewPost.jsp"/>
+    </div>
+</div>
 <div class="menu">
+
     <!-- Logo Facebook -->
     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="45" fill="currentColor" class="bi bi-facebook"
          viewBox="0 0 16 16" style="color: #0866ff; margin-right: 20px;">
@@ -128,18 +133,15 @@
             </div>
         </div>
     </div>
-
-
     <div class="center" style="overflow-y: auto; scrollbar-width: none">
         <form action="">
             <div class="addPost">
-                <div >
-
+                <div>
                     <img src="${user.image}"
                          alt="User Icon" width="60" height="60" style="border-radius: 50%">
                 </div>
                 <div class="addPostInput" style="width: 100%">
-                    <input type="text" placeholder="Bạn đang nghĩ gì thế?">
+                    <input type="text" id="postInput" onclick="newPost()" placeholder="Bạn đang nghĩ gì thế?">
                 </div>
             </div>
         </form>
@@ -179,10 +181,12 @@
                     </div>
                     <div class="media-area">
                         <c:forEach items="${post.mediaUrls}" var="media">
-                            <div style="height: fit-content" class="media" data-url="${media.url}" data-type="${media.type}"></div>
+                            <div style="height: fit-content" class="media" data-url="${media.url}"
+                                 data-type="${media.type}"></div>
                         </c:forEach>
                     </div>
-                    <div class="post-information" style="display: flex;margin-top: 15px;border-top: 1px solid lightgray;">
+                    <div class="post-information"
+                         style="display: flex;margin-top: 15px;border-top: 1px solid lightgray;">
                         <div style="margin-right: 15px">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor"
                                  class="bi bi-hand-thumbs-up" viewBox="0 0 10 20">
@@ -250,6 +254,37 @@
 
 
 <script>
+    function newPost() {
+        document.getElementById("iclusst").style.display = "block";
+    }
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const iclusst = document.getElementById("iclusst");
+        const popupContent = document.getElementById("popup-content");
+
+        // Hiển thị popup
+        function newPost() {
+            iclusst.style.display = "flex";
+        }
+
+        // Ẩn popup
+        function hidePopup() {
+            iclusst.style.display = "none";
+        }
+
+        // Ẩn popup khi click bên ngoài popup-content
+        iclusst.addEventListener("click", function(event) {
+            if (!popupContent.contains(event.target)) {
+                hidePopup();
+            }
+        });
+
+        // Định nghĩa global
+        window.newPost = newPost;
+        window.hidePopup = hidePopup;
+    });
+
     function confirmLogout() {
         window.location.href = '/login?action=logout';
     }
@@ -325,8 +360,9 @@
     }
 
     function createMediaElement(media, className) {
+        console.log(media.url)
         if (media.type === "picture") {
-            return `<img src="` + media.url + `" class="media ` + className + `">`;
+            return `<img src="/resources/post/` + media.url + `" class="media ` + className + `">`;
         } else if (media.type === "video") {
             return `<video src="` + media.url + `" class="media ` + className + `" controls></video>`;
         }
@@ -335,6 +371,32 @@
 
 </script>
 <style>
+    #iclusst {
+        display: none; /* Mặc định ẩn */
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Làm mờ nền */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000; /* Đảm bảo nằm trên cùng */
+        transform: translate(-50%, -50%); /* Căn giữa màn hình */
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    #iclusst .content {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        width: 50%;
+        max-height: 80%;
+        overflow: auto;
+    }
+
+
     .frend:hover {
         background: #ececec;
     }
