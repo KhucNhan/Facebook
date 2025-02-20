@@ -1,13 +1,8 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: ThinkpadX1
-  Date: 2/17/2025
-  Time: 2:17 PM
-  To change this template use File | Settings | File Templates.
---%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<html lang="vi">
 <head>
+    <meta charset="UTF-8">
     <title>Thêm tài khoản mới</title>
     <style>
         * {
@@ -124,51 +119,86 @@
             background-color: #f0f2f5;
         }
 
-    </style>
-    <script type="text/javascript">
-        function previewImage(event){
-            var reader = new FileReader();
-            reader.onload = function (){
-                var output = document.getElementById('preview');
-                output.src = reader.result;
-                output.style.display = 'block';
-
-            };
-            reader.readAsDataURL(event.target.files[0]);
+        .custom-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px;
+            background: #28a745;
+            color: white;
+            border-radius: 5px;
+            font-size: 16px;
+            z-index: 1000;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
 
-        document.addEventListener("DOMContentLoaded", function() {
+        .custom-alert.error {
+            background: #dc3545;
+        }
+
+    </style>
+    <script type="text/javascript">
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var output = document.getElementById('preview');
+                output.src = reader.result;
+            };
+            if (event.target.files.length > 0) {
+                reader.readAsDataURL(event.target.files[0]);
+            } else {
+                document.getElementById('preview').src = "${pageContext.request.contextPath}/resources/avatars/default_avt.jpg";
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
             var today = new Date().toISOString().split('T')[0];
             document.getElementById('dateOfBirth').setAttribute('max', today);
         });
+
+        function add() {
+            const form = document.getElementById("addUserForm");
+            form.event.preventDefault();
+            const status =
+            showAlert()
+        }
     </script>
 </head>
 <body>
 <div class="signup-container">
     <h1 class="form-header">Thêm tài khoản</h1>
-
-    <form action="/users?action=add" method="post" class="signup-form" enctype="multipart/form-data">
+    <c:if test="${status == 'success'}">
+        <div>
+            <p style="color: green; text-align: center; font-weight: bold">Thêm tài khoản thành công!</p>
+        </div>
+    </c:if>
+    <c:if test="${status != 'success'}">
+        <div>
+            <p style="color: white">hehehe</p>
+        </div>
+    </c:if>
+    <form id="addUserForm" action="/users?action=add" method="post" class="signup-form" enctype="multipart/form-data">
 
         <div class="form-group">
             <label for="image">Ảnh đại diện</label>
-            <input type="file" id="image" name="image" accept="image/*" onchange="previewImage(event)" required>
+            <input type="file" id="image" accept=".png,.jpg" name="image" onchange="previewImage(event)" title="png, jpg only!">
             <img id="preview" class="circular-img" alt="">
         </div>
 
         <div class="form-group">
-            <input type="text" name="name" placeholder="Họ và tên" required>
+            <input type="text" id="name" name="name" placeholder="Họ và tên" required>
         </div>
 
         <div class="form-group">
-            <input type="email" name="email" placeholder="Email" required>
+            <input type="email" id="email" name="email" placeholder="Email" required>
         </div>
 
         <div class="form-group">
-            <input type="number" name="phone" placeholder="Số điện thoại" required>
+            <input type="number" id="phone" name="phone" placeholder="Số điện thoại" required>
         </div>
 
         <div class="form-group">
-            <input type="password" name="password" placeholder="Mật khẩu" required>
+            <input type="password" id="password" name="password" placeholder="Mật khẩu" required>
         </div>
 
         <div class="form-group">
@@ -188,10 +218,9 @@
             </div>
         </div>
 
-        <button type="submit" class="signup-button">Thêm tài khoản</button>
+        <button type="submit" id="submitBtn" class="signup-button">Thêm tài khoản</button>
         <a href="/users" style="display: block;text-align: center;margin-top: 10px">Quay lại</a>
     </form>
 </div>
-
 </body>
 </html>

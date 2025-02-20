@@ -1,7 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<html lang="vi">
 <head>
+    <meta charset="UTF-8">
     <title>Facebook</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -121,7 +122,7 @@
             paginatedUsers.forEach(function (user) {
                 const row = '<tr class="d-flex">' +
                     '<td style="width: 5%;" class="text-center">' + user.userId + '</td>' +
-                    '<td style="width: 10%;" class="text-center"><img style="width: 100%;" src="' + user.image + '" /></td>' +
+                    '<td style="width: 10%;" class="text-center"><img style="width: 100%;" src="/resources/avatars/' + user.image + '/" /></td>' +
                     '<td style="width: 10%;" class="text-center">' + user.name + '</td>' +
                     '<td style="width: 15%;" class="text-center">' + user.email + '</td>' +
                     '<td style="width: 10%;" class="text-center">' + user.phone + '</td>' +
