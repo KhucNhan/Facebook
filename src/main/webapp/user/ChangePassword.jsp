@@ -76,7 +76,6 @@
         </div>
         <button type="submit" class="btn">Xác nhận</button>
     </form>
-    <button onclick="window.location.href='index.jsp'" class="btn btn-secondary">Quay lại </button>
 </div>
 
 
