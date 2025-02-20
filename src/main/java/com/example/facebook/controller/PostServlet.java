@@ -81,10 +81,10 @@ public class PostServlet extends HttpServlet {
         String content = req.getParameter("content");
         String privacy = req.getParameter("privacy");
 
-        File uploadDir =new File( System.getenv("localUrl"));
+        File uploadDir =new File( System.getenv("localPostUrl"));
         if (!uploadDir.exists()) uploadDir.mkdir();
 
-        String filePath = System.getenv("localUrl") + File.separator + fileName;
+        String filePath = System.getenv("localPostUrl") + File.separator + fileName;
         filePart.write(filePath);
 
         // tạo post -> tạo post media
