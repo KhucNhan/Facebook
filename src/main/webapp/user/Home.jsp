@@ -141,7 +141,7 @@
                          alt="User Icon" width="60" height="60" style="border-radius: 50%">
                 </div>
                 <div class="addPostInput" style="width: 100%">
-                    <input type="text" id="postInput" onclick="newPost()" placeholder="Bạn đang nghĩ gì thế?">
+                    <input  type="button" style="text-align: left;padding-left: 15px" id="postInput" onclick="newPost()" value="Bạn đang nghĩ gì thế?" >
                 </div>
             </div>
         </form>
