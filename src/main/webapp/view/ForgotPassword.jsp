@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Language" content="vi">
     <title>Bạn quên mật khẩu ?</title>
-    <link rel="stylesheet" href="css/ForgotPassword.css">
-    <script src="js/ForgotPassword.js"></script>
+    <link rel="stylesheet" href="/css/ForgotPassword.css">
+    <script src="/js/ForgotPassword.js"></script>
 </head>
 <body>
 <div class="form-container">

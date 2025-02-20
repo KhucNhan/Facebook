@@ -14,4 +14,5 @@ public interface IUserDAO {
     List<User> selectUsersByEmail(String value) throws SQLException;
     List<User> selectUsersByPhone(String value) throws SQLException;
     List<User> selectUsersByName(String value) throws SQLException;
+    boolean isUserExists(String email, String phone) throws SQLException;
 }

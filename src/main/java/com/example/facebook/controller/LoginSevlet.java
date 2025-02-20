@@ -37,6 +37,9 @@ public class LoginSevlet extends HttpServlet {
                 RequestDispatcher dispatchers = req.getRequestDispatcher("view/Login.jsp");
                 dispatchers.forward(req, resp);
                 break;
+            case "goToSignup":
+                resp.sendRedirect("view/Signup.jsp");
+                break;
         }
     }
 
