@@ -106,10 +106,6 @@
             text-align: center;
         }
 
-        .gender-options input[type="radio"] {
-            display: none;
-        }
-
         .gender-options input[type="radio"]:checked + label {
             background-color: #1877f2;
             color: white;

@@ -38,7 +38,7 @@ public class FriendShip implements IFriendShipDAO {
                         resultSet.getString(2),
                         resultSet.getString(3),
                         resultSet.getString(4),
-                        resultSet.getInt(5),
+                        resultSet.getString(5),
                         resultSet.getString(6),
                         resultSet.getDate(7),
                         resultSet.getBoolean(8),

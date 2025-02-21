@@ -45,13 +45,22 @@ public class HomeServlet extends HttpServlet {
         HttpSession session = req.getSession();
         String userIdStr = session.getAttribute("userId").toString();
         User user = userDAO.selectUserById(Integer.parseInt(userIdStr));
-        List<User> usersFriendShip = friendShip.getAllFriendsAdded(Integer.parseInt(userIdStr));
-        List<Post> posts = postDAO.selectAllPosts(Integer.parseInt(userIdStr));
 
-        req.setAttribute("posts", posts);
-        req.setAttribute("user", user);
-        req.setAttribute("usersFriendShip",usersFriendShip);
+        if (user.getRole().equalsIgnoreCase("admin")) {
+            List<User> users = userDAO.selectAllUsers();
+            req.setAttribute("users", users);
+            req.getRequestDispatcher("/admin/Users.jsp").forward(req, resp);
+        } else {
+            List<User> usersFriendShip = friendShip.getAllFriendsAdded(Integer.parseInt(userIdStr));
+            List<Post> posts = postDAO.selectAllPosts(Integer.parseInt(userIdStr));
 
-        req.getRequestDispatcher("/user/Home.jsp").forward(req, resp);
+            req.setAttribute("posts", posts);
+            req.setAttribute("user", user);
+            req.setAttribute("usersFriendShip",usersFriendShip);
+
+            req.getRequestDispatcher("/user/Home.jsp").forward(req, resp);
+        }
+
+
     }
 }

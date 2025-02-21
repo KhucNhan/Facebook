@@ -85,8 +85,8 @@
                                  style="border-radius: 50%;margin-top: -10px;margin-right: -20px;position: relative">
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Thông tin cá nhân</a></li>
-                            <li><a class="dropdown-item" href="#">Mật khẩu</a></li>
+                            <li><a class="dropdown-item" href="/users?action=userUpdateInformation">Cập nhật thông tin cá nhân</a></li>
+                            <li><a class="dropdown-item" href="/users?action=changePassword">Đổi mật khẩu</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>

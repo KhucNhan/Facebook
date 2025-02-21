@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Dell
-  Date: 2/18/2025
-  Time: 8:56 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="all">
     <form action="posts?action=newPost" method="post" enctype="multipart/form-data">
@@ -51,7 +44,7 @@
         </div>
 
         <div class="done">
-            <button type="submit" >ddawng</button>
+            <button type="submit">Đăng</button>
 <%--            <button type="submit" id="postButton" disabled>Đăng</button>--%>
         </div>
     </form>

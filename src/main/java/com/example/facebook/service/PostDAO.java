@@ -34,13 +34,15 @@ public class PostDAO implements IPostDAO{
             "    SELECT postId, COUNT(*) AS total_comments FROM comments GROUP BY postId\n" +
             ") c ON p.postId = c.postId\n" +
             "LEFT JOIN postmedias pm ON p.postId = pm.postId  \n" +
-            "WHERE p.privacy != 'Private'  \n" +
-            "AND p.userId != ?\n" +
-            "AND (\n" +
-            "    p.privacy = 'Public'  \n" +
-            "    OR (p.privacy = 'Friends' AND f.status = 'accepted')\n" +
-            ")\n" +
+            "WHERE p.userId = ?  \n" +
+            "   OR (p.privacy != 'Private'\n" +
+            "       AND (\n" +
+            "           p.privacy = 'Public'  \n" +
+            "           OR (p.privacy = 'Friends' AND f.status = 'accepted')\n" +
+            "       )\n" +
+            "   )\n" +
             "ORDER BY p.createAt DESC;";
+
 
     private static final String insert_post = "insert into posts (userId, content, privacy) values (?, ?, ?)";
     @Override
