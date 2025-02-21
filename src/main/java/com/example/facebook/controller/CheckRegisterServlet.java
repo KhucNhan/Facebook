@@ -18,6 +18,7 @@ import java.util.Objects;
 @WebServlet("/check-register")
 public class CheckRegisterServlet extends HttpServlet {
     UserDAO userDAO = new UserDAO();
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
@@ -37,7 +38,9 @@ public class CheckRegisterServlet extends HttpServlet {
         try {
             if (name.matches(".*[^a-zA-Z0-9\\s].*")) {
                 response.getWriter().write("nameError");
-            } else if (userDAO.isUserExists(email, phone)){
+            } else if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.(com|vn|org|net|edu|gov|info)$")) {
+                response.getWriter().write("emailRegex");
+            } else if (userDAO.isUserExists(email, phone)) {
                 response.getWriter().write("exists");
             } else if (password.length() < 6) {
                 response.getWriter().write("passwordLengthError");

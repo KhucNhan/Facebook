@@ -8,10 +8,10 @@
             </div>
             <div class="post_UI">
                 <div>
-                    <img src="/resources/avatars/" style="width: 40px; height: 40px; border-radius: 50%" alt="Avt">
+                    <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}" style="width: 40px; height: 40px; border-radius: 50%" alt="Avt">
                 </div>
                 <div>
-                    <div class="fw-bold"></div>
+                    <div class="fw-bold">${user.name}</div>
                     <select class="form-select form-select-sm mt-1 select" name="privacy" id="privacySelect"
                             style="padding-right: 0px">
                         <option value="Public">🌍 Công khai</option>
