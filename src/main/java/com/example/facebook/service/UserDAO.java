@@ -132,7 +132,7 @@ public class UserDAO implements IUserDAO {
         Set<User> resultSet = new HashSet<>();
 
         if (value != null) {
-            if (value.matches("^0\\d*$")) {
+            if (value.matches("^\\d+$")) {
                 resultSet.addAll(userDAO.selectUsersByPhone(value));
             } else {
                 resultSet.addAll(userDAO.selectUsersByName(value));
@@ -174,8 +174,10 @@ public class UserDAO implements IUserDAO {
     @Override
     public List<User> selectUsersByPhone(String value) throws SQLException {
         List<User> users = new ArrayList<>();
+        System.out.println(value);
         PreparedStatement preparedStatement = connection.prepareStatement(select_user_by_phone);
         preparedStatement.setString(1, "%" + value + "%");
+        System.out.println(preparedStatement);
         ResultSet resultSet = preparedStatement.executeQuery();
 
         while (resultSet.next()) {
