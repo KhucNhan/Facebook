@@ -52,9 +52,6 @@
                 <label>
                     <input type="radio" name="gender" value="female" required> Nữ
                 </label>
-                <label>
-                    <input type="radio" name="gender" value="other" required> Khác
-                </label>
             </div>
         </div>
         <button type="submit" class="signup-button">Đăng kí</button>

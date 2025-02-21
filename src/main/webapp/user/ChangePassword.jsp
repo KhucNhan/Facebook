@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: ThinkpadX1
@@ -61,23 +62,35 @@
 <body>
 <div class="container">
     <h2>Đổi mật khẩu</h2>
-    <form action="changePassword" method="post">
+    <c:if test="${message == 'success'}">
+        <p style="color: green">Đổi mật khẩu thành công!</p>
+    </c:if>
+    <form action="/users?action=changePassword&userId=${sessionScope.userId}" method="post">
         <div class="form-group">
             <label for="oldPassword">Mật khẩu cũ:</label>
             <input type="password" id="oldPassword" name="oldPassword" required>
+            <c:if test="${message == 'incorrectPassword'}">
+                <small style="color: red">Sai mật khẩu</small>
+            </c:if>
         </div>
         <div class="form-group">
             <label for="newPassword">Mật khẩu mới:</label>
             <input type="password" id="newPassword" name="newPassword" required>
+            <c:if test="${message == 'index'}">
+                <small style="color: red">Mật khẩu phải có ít nhất 6 ký tự</small>
+            </c:if>
         </div>
         <div class="form-group">
             <label for="confirmPassword">Nhập lại mật khẩu mới:</label>
             <input type="password" id="confirmPassword" name="confirmPassword" required>
+            <c:if test="${message == 'incorrectConfirmPassword'}">
+                <small style="color: red">Sai mật khẩu</small>
+            </c:if>
         </div>
         <button type="submit" class="btn">Xác nhận</button>
+        <a style="display: block;text-align: center" href="/home">Quay lại</a>
     </form>
 </div>
-
 
 </body>
 </html>

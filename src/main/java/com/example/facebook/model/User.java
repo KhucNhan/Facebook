@@ -9,7 +9,7 @@ public class User {
     private String image;
     private String name;
     private String email;
-    private int phone;
+    private String phone;
     private String password;
     private Date dateOfBirth;
     private boolean gender;
@@ -22,7 +22,7 @@ public class User {
     public User() {
     }
 
-    public User(int userId, String image, String name, String email, int phone, String password, Date dateOfBirth, boolean gender, String bio, String role, Timestamp createAt, Timestamp updateAt, boolean status) {
+    public User(int userId, String image, String name, String email, String phone, String password, Date dateOfBirth, boolean gender, String bio, String role, Timestamp createAt, Timestamp updateAt, boolean status) {
         this.userId = userId;
         this.image = image;
         this.name = name;
@@ -38,7 +38,7 @@ public class User {
         this.status = status;
     }
 
-    public User(String image, String name, String email, int phone, String password, Date dateOfBirth, boolean gender) {
+    public User(String image, String name, String email, String phone, String password, Date dateOfBirth, boolean gender) {
         this.image = image;
         this.name = name;
         this.email = email;
@@ -88,11 +88,11 @@ public class User {
         this.email = email;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

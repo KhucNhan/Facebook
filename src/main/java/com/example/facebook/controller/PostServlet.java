@@ -33,6 +33,9 @@ public class PostServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=UTF-8");
         String action = req.getParameter("action");
 
         if (action == null) {
@@ -60,6 +63,9 @@ public class PostServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=UTF-8");
         String action = req.getParameter("action");
 
         if (action == null) {
@@ -88,8 +94,6 @@ public class PostServlet extends HttpServlet {
         String privacy = req.getParameter("privacy");
 
         File uploadDir = new File("C:\\uploads\\postMedias");
-
-
         if (!uploadDir.exists()) uploadDir.mkdirs();
 
 //         tạo post -> tạo post media
@@ -101,24 +105,14 @@ public class PostServlet extends HttpServlet {
 
         for (Part filePart : fileParts) {
             String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-
             String filePartss = "C:\\uploads\\postMedias" + File.separator + fileName;
             filePart.write(filePartss);
-
 
             mediaDAO.insertPostMedia(postId, "picture", fileName);
 
         }
+        resp.sendRedirect(req.getContextPath() + "/home");
 
     }
 
-    private String extractFileName(Part part) {
-        String contentDisp = part.getHeader("content-disposition");
-        for (String content : contentDisp.split(";")) {
-            if (content.trim().startsWith("filename")) {
-                return content.substring(content.indexOf("=") + 2, content.length() - 1);
-            }
-        }
-        return null;
-    }
 }
