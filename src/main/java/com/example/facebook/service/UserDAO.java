@@ -16,7 +16,7 @@ public class UserDAO implements IUserDAO {
     private static UserDAO userDAO = new UserDAO();
 
 
-    private static final String select_all_users = "select * from users";
+    private static final String select_all_users = "select * from users order by userId desc";
     private static final String insert_user = "INSERT INTO users (name, email, phone, password, dateOfBirth, gender, bio, image, createAt, updateAt) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
 
