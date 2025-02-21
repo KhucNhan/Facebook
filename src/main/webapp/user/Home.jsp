@@ -236,7 +236,7 @@
                 <a class="frend">
                     <div class="left_bottom">
                         <div>
-                            <img src="${user.image}"
+                            <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
                                  alt="User Icon" width="50" height="50" style="border-radius: 50%;">
                         </div>
                         <div style="margin-left: 20px;width: 100%">
