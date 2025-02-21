@@ -41,13 +41,13 @@
             <div class="image" id="A">
                 <div>
                     <label for="fileA" class="custom-file-upload">Thêm ảnh/video</label>
-                    <input type="file" id="fileA" name="file" onchange="newImage(event)" multiple>
+                    <input type="file" id="fileA"  name="fileA[]" onchange="newImage(event)" multiple>
                 </div>
             </div>
             <div style="border: 0px" class="ListImage" id="listImageInput">
                 <div id="B" style="display: none">
                     <label for="fileB" class="custom-file-upload">Thêm ảnh/video</label>
-                    <input id="fileB" type="file" name="file" onchange="newImage(event)" multiple>
+                    <input id="fileB" type="file" name="fileB[]" onchange="newImage(event)" multiple>
                     <button style="background: #42b72a;width: 100px;margin-left: 30px" class="delete-button" onclick="clearImages(event)">Xóa ảnh</button>
                 </div>
             </div>

@@ -16,6 +16,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 2, // 2MB
         maxFileSize = 1024 * 1024 * 10,      // 10MB
@@ -66,7 +68,7 @@ public class PostServlet extends HttpServlet {
         try {
             switch (action) {
                 case "newPost":
-                    newPost(req,resp);
+                    newPost(req, resp);
                     break;
             }
         } catch (SQLException e) {
@@ -75,26 +77,41 @@ public class PostServlet extends HttpServlet {
     }
 
     private void newPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
-        Part filePart = req.getPart("file");
-        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+
+        Collection<Part> fileParts = req.getParts().stream()
+                .filter(part -> (part.getName().startsWith("fileA") || part.getName().startsWith("fileB")) && part.getSize() > 0)
+                .collect(Collectors.toList());
+
+        System.out.println("Tổng số ảnh nhận được: " + fileParts.size());
 
         String content = req.getParameter("content");
         String privacy = req.getParameter("privacy");
 
-        File uploadDir =new File( System.getenv("localPostUrl"));
-        if (!uploadDir.exists()) uploadDir.mkdir();
+        File uploadDir = new File("C:\\uploads\\postMedias");
 
-        String filePath = System.getenv("localPostUrl") + File.separator + fileName;
-        filePart.write(filePath);
 
-        // tạo post -> tạo post media
+        if (!uploadDir.exists()) uploadDir.mkdirs();
+
+//         tạo post -> tạo post media
         HttpSession session = req.getSession();
         String userIdStr = session.getAttribute("userId").toString();
         // tạo post
         int postId = postDAO.insertPost(new Post(userDAO.selectUserById(Integer.parseInt(userIdStr)), content, privacy));
-        // tạo postmedia
-        mediaDAO.insertPostMedia(postId, "picture", fileName);
+
+
+        for (Part filePart : fileParts) {
+            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+
+            String filePartss = "C:\\uploads\\postMedias" + File.separator + fileName;
+            filePart.write(filePartss);
+
+
+            mediaDAO.insertPostMedia(postId, "picture", fileName);
+
+        }
+
     }
+
     private String extractFileName(Part part) {
         String contentDisp = part.getHeader("content-disposition");
         for (String content : contentDisp.split(";")) {
