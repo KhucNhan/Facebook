@@ -8,20 +8,15 @@
             </div>
             <div class="post_UI">
                 <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
-                         class="bi bi-person-circle" viewBox="0 0 16 16">
-                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
-                        <path fill-rule="evenodd"
-                              d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
-                    </svg>
+                    <img src="/resources/avatars/${user.imgae}" style="width: 40px; height: 40px; border-radius: 50%" alt="Avt">
                 </div>
                 <div>
-                    <div class="fw-bold">Khúc Nhân</div>
+                    <div class="fw-bold">${user.name}</div>
                     <select class="form-select form-select-sm mt-1 select" name="privacy" id="privacySelect"
                             style="padding-right: 0px">
-                        <option value="Private">🔒 Chỉ mình tôi</option>
+                        <option value="Public" selected>🌍 Công khai</option>
                         <option value="Friends">👥 Bạn của bạn bè</option>
-                        <option value="Public">🌍 Công khai</option>
+                        <option value="Private">🔒 Chỉ mình tôi</option>
                     </select>
                 </div>
             </div>
@@ -33,19 +28,21 @@
         <div>
             <div class="image" id="A">
                 <div>
-                    <input type="file" name="file" onchange="newImage(event)" value="Thêm ảnh/video" multiple>
+                    <label for="fileA" class="custom-file-upload">Thêm ảnh/video</label>
+                    <input type="file" id="fileA" name="file" onchange="newImage(event)" multiple>
                 </div>
             </div>
-            <div class="ListImage" id="listImageInput">
+            <div style="border: 0px" class="ListImage" id="listImageInput">
                 <div id="B" style="display: none">
-                    <input type="file" name="file" onchange="newImage(event)" value="Thêm ảnh/video" multiple>
+                    <label for="fileB" class="custom-file-upload">Thêm ảnh/video</label>
+                    <input id="fileB" type="file" name="file" onchange="newImage(event)" multiple>
+                    <button style="background: #42b72a;width: 100px;margin-left: 30px" class="delete-button" onclick="clearImages(event)">Xóa ảnh</button>
                 </div>
             </div>
         </div>
 
         <div class="done">
-            <button type="submit">Đăng</button>
-<%--            <button type="submit" id="postButton" disabled>Đăng</button>--%>
+            <button type="submit" id="postButton">Đăng</button>
         </div>
     </form>
 </div>
@@ -53,6 +50,27 @@
 <%--</body>--%>
 <%--</html>--%>
 <script>
+    function clearImages(event) {
+        event.preventDefault(); // Ngăn chặn hành vi submit form
+
+        let check = document.querySelector('#A'); // Phần chứa nút "Thêm ảnh/video" ban đầu
+        let checks = document.querySelector('#B'); // Phần chứa ảnh sau khi upload
+        let fileInputA = document.getElementById("fileA"); // Input file ban đầu
+        let fileInputB = document.getElementById("fileB"); // Input file sau khi upload
+        let listImageInput = document.getElementById('listImageInput'); // Phần chứa ảnh đã upload
+
+        listImageInput.querySelectorAll("img").forEach(img => img.remove());
+
+        fileInputA.value = "";
+        fileInputB.value = "";
+
+        check.style.display = 'flex'; // Hiện lại phần "Thêm ảnh/video"
+        checks.style.display = 'none'; // Ẩn phần chứa ảnh đã upload
+
+        checkPostStatus();
+    }
+
+
 
     function newImage(event) {
         const listImageInput = document.getElementById('listImageInput');
@@ -70,7 +88,7 @@
                     var img = document.createElement("img");
                     img.src = reader.result;
                     img.classList.add("cricular-img");
-                    img.style.width = "350px";
+                    img.style.width = "400px";
                     img.style.height = "350px";
                     img.style.objectFit = "cover";
                     img.style.borderRadius = "5px";
@@ -103,7 +121,7 @@
 
     function checkPostStatus() {
         let postText = document.getElementById("postInput").value.trim();
-        let fileInput = document.getElementById("fileInput").files.length > 0;
+        let fileInput = document.getElementById("fileA").files.length > 0;
         let postButton = document.getElementById("postButton");
 
         if (postText || fileInput) {
@@ -122,6 +140,25 @@
 </script>
 
 <style>
+    input[type="file"] {
+        display: none;
+    }
+
+    .custom-file-upload {
+        display: inline-block;
+        padding: 10px 15px;
+        background-color: #ececec;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .custom-file-upload:hover {
+        background-color: #d3d2d2;
+    }
+
+
     .done button {
         width: 100%;
         padding: 10px;
@@ -140,7 +177,7 @@
         display: flex;
         flex-direction: column;
         gap: 10px;
-        max-height: 300px;
+        max-height: 370px;
         overflow-y: auto;
         padding: 10px;
         border: 1px solid #ddd;
@@ -253,7 +290,7 @@
     .image {
         width: 95%;
         padding: 5px;
-        height: 380px;
+        height: 350px;
         border: 1px solid silver;
         margin: auto;
         align-items: center;

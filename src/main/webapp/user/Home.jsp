@@ -24,7 +24,7 @@
 </head>
 <body>
 <div id="iclusst" style="display: none;">
-    <div id="popup-content" style="width: 30%;margin-left: 1%;margin-top:1%;background: white">
+    <div id="popup-content" style="width: 30%;margin-left: 1%;margin-top:1%;background: white; border-radius: 10px;">
         <jsp:include page="NewPost.jsp"/>
     </div>
 </div>
@@ -141,7 +141,7 @@
                          alt="User Icon" width="60" height="60" style="border-radius: 50%">
                 </div>
                 <div class="addPostInput" style="width: 100%">
-                    <input type="text" id="postInput" onclick="newPost()" placeholder="Bạn đang nghĩ gì thế?">
+                    <input  type="button" style="text-align: left;padding-left: 15px" id="postInput" onclick="newPost()" value="Bạn đang nghĩ gì thế?" >
                 </div>
             </div>
         </form>
