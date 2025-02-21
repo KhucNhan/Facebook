@@ -6,10 +6,7 @@ import com.example.facebook.service.UserDAO;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
+import javax.servlet.http.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -46,6 +43,12 @@ public class UserServlet extends HttpServlet {
                 case "update":
                     showUpdateUser(req, resp);
                     break;
+                case "userUpdateInformation":
+                    showUserUpdateInformation(req, resp);
+                    break;
+                case "changePassword":
+                    req.getRequestDispatcher("user/ChangePassword.jsp").forward(req, resp);
+                    break;
                 default:
                     showUserList(req, resp);
                     break;
@@ -53,6 +56,14 @@ public class UserServlet extends HttpServlet {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void showUserUpdateInformation(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
+        HttpSession session = req.getSession();
+        String userIdStr = session.getAttribute("userId").toString();
+        User user = userDAO.selectUserById(Integer.parseInt(userIdStr));
+        req.setAttribute("user", user);
+        req.getRequestDispatcher("user/Edit.jsp").forward(req, resp);
     }
 
     private void showUpdateUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
@@ -95,10 +106,64 @@ public class UserServlet extends HttpServlet {
                 case "search":
                     searchUser(req, resp);
                     break;
+                case "userUpdateInformation":
+                    userUpdateInformation(req, resp);
+                    break;
+                case "changePassword":
+                    changePassword(req, resp);
+                    break;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void changePassword(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
+        String userIdStr = req.getParameter("userId");
+        String oldPassword = req.getParameter("oldPassword");
+        String newPassword = req.getParameter("newPassword");
+        String confirmPassword = req.getParameter("confirmPassword");
+
+        User user = userDAO.selectUserById(Integer.parseInt(userIdStr));
+        if (user.getPassword().equals(oldPassword)) {
+            if (!(newPassword.length() < 6)) {
+                if (newPassword.equals(confirmPassword)) {
+                    user.setPassword(newPassword);
+                    boolean status = userDAO.updateUser(user, Integer.parseInt(userIdStr));
+                    if (status) {
+                        req.setAttribute("message", "success");
+                    }
+                } else {
+                    req.setAttribute("message", "incorrectConfirmPassword");
+                }
+            } else {
+                req.setAttribute("message", "index");
+            }
+        } else {
+            req.setAttribute("message", "incorrectPassword");
+        }
+        req.getRequestDispatcher("user/ChangePassword.jsp").forward(req, resp);
+    }
+
+    private void userUpdateInformation(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
+        String userIdStr = req.getParameter("userId");
+        String name = req.getParameter("name");
+        String email = req.getParameter("email");
+        String phone = req.getParameter( "phone");
+        String dateOfBirth = req.getParameter("dateOfBirth");
+        boolean gender = Boolean.parseBoolean(req.getParameter("gender"));
+
+        User user = userDAO.selectUserById(Integer.parseInt(userIdStr));
+        user.setName(name);
+        user.setEmail(email);
+        user.setPhone(phone);
+        user.setDateOfBirth(Date.valueOf(dateOfBirth));
+        user.setGender(gender);
+
+        boolean status = userDAO.updateUser(user, Integer.parseInt(userIdStr));
+        if (status) req.setAttribute("status", "success");
+        req.setAttribute("user", user);
+        req.getRequestDispatcher("user/Edit.jsp").forward(req, resp);
     }
 
     private void changeUserStatus(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
@@ -132,14 +197,13 @@ public class UserServlet extends HttpServlet {
         String dateOfBirth = req.getParameter("dateOfBirth");
         boolean gender = Boolean.parseBoolean(req.getParameter("gender"));
 
-        File uploadDir = new File(System.getenv("localAvtUrl"));
-        if (!uploadDir.exists()) uploadDir.mkdir();
+        File uploadDir = new File("C:\\uploads\\postMedias");
+        if (!uploadDir.exists()) uploadDir.mkdirs();
 
-        String filePath = System.getenv("localAvtUrl") + File.separator + fileName;
+        String filePath = "C:\\uploads\\postMedias" + File.separator + fileName;
         filePart.write(filePath);
 
-        User user = new User(fileName, name, email, Integer.parseInt(phone), password, Date.valueOf(dateOfBirth), gender);
-        System.out.println(user);
+        User user = new User(fileName, name, email, phone, password, Date.valueOf(dateOfBirth), gender);
         if (userDAO.insertUser(user)) {
             req.setAttribute("status", "success");
         } else {
@@ -148,7 +212,7 @@ public class UserServlet extends HttpServlet {
         req.getRequestDispatcher("admin/Add.jsp").forward(req, resp);
     }
 
-    private void updateUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+    private void updateUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
         String userId = req.getParameter("userId");
         String image = req.getParameter("image");
         String name = req.getParameter("name");
@@ -161,10 +225,12 @@ public class UserServlet extends HttpServlet {
         user.setImage(image);
         user.setName(name);
         user.setEmail(email);
-        user.setPhone(Integer.parseInt(phone));
+        user.setPhone(phone);
         user.setDateOfBirth(Date.valueOf(dateOfBirth));
         user.setGender(gender);
 
-        userDAO.updateUser(user, Integer.parseInt(userId));
+        boolean status = userDAO.updateUser(user, Integer.parseInt(userId));
+        if (status) req.setAttribute("status", "success");
+        req.getRequestDispatcher("admin/Edit.jsp").forward(req, resp);
     }
 }

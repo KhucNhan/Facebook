@@ -19,8 +19,8 @@
                 </svg>
             </a>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
-                <li><a class="dropdown-item" href="#">Thay đổi thông tin cá nhân</a></li>
+                <li><a class="dropdown-item" href="/users?action=userUpdateInformation">Cập nhật thông tin cá nhân</a></li>
+                <li><a class="dropdown-item" href="/users?action=changePassword">Đổi mật khẩu</a></li>
                 <li><a class="dropdown-item" href="#" onclick="confirmLogout()">Đăng xuất</a></li>
             </ul>
         </li>

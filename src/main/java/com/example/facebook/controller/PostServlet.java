@@ -31,6 +31,9 @@ public class PostServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=UTF-8");
         String action = req.getParameter("action");
 
         if (action == null) {
@@ -58,6 +61,9 @@ public class PostServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=UTF-8");
         String action = req.getParameter("action");
 
         if (action == null) {
@@ -81,27 +87,26 @@ public class PostServlet extends HttpServlet {
         String content = req.getParameter("content");
         String privacy = req.getParameter("privacy");
 
-        File uploadDir =new File( System.getenv("localPostUrl"));
-        if (!uploadDir.exists()) uploadDir.mkdir();
+        if (!fileName.isEmpty()) {
+            File uploadDir =new File("C:\\uploads\\postMedias");
+            if (!uploadDir.exists()) uploadDir.mkdirs();
 
-        String filePath = System.getenv("localPostUrl") + File.separator + fileName;
-        filePart.write(filePath);
+            String filePath = "C:\\uploads\\postMedias" + File.separator + fileName;
+            filePart.write(filePath);
 
-        // tạo post -> tạo post media
-        HttpSession session = req.getSession();
-        String userIdStr = session.getAttribute("userId").toString();
-        // tạo post
-        int postId = postDAO.insertPost(new Post(userDAO.selectUserById(Integer.parseInt(userIdStr)), content, privacy));
-        // tạo postmedia
-        mediaDAO.insertPostMedia(postId, "picture", fileName);
-    }
-    private String extractFileName(Part part) {
-        String contentDisp = part.getHeader("content-disposition");
-        for (String content : contentDisp.split(";")) {
-            if (content.trim().startsWith("filename")) {
-                return content.substring(content.indexOf("=") + 2, content.length() - 1);
-            }
+            HttpSession session = req.getSession();
+            String userIdStr = session.getAttribute("userId").toString();
+            // tạo post
+            int postId = postDAO.insertPost(new Post(userDAO.selectUserById(Integer.parseInt(userIdStr)), content, privacy));
+            // tạo postmedia
+            mediaDAO.insertPostMedia(postId, "picture", fileName);
+        } else {
+            HttpSession session = req.getSession();
+            String userIdStr = session.getAttribute("userId").toString();
+            // tạo post
+            postDAO.insertPost(new Post(userDAO.selectUserById(Integer.parseInt(userIdStr)), content, privacy));
         }
-        return null;
+
+        resp.sendRedirect(req.getContextPath() + "/home");
     }
 }

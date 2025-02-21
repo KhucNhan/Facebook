@@ -73,13 +73,10 @@ public class LoginSevlet extends HttpServlet {
                     resp.getWriter().println("{\"success\": false, \"message\": \"Tài khoản của bạn đã bị khóa!\"}");
                     return;
                 }
-
+                HttpSession session = req.getSession();
+                session.setAttribute("userId", userId);
                 if (role.equalsIgnoreCase("User")) {
                     resp.getWriter().println("{\"success\": true, \"message\": \"User\"}");
-
-                    HttpSession session = req.getSession();
-                    session.setAttribute("userId", userId);
-
                 } else {
                     resp.getWriter().println("{\"success\": true, \"message\": \"Admin\"}");
                 }

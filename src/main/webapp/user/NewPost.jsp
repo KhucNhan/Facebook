@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Dell
-  Date: 2/18/2025
-  Time: 8:56 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="all">
     <form action="posts?action=newPost" method="post" enctype="multipart/form-data">
@@ -15,20 +8,15 @@
             </div>
             <div class="post_UI">
                 <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
-                         class="bi bi-person-circle" viewBox="0 0 16 16">
-                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
-                        <path fill-rule="evenodd"
-                              d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
-                    </svg>
+                    <img src="/resources/avatars/" style="width: 40px; height: 40px; border-radius: 50%" alt="Avt">
                 </div>
                 <div>
-                    <div class="fw-bold">Khúc Nhân</div>
+                    <div class="fw-bold"></div>
                     <select class="form-select form-select-sm mt-1 select" name="privacy" id="privacySelect"
                             style="padding-right: 0px">
+                        <option value="Public">🌍 Công khai</option>
                         <option value="Private">🔒 Chỉ mình tôi</option>
                         <option value="Friends">👥 Bạn của bạn bè</option>
-                        <option value="Public">🌍 Công khai</option>
                     </select>
                 </div>
             </div>
