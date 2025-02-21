@@ -20,11 +20,12 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f2f5;
+            justify-items: center;
+            align-content: center;
         }
 
         .signup-container {
             width: 400px;
-            margin: 100px auto;
             padding: 20px;
             background-color: white;
             border-radius: 10px;
@@ -181,10 +182,10 @@
             <label>Giới tính</label>
             <div class="gender-options">
                 <label>
-                    <input type="radio" name="gender" value="true" ${user.gender ? "checked" : ""}> Nam
+                    <input type="radio" name="gender" value="true" ${user.gender == true ? "checked" : ""}> Nam
                 </label>
                 <label>
-                    <input type="radio" name="gender" value="false" ${!user.gender ? "checked" : ""}> Nữ
+                    <input type="radio" name="gender" value="false" ${!user.gender == true ? "checked" : ""}> Nữ
                 </label>
             </div>
         </div>

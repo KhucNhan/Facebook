@@ -14,8 +14,8 @@
     <title>Facebook/Đăng Nhập</title>
 </head>
 <body style="background: #f2f4f7">
-<div style="justify-content: center;text-align: center">
-    <img style="width: 240px; margin:28px 26px 1px 10px;"
+<div style="justify-content: center;text-align: center; height: 100%; align-content: center">
+    <img style="width: 240px;"
          src="https://static.xx.fbcdn.net/rsrc.php/y1/r/4lCu2zih0ca.svg">
     <div style="display: block; background: #fff;margin:auto;border-radius: 8px;padding: 0 15px 40px 0; width: 396px;box-shadow: 0px 2px 4px rgba(0, 0, 0, .1), 0px 8px 16px rgba(0, 0, 0, .1);font-family: inherit ">
         <div style="font-family: inherit; font-size: 21px;line-height: 70px;margin-bottom: -10px">

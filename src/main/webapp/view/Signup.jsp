@@ -13,7 +13,7 @@
 <body>
 <div class="signup-container">
     <div class="signup-header">
-        <h1>Đăng kí</h1>
+        <h1>Đăng ký</h1>
     </div>
     <form action="/register" method="post" class="signup-form">
         <div class="form-group">
@@ -24,6 +24,7 @@
         <div class="form-group">
             <input id="email" name="email" type="email" placeholder="Email" required>
             <br>
+            <sup id="phoneAndEmailErrorr" style="color: red;padding-left: 5px;"></sup>
         </div>
         <div class="form-group">
             <input id="phone" name="phone" type="number" placeholder="Số điện thoại" required>
@@ -32,6 +33,8 @@
         </div>
         <div class="form-group">
             <input id="password" name="password" type="password" placeholder="Mật khẩu" required>
+            <br>
+            <sup id="passwordIsError" style="color: red;padding-left: 5px;"></sup>
         </div>
         <div class="form-group">
             <input id="rePassword" name="rePassword" type="password" placeholder="Nhập lại mật khẩu" required>
@@ -47,14 +50,14 @@
             <label>Giới tính</label>
             <div class="gender-options">
                 <label>
-                    <input type="radio" name="gender" value="male" required> Nam
+                    <input type="radio" name="gender" value="male" required>    Nam
                 </label>
                 <label>
-                    <input type="radio" name="gender" value="female" required> Nữ
+                    <input type="radio" name="gender" value="female" required>    Nữ
                 </label>
             </div>
         </div>
-        <button type="submit" class="signup-button">Đăng kí</button>
+        <button type="submit" class="signup-button">Đăng ký</button>
         <a href="/register" style="display: block;text-align: center;margin-top: 10px;">Bạn đã có tài khoản ?</a>
     </form>
 </div>

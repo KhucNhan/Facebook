@@ -10,6 +10,7 @@ import javax.servlet.http.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -190,6 +191,10 @@ public class UserServlet extends HttpServlet {
         Part filePart = req.getPart("image");
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
 
+        if (fileName.isEmpty()) {
+            fileName = "default_avt.jpg";
+        }
+
         String name = req.getParameter("name");
         String email = req.getParameter("email");
         String phone = req.getParameter("phone");
@@ -197,11 +202,15 @@ public class UserServlet extends HttpServlet {
         String dateOfBirth = req.getParameter("dateOfBirth");
         boolean gender = Boolean.parseBoolean(req.getParameter("gender"));
 
-        File uploadDir = new File("C:\\uploads\\postMedias");
+        File uploadDir = new File("C:\\uploads\\avatars");
         if (!uploadDir.exists()) uploadDir.mkdirs();
 
-        String filePath = "C:\\uploads\\postMedias" + File.separator + fileName;
-        filePart.write(filePath);
+        File file = new File(uploadDir, fileName);
+
+        if (!file.exists()) {
+            String filePath = "C:\\uploads\\avatars" + File.separator + fileName;
+            filePart.write(filePath);
+        }
 
         User user = new User(fileName, name, email, phone, password, Date.valueOf(dateOfBirth), gender);
         if (userDAO.insertUser(user)) {
@@ -214,7 +223,22 @@ public class UserServlet extends HttpServlet {
 
     private void updateUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
         String userId = req.getParameter("userId");
-        String image = req.getParameter("image");
+
+        Part filePart = req.getPart("image");
+        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+
+        File uploadDir = new File("C:\\uploads\\avatars");
+        if (!uploadDir.exists()) uploadDir.mkdirs();
+
+        File file = new File(uploadDir, fileName);
+
+        if (file.exists()) {
+            file.delete();
+        }
+
+        String filePath = "C:\\uploads\\avatars" + File.separator + fileName;
+        filePart.write(filePath);
+
         String name = req.getParameter("name");
         String email = req.getParameter("email");
         String phone = req.getParameter("phone");
@@ -222,7 +246,7 @@ public class UserServlet extends HttpServlet {
         boolean gender = Boolean.parseBoolean(req.getParameter("gender"));
 
         User user = userDAO.selectUserById(Integer.parseInt(userId));
-        user.setImage(image);
+        user.setImage(fileName);
         user.setName(name);
         user.setEmail(email);
         user.setPhone(phone);
@@ -231,6 +255,7 @@ public class UserServlet extends HttpServlet {
 
         boolean status = userDAO.updateUser(user, Integer.parseInt(userId));
         if (status) req.setAttribute("status", "success");
+        req.setAttribute("user", user);
         req.getRequestDispatcher("admin/Edit.jsp").forward(req, resp);
     }
 }
