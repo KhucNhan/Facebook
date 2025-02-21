@@ -197,10 +197,10 @@ public class UserServlet extends HttpServlet {
         String dateOfBirth = req.getParameter("dateOfBirth");
         boolean gender = Boolean.parseBoolean(req.getParameter("gender"));
 
-        File uploadDir = new File(System.getenv("localAvtUrl"));
+        File uploadDir = new File("C:\\uploads\\postMedias");
         if (!uploadDir.exists()) uploadDir.mkdirs();
 
-        String filePath = System.getenv("localAvtUrl") + File.separator + fileName;
+        String filePath = "C:\\uploads\\postMedias" + File.separator + fileName;
         filePart.write(filePath);
 
         User user = new User(fileName, name, email, phone, password, Date.valueOf(dateOfBirth), gender);

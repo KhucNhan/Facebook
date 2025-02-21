@@ -8,15 +8,15 @@
             </div>
             <div class="post_UI">
                 <div>
-                    <img src="/resources/avatars/${user.imgae}" style="width: 40px; height: 40px; border-radius: 50%" alt="Avt">
+                    <img src="/resources/avatars/" style="width: 40px; height: 40px; border-radius: 50%" alt="Avt">
                 </div>
                 <div>
-                    <div class="fw-bold">${user.name}</div>
+                    <div class="fw-bold"></div>
                     <select class="form-select form-select-sm mt-1 select" name="privacy" id="privacySelect"
                             style="padding-right: 0px">
-                        <option value="Public" selected>🌍 Công khai</option>
-                        <option value="Friends">👥 Bạn của bạn bè</option>
+                        <option value="Public">🌍 Công khai</option>
                         <option value="Private">🔒 Chỉ mình tôi</option>
+                        <option value="Friends">👥 Bạn của bạn bè</option>
                     </select>
                 </div>
             </div>

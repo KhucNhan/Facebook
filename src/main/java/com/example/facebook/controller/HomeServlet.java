@@ -54,6 +54,7 @@ public class HomeServlet extends HttpServlet {
             List<User> usersFriendShip = friendShip.getAllFriendsAdded(Integer.parseInt(userIdStr));
             List<Post> posts = postDAO.selectAllPosts(Integer.parseInt(userIdStr));
 
+
             req.setAttribute("posts", posts);
             req.setAttribute("user", user);
             req.setAttribute("usersFriendShip",usersFriendShip);

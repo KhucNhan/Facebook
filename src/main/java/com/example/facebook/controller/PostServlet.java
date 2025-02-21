@@ -88,10 +88,10 @@ public class PostServlet extends HttpServlet {
         String privacy = req.getParameter("privacy");
 
         if (!fileName.isEmpty()) {
-            File uploadDir =new File( System.getenv("localPostUrl"));
+            File uploadDir =new File("C:\\uploads\\postMedias");
             if (!uploadDir.exists()) uploadDir.mkdirs();
 
-            String filePath = System.getenv("localPostUrl") + File.separator + fileName;
+            String filePath = "C:\\uploads\\postMedias" + File.separator + fileName;
             filePart.write(filePath);
 
             HttpSession session = req.getSession();
@@ -108,14 +108,5 @@ public class PostServlet extends HttpServlet {
         }
 
         resp.sendRedirect(req.getContextPath() + "/home");
-    }
-    private String extractFileName(Part part) {
-        String contentDisp = part.getHeader("content-disposition");
-        for (String content : contentDisp.split(";")) {
-            if (content.trim().startsWith("filename")) {
-                return content.substring(content.indexOf("=") + 2, content.length() - 1);
-            }
-        }
-        return null;
     }
 }

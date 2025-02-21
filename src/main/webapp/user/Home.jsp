@@ -362,7 +362,7 @@
     function createMediaElement(media, className) {
         console.log(media.url)
         if (media.type === "picture") {
-            return `<img src="/resources/post/` + media.url + `" class="media ` + className + `">`;
+            return `<img src="${pageContext.request.contextPath}/uploads/` + media.url + `" class="media ` + className + `">`;
         } else if (media.type === "video") {
             return `<video src="` + media.url + `" class="media ` + className + `" controls></video>`;
         }
