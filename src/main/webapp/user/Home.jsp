@@ -80,7 +80,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">
-                            <img src="${pageContext.request.contextPath}/uploads/${user.image}"
+                            <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
                                  alt="User Icon" width="37" height="37"
                                  style="border-radius: 50%;margin-top: -10px;margin-right: -20px;position: relative">
                         </a>
@@ -102,7 +102,7 @@
     <div class="left">
         <div class="leftIcon" style="justify-content: left">
             <div>
-                <img src="${pageContext.request.contextPath}/uploads/${user.image}"
+                <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
                      alt="User Icon" width="50" height="50" style="border-radius: 50%;">
             </div>
             <div>
@@ -137,7 +137,7 @@
         <form action="">
             <div class="addPost">
                 <div>
-                    <img src="${pageContext.request.contextPath}/uploads/${user.image}"
+                    <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
                          alt="User Icon" width="60" height="60" style="border-radius: 50%">
                 </div>
                 <div class="addPostInput" style="width: 100%">
@@ -151,7 +151,7 @@
                 <div class="post-card">
                     <div class="introduce" style="display: flex; justify-content: space-between">
                         <div style="display: flex">
-                            <img src="${pageContext.request.contextPath}/uploads/${user.image}" style="height: 50px;width: 50px; border-radius: 50%">
+                            <img src="${pageContext.request.contextPath}/uploads/avatars/${post.user.image}" style="height: 50px;width: 50px; border-radius: 50%">
                             <div style="display: flex; flex-direction: column; margin-left: 10px">
                                 <div style="height: 20px;">
                                     <a style="font-weight: bold; color: black">${post.user.name}</a>
@@ -362,7 +362,7 @@
     function createMediaElement(media, className) {
         console.log(media.url)
         if (media.type === "picture") {
-            return `<img src="${pageContext.request.contextPath}/uploads/` + media.url + `" class="media ` + className + `">`;
+            return `<img src="${pageContext.request.contextPath}/uploads/postMedias/` + media.url + `" class="media ` + className + `">`;
         } else if (media.type === "video") {
             return `<video src="` + media.url + `" class="media ` + className + `" controls></video>`;
         }

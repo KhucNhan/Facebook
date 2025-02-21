@@ -96,6 +96,13 @@
                 } else {
                     emailError.innerText = "";
                 }
+
+                if (xhr.responseText.trim() === "emailRegex") {
+                    emailError.innerText = "Địa chỉ email không hợp lệ!";
+                } else {
+                    emailError.innerText = "";
+                }
+
                 if (xhr.responseText.trim() === "nameError") {
                     nameError.innerText = "Tên không được chứa ký tự đặc biệt!";
                 } else {

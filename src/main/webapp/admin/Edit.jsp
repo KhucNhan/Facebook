@@ -157,7 +157,7 @@
         <div class="form-group">
             <label for="image">Ảnh đại diện</label>
             <input type="file" id="image" name="image" accept="image/*" onchange="previewImage(event)">
-            <img id="preview" class="circular-img" alt="Xem ảnh" src="${user.image}">
+            <img id="preview" class="circular-img" alt="Xem ảnh" src="${pageContext.request.contextPath}/uploads/avatars/${user.image}">
         </div>
 
         <div class="form-group">
