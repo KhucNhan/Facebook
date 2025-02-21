@@ -98,7 +98,7 @@
             userId: ${user.userId},
             name: '${user.name}',
             email: '${user.email}',
-            phone: '0${user.phone}',
+            phone: '${user.phone}',
             gender: '${user.gender ? "Nam" : "Nữ"}',
             dateOfBirth: '${user.dateOfBirth}',
             image: '${user.image}',
