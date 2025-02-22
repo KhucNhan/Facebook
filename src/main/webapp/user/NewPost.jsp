@@ -36,7 +36,7 @@
                 <div id="B" style="display: none">
                     <label for="fileB" class="custom-file-upload">Thêm ảnh/video</label>
                     <input id="fileB" type="file" name="fileB[]" onchange="newImage(event)" multiple>
-                    <button style="background: #42b72a;width: 100px;margin-left: 30px" class="delete-button" onclick="clearImages(event)">Xóa ảnh</button>
+                    <button style="background: #F44336;width: 100px;color: white;margin-left: 30px" class="delete-button" onclick="clearImages(event)">Xóa ảnh</button>
                 </div>
             </div>
         </div>
@@ -51,21 +51,21 @@
 <%--</html>--%>
 <script>
     function clearImages(event) {
-        event.preventDefault(); // Ngăn chặn hành vi submit form
+        event.preventDefault();
 
-        let check = document.querySelector('#A'); // Phần chứa nút "Thêm ảnh/video" ban đầu
-        let checks = document.querySelector('#B'); // Phần chứa ảnh sau khi upload
-        let fileInputA = document.getElementById("fileA"); // Input file ban đầu
-        let fileInputB = document.getElementById("fileB"); // Input file sau khi upload
-        let listImageInput = document.getElementById('listImageInput'); // Phần chứa ảnh đã upload
+        let check = document.querySelector('#A');
+        let checks = document.querySelector('#B');
+        let fileInputA = document.getElementById("fileA");
+        let fileInputB = document.getElementById("fileB");
+        let listImageInput = document.getElementById('listImageInput');
 
         listImageInput.querySelectorAll("img").forEach(img => img.remove());
 
         fileInputA.value = "";
         fileInputB.value = "";
 
-        check.style.display = 'flex'; // Hiện lại phần "Thêm ảnh/video"
-        checks.style.display = 'none'; // Ẩn phần chứa ảnh đã upload
+        check.style.display = 'flex';
+        checks.style.display = 'none';
 
         checkPostStatus();
     }
@@ -147,7 +147,7 @@
     .custom-file-upload {
         display: inline-block;
         padding: 10px 15px;
-        background-color: #ececec;
+        background-color: #b4b4b8;
         color: white;
         border-radius: 5px;
         cursor: pointer;
@@ -155,7 +155,7 @@
     }
 
     .custom-file-upload:hover {
-        background-color: #d3d2d2;
+        background-color: #4CAF50;
     }
 
 
@@ -219,9 +219,9 @@
         align-items: center;
         flex-direction: column;
         justify-content: center;
-        width: 100%; /* Điều chỉnh kích thước phù hợp */
+        width: 100%;
         height: 100%;
-        border: 2px dashed grey; /* Viền vùng chọn */
+        border: 2px dashed grey;
         border-radius: 8px;
         cursor: pointer;
         text-align: center;
@@ -229,12 +229,12 @@
     }
 
     .image_div:hover {
-        background-color: rgba(0, 0, 0, 0.1); /* Hiệu ứng khi trỏ vào */
+        background-color: rgba(0, 0, 0, 0.1);
         border-color: black;
     }
 
     .new_image_div:hover {
-        background-color: rgba(0, 0, 0, 0.1); /* Hiệu ứng khi trỏ vào */
+        background-color: rgba(0, 0, 0, 0.1);
         border-color: black;
     }
 

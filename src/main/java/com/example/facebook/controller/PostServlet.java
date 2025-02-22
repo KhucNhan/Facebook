@@ -88,7 +88,6 @@ public class PostServlet extends HttpServlet {
                 .filter(part -> (part.getName().startsWith("fileA") || part.getName().startsWith("fileB")) && part.getSize() > 0)
                 .collect(Collectors.toList());
 
-        System.out.println("Tổng số ảnh nhận được: " + fileParts.size());
 
         String content = req.getParameter("content");
         String privacy = req.getParameter("privacy");
@@ -96,10 +95,9 @@ public class PostServlet extends HttpServlet {
         File uploadDir = new File("C:\\uploads\\postMedias");
         if (!uploadDir.exists()) uploadDir.mkdirs();
 
-//         tạo post -> tạo post media
         HttpSession session = req.getSession();
         String userIdStr = session.getAttribute("userId").toString();
-        // tạo post
+
         int postId = postDAO.insertPost(new Post(userDAO.selectUserById(Integer.parseInt(userIdStr)), content, privacy));
 
 
