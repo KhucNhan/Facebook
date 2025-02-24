@@ -16,6 +16,8 @@ public class PostDAO implements IPostDAO {
     private ConnectDatabase connectDatabase = new ConnectDatabase();
     private Connection connection = connectDatabase.connection();
     UserDAO userDAO = new UserDAO();
+
+    private static final String updatePost = "UPDATE posts SET content = ?, privacy = ?,updateAt =NOW() WHERE (postId = ?)";
     private static final String get_Post_Id = "SELECT * FROM posts WHERE postId = ? ";
 
     private static final String get_user_by_id = "SELECT * FROM users";
@@ -176,5 +178,23 @@ public class PostDAO implements IPostDAO {
             e.printStackTrace();
         }
         return postMediaList;
+    }
+
+    @Override
+    public boolean updatePost(int post, String content, String privacy) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(updatePost);
+            preparedStatement.setString(1, content);
+            preparedStatement.setString(2, privacy);
+            preparedStatement.setInt(3, post);
+
+            int row = preparedStatement.executeUpdate();
+
+            return row > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
