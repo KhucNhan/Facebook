@@ -85,7 +85,8 @@
                                  style="border-radius: 50%;margin-top: -10px;margin-right: -20px;position: relative">
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/users?action=userUpdateInformation">Cập nhật thông tin cá nhân</a></li>
+                            <li><a class="dropdown-item" href="/users?action=userUpdateInformation">Cập nhật thông tin
+                                cá nhân</a></li>
                             <li><a class="dropdown-item" href="/users?action=changePassword">Đổi mật khẩu</a></li>
                             <li>
                                 <hr class="dropdown-divider">
@@ -141,7 +142,8 @@
                          alt="User Icon" width="60" height="60" style="border-radius: 50%">
                 </div>
                 <div class="addPostInput" style="width: 100%">
-                    <input  type="button" style="text-align: left;padding-left: 15px" id="postInput" onclick="newPost()" value="Bạn đang nghĩ gì thế?" >
+                    <input type="button" style="text-align: left;padding-left: 15px" id="postInput" onclick="newPost()"
+                           value="Bạn đang nghĩ gì thế?">
                 </div>
             </div>
         </form>
@@ -151,7 +153,8 @@
                 <div class="post-card">
                     <div class="introduce" style="display: flex; justify-content: space-between">
                         <div style="display: flex">
-                            <img src="${pageContext.request.contextPath}/uploads/avatars/${post.user.image}" style="height: 50px;width: 50px; border-radius: 50%">
+                            <img src="${pageContext.request.contextPath}/uploads/avatars/${post.user.image}"
+                                 style="height: 50px;width: 50px; border-radius: 50%">
                             <div style="display: flex; flex-direction: column; margin-left: 10px">
                                 <div style="height: 20px;">
                                     <a style="font-weight: bold; color: black">${post.user.name}</a>
@@ -163,8 +166,23 @@
                         </div>
                         <div style="display: flex;">
                             <div>
-                                <a href=""
-                                   style="font-size: large; font-weight: bold;text-decoration: none; color: grey">...</a>
+                                <div>
+                                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                        <li class="nav-item dropdown">
+                                            <a style="margin-top: -10px;font-size: 20px;width: 20px;overflow: hidden;" class="nav-link dropdown-toggle" href="#" role="button"
+                                               data-bs-toggle="dropdown"
+                                               aria-expanded="false">
+                                                ...
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <h1></h1>
+                                                <li><a class="dropdown-item" href="/posts?action=userEditPost&postId=${post.getPostId()}">Sửa bài viết</a></li>
+<%--                                                <li><a class="dropdown-item" href="/users?action=changePassword">Xóa</a>--%>
+                                        </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                             <div>
                                 <a href="" style="color: grey">
@@ -259,7 +277,7 @@
     }
 
 
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         const iclusst = document.getElementById("iclusst");
         const popupContent = document.getElementById("popup-content");
 
@@ -274,7 +292,7 @@
         }
 
         // Ẩn popup khi click bên ngoài popup-content
-        iclusst.addEventListener("click", function(event) {
+        iclusst.addEventListener("click", function (event) {
             if (!popupContent.contains(event.target)) {
                 hidePopup();
             }

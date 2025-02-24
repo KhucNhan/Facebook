@@ -11,10 +11,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PostDAO implements IPostDAO{
+public class PostDAO implements IPostDAO {
+
     private ConnectDatabase connectDatabase = new ConnectDatabase();
     private Connection connection = connectDatabase.connection();
     UserDAO userDAO = new UserDAO();
+    private static final String get_Post_Id = "SELECT * FROM posts WHERE postId = ? ";
+
+    private static final String get_user_by_id = "SELECT * FROM users";
+    private static final String get_information_post_Id = "SELECT * FROM posts WHERE postId = ?";
+
+    private static final String get_all_image_links_post = "SELECT * FROM postmedias WHERE postId = ?";
 
     private static final String select_all_post = "SELECT \n" +
             "    p.postId, p.userId, p.content, p.privacy, p.createAt, p.updateAt, \n" +
@@ -45,6 +52,7 @@ public class PostDAO implements IPostDAO{
 
 
     private static final String insert_post = "insert into posts (userId, content, privacy) values (?, ?, ?)";
+
     @Override
     public List<Post> selectAllPosts(int userId) throws SQLException {
         List<Post> posts = new ArrayList<>();
@@ -100,5 +108,73 @@ public class PostDAO implements IPostDAO{
             }
         }
         return -1;
+    }
+
+    @Override
+    public int getPostId(int post) {
+        int userID = -1;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(get_Post_Id);
+            preparedStatement.setInt(1, post);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                userID = resultSet.getInt("userId");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userID;
+    }
+
+    @Override
+    public Post getInformationPostId(int post) {
+        Post post1 = new Post();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(get_information_post_Id);
+            preparedStatement.setInt(1, post);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                post1 = new Post(
+                        resultSet.getInt("postId"),
+                        resultSet.getInt("userId"),
+                        resultSet.getString("content"),
+                        resultSet.getString("privacy"),
+                        resultSet.getTimestamp("createAt"),
+                        resultSet.getTimestamp("updateAt")
+                );
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return post1;
+    }
+
+    @Override
+    public List<PostMedia> getAllImageLinksPost(int post) {
+        List<PostMedia> postMediaList = new ArrayList<>();
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(get_all_image_links_post);
+            preparedStatement.setInt(1, post);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                postMediaList.add(new PostMedia(
+                        resultSet.getInt("postMediaId"),
+                        resultSet.getInt("postId"),
+                        resultSet.getString("url"),
+                        resultSet.getString("type")
+
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return postMediaList;
     }
 }
