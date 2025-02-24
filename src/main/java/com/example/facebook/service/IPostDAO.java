@@ -19,4 +19,6 @@ public interface IPostDAO {
 
     boolean updatePost(int post,String content,String privacy);
 
+    boolean deletePost(int postID);
+
 }

@@ -17,10 +17,12 @@ public class PostDAO implements IPostDAO {
     private Connection connection = connectDatabase.connection();
     UserDAO userDAO = new UserDAO();
 
+    private static final String deletePost = "DELETE FROM posts WHERE (postId = ?)";
+
     private static final String updatePost = "UPDATE posts SET content = ?, privacy = ?,updateAt =NOW() WHERE (postId = ?)";
     private static final String get_Post_Id = "SELECT * FROM posts WHERE postId = ? ";
 
-    private static final String get_user_by_id = "SELECT * FROM users";
+//    private static final String get_user_by_id = "SELECT * FROM users";
     private static final String get_information_post_Id = "SELECT * FROM posts WHERE postId = ?";
 
     private static final String get_all_image_links_post = "SELECT * FROM postmedias WHERE postId = ?";
@@ -193,6 +195,22 @@ public class PostDAO implements IPostDAO {
             return row > 0;
 
         } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deletePost(int postID) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(deletePost);
+            preparedStatement.setInt(1,postID);
+
+            int row = preparedStatement.executeUpdate();
+
+            return row > 0;
+
+        }catch (SQLException e){
             e.printStackTrace();
             return false;
         }
