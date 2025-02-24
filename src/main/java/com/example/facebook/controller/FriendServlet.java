@@ -1,7 +1,7 @@
 package com.example.facebook.controller;
 
 
-import com.example.facebook.service.FriendShip;
+import com.example.facebook.service.FriendShipDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,7 +12,7 @@ import java.io.IOException;
 
 @WebServlet("/friendShip")
 public class FriendServlet extends HttpServlet {
-    FriendShip friendShip = new FriendShip();
+    FriendShipDAO friendShipDAO = new FriendShipDAO();
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 

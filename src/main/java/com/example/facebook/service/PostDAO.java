@@ -43,6 +43,22 @@ public class PostDAO implements IPostDAO{
             "   )\n" +
             "ORDER BY p.createAt DESC;";
 
+    private static final String select_post_by_id = "SELECT \n" +
+            "    p.postId, p.userId, p.content, p.privacy, p.createAt, p.updateAt, \n" +
+            "    COALESCE(e.total_emotions, 0) AS totalEmotions, \n" +
+            "    COALESCE(c.total_comments, 0) AS totalComments,\n" +
+            "    pm.type, \n" +
+            "    pm.url\n" +
+            "FROM posts p\n" +
+            "LEFT JOIN (\n" +
+            "    SELECT postId, COUNT(*) AS total_emotions FROM postemotions GROUP BY postId\n" +
+            ") e ON p.postId = e.postId\n" +
+            "LEFT JOIN (\n" +
+            "    SELECT postId, COUNT(*) AS total_comments FROM comments GROUP BY postId\n" +
+            ") c ON p.postId = c.postId\n" +
+            "LEFT JOIN postmedias pm ON p.postId = pm.postId  \n" +
+            "WHERE p.postId = ?";
+
 
     private static final String insert_post = "insert into posts (userId, content, privacy) values (?, ?, ?)";
     @Override
@@ -78,7 +94,7 @@ public class PostDAO implements IPostDAO{
             String url = resultSet.getString("url");
             String type = resultSet.getString("type");
             if (url != null && type != null) {
-                post.getMediaUrls().add(new PostMedia(resultSet.getInt(1), resultSet.getInt(2), url, type));
+                post.getMediaUrls().add(new PostMedia(resultSet.getInt(1), resultSet.getInt(2), type, url));
             }
         }
 
@@ -101,4 +117,38 @@ public class PostDAO implements IPostDAO{
         }
         return -1;
     }
+
+    @Override
+    public Post selectPostById(int postId) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement(select_post_by_id);
+        preparedStatement.setInt(1, postId);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        Post post = null;
+
+        while (resultSet.next()) {
+            if (post == null) {
+                post = new Post(
+                        postId,
+                        userDAO.selectUserById(resultSet.getInt("userId")),
+                        resultSet.getString("content"),
+                        resultSet.getString("privacy"),
+                        resultSet.getTimestamp("createAt"),
+                        resultSet.getTimestamp("updateAt"),
+                        resultSet.getInt("totalEmotions"),
+                        resultSet.getInt("totalComments")
+                );
+            }
+
+            String url = resultSet.getString("url");
+            String type = resultSet.getString("type");
+            if (url != null && type != null) {
+                post.getMediaUrls().add(new PostMedia(postId, resultSet.getInt("userId"), type, url));
+            }
+        }
+
+        return post;
+    }
+
 }

@@ -5,23 +5,21 @@ import java.sql.Timestamp;
 public class Comment {
     private int commentId;
     private int postId;
-    private int userId;
+    private User user;
     private int parentId;
     private String content;
-    private String privacy;
     private Timestamp createAt;
     private Timestamp updateAt;
 
     public Comment() {
     }
 
-    public Comment(int commentId, int postId, int userId, int parentId, String content, String privacy, Timestamp createAt, Timestamp updateAt) {
+    public Comment(int commentId, int postId, User user, int parentId, String content, Timestamp createAt, Timestamp updateAt) {
         this.commentId = commentId;
         this.postId = postId;
-        this.userId = userId;
+        this.user = user;
         this.parentId = parentId;
         this.content = content;
-        this.privacy = privacy;
         this.createAt = createAt;
         this.updateAt = updateAt;
     }
@@ -42,12 +40,12 @@ public class Comment {
         this.postId = postId;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public int getParentId() {
@@ -66,14 +64,6 @@ public class Comment {
         this.content = content;
     }
 
-    public String getPrivacy() {
-        return privacy;
-    }
-
-    public void setPrivacy(String privacy) {
-        this.privacy = privacy;
-    }
-
     public Timestamp getCreateAt() {
         return createAt;
     }
@@ -88,19 +78,5 @@ public class Comment {
 
     public void setUpdateAt(Timestamp updateAt) {
         this.updateAt = updateAt;
-    }
-
-    @Override
-    public String toString() {
-        return "Comments{" +
-                "commentId=" + commentId +
-                ", postId=" + postId +
-                ", userId=" + userId +
-                ", parentId=" + parentId +
-                ", content='" + content + '\'' +
-                ", privacy='" + privacy + '\'' +
-                ", createAt=" + createAt +
-                ", updateAt=" + updateAt +
-                '}';
     }
 }
