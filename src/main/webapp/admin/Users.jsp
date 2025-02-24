@@ -155,11 +155,16 @@
 
     function setupPagination() {
         const pagination = document.getElementById('pagination');
-        pagination.innerHTML = '';  // Xóa nội dung cũ của phân trang
+        pagination.innerHTML = '';
         const pageCount = Math.ceil(users.length / rowsPerPage);
 
         const prevLi = document.createElement('li');
         prevLi.classList.add('page-item');
+
+        if (currentPage === 1) {
+            prevLi.classList.add('disabled');
+        }
+
         prevLi.innerHTML = '<a class="page-link" href="#">Previous</a>';
         prevLi.addEventListener('click', function () {
             if (currentPage > 1) {
@@ -170,6 +175,9 @@
         });
         if (users.length !== 0) {
             pagination.appendChild(prevLi);
+        }
+        if (currentPage === 1) {
+
         }
 
         for (let i = 1; i <= pageCount; i++) {
@@ -182,6 +190,7 @@
             li.addEventListener('click', function () {
                 currentPage = i;
                 displayUsers(currentPage);
+                setupPagination();
                 updateActivePage();
             });
             if (users.length !== 0) {
@@ -191,6 +200,11 @@
 
         const nextLi = document.createElement('li');
         nextLi.classList.add('page-item');
+
+        if (currentPage === pageCount) {
+            nextLi.classList.add('disabled');
+        }
+
         nextLi.innerHTML = '<a class="page-link" href="#">Next</a>';
         nextLi.addEventListener('click', function () {
             if (currentPage < pageCount) {
