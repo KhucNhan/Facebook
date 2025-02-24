@@ -50,11 +50,37 @@ public class PostServlet extends HttpServlet {
                 case "userEditPost":
                     userEditPost(req,resp);
                     break;
+                case "deletePost" :
+                    deletePostById(req,resp);
+                    break;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
+    private void deletePostById(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+        int userId = (int) session.getAttribute("userId");
+
+        int postId = Integer.parseInt(req.getParameter("postId"));
+        int userIdPost = postDAO.getPostId(postId);
+        if (userId == userIdPost){
+            postDAO.deletePost(postId);
+
+
+            HttpSession session1 = req.getSession();
+            session1.setAttribute("successMessage", "Xóa bài viết thành công!");
+
+            resp.sendRedirect(req.getContextPath() + "/home");
+
+        }else {
+            req.setAttribute("errorMessage", "Bạn không có quyền xóa bài viết này!");
+            req.getRequestDispatcher("/home").forward(req, resp);
+        }
+
+    }
+
     private void userEditPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         HttpSession session = req.getSession();
         int userId = (int) session.getAttribute("userId");

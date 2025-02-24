@@ -31,7 +31,7 @@
         }
         function showSuccess(message) {
             Swal.fire({
-                title: "Cập nhật thành công!",
+                title: message,
                 icon: "success",
                 draggable: true,
                 timer:1500,
@@ -70,6 +70,7 @@
         showSuccess("<%= successMessage.replace("\"", "\\\"").replace("\n", "\\n") %>");
     </script>
     <%
+            session.removeAttribute("successMessage");
         }
     %>
 
@@ -220,7 +221,7 @@
                                             <ul class="dropdown-menu">
                                                 <h1></h1>
                                                 <li><a class="dropdown-item" href="/posts?action=userEditPost&postId=${post.getPostId()}">Sửa bài viết</a></li>
-<%--                                                <li><a class="dropdown-item" href="/users?action=changePassword">Xóa</a>--%>
+                                                <li><a class="dropdown-item delete-link" href="/posts?action=deletePost&&postId=${post.getPostId()}">Xóa</a>
                                         </li>
                                             </ul>
                                         </li>
@@ -315,7 +316,29 @@
 
 
 <script>
+
     document.addEventListener("DOMContentLoaded", function () {
+
+        document.querySelector(".delete-link").addEventListener("click", function (event) {
+            event.preventDefault();
+
+            let deleteUrl = this.href; // Lưu link xóa
+
+            Swal.fire({
+                title: "Bạn có chắc chắn muốn xóa bài viết?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Có, xóa ngay!",
+                cancelButtonText: "Hủy",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = deleteUrl;
+                }
+            });
+        });
+
+
+
         const iclusst = document.getElementById("iclusst");
         const popupContent = document.getElementById("popup-content");
 
