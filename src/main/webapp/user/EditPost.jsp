@@ -16,6 +16,7 @@
     <title>Title</title>
 </head>
 <body>
+
 <%
     User user = (User) request.getAttribute("user");
     Post editPost = (Post) request.getAttribute("editPost");
@@ -26,7 +27,7 @@
 
         <!-- Logo Facebook -->
         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="45" fill="currentColor" class="bi bi-facebook"
-             viewBox="0 0 16 16" style="color: #0866ff; margin-right: 20px;">
+             viewBox="0 0 16 16nu" style="color: #0866ff; margin-right: 20px;">
             <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"/>
         </svg>
 
@@ -97,10 +98,11 @@
     </div>
 </div>
 <div style="margin-top: 15px">
-
     <div class="all">
         <form action="posts?action=updatePost" method="post" enctype="multipart/form-data">
             <!-- Header section -->
+            <input type="hidden" name="postId" value="<%= editPost.getPostId() %>">
+
             <div class="top_nav">
                 <div style="font-size: 2em; text-align: center; border-bottom: 1px solid black">
                     <b>Chỉnh sửa bài viết</b>
@@ -112,7 +114,7 @@
                     </div>
                     <div>
                         <div class="fw-bold">${user.name}</div>
-                        <select class="form-select form-select-sm mt-1 select" name="privacy" id="privacySelect"
+                        <select onchange="checkPostStatus()" class="form-select form-select-sm mt-1 select" name="privacy" id="privacySelect"
                                 style="padding-right: 0px">
                             <option value="Public" <%= "Public".equals(editPost.getPrivacy()) ? "selected" : "" %> >🌍
                                 Công
@@ -132,22 +134,23 @@
                 <div class="text">
                 <textarea id="postInput" name="content"
                           oninput="checkPostStatus()"><%=editPost.getContent()%></textarea>
-
                 </div>
             </div>
             <div>
-                <div class="image" id="A" style="display: none">
+                <div class="image" id="A" >
                     <div>
-                        <label for="fileA" class="custom-file-upload">Thêm ảnh/video</label>
+                        <label style="margin-top: 35%"  for="fileA" class="custom-file-upload addImage">Thêm ảnh/video</label>
                         <input type="file" id="fileA" name="fileA[]" onchange="newImage(event)" multiple>
                     </div>
+
                 </div>
                 <div style="border: 0px" class="ListImage" id="listImageInput">
                     <div id="B">
                         <label for="fileB" class="custom-file-upload">Thêm ảnh/video</label>
                         <input id="fileB" type="file" name="fileB[]" onchange="newImage(event)" multiple>
+                        <input type="hidden" id="deleteAllImagesInput" name="deleteAllImages" value="false">
                         <button style="background: #F44336;width: 100px;color: white;margin-left: 30px"
-                                class="delete-button" onclick="clearImages(event)">Xóa ảnh
+                                name="deleteAllImages" class="delete-button" onclick="clearImages(event)">Xóa ảnh
                         </button>
                     </div>
                     <c:forEach var="media" items="${imageLinks}">
@@ -163,12 +166,30 @@
                 <button type="submit" id="postButton">Cập nhật</button>
             </div>
         </form>
-        <button style="background: red;width: 100px;margin-top: -74px;margin-left: 350px" type="submit" onclick="exit()" >Thoát</button>
+        <button style="background: #00ff3c;color: white;width: 100px;margin-top: -74px;margin-left: 350px" type="submit" onclick="exit()" >Thoát</button>
     </div>
 </div>
 </body>
 </html>
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let imageLinks = document.querySelectorAll("#listImageInput img"); // Lấy danh sách ảnh
+        let divA = document.getElementById("A");
+        let addImage = document.getElementById("addImage");
+        let divB = document.getElementById("B");
+
+        if (imageLinks.length > 0) {
+            divA.style.display = "none";
+            divB.style.display = "block";
+
+        } else {
+            divA.style.display = "block";
+            divB.style.display = "none";
+            addImage.style.marginTop="0%";
+
+        }
+    });
+
     function exit(){
         window.location.href = '/home';
     }
@@ -190,6 +211,8 @@
         checks.style.display = 'none';
 
         checkPostStatus();
+
+        document.getElementById("deleteAllImagesInput").value = "true";
     }
 
 
@@ -243,9 +266,10 @@
     function checkPostStatus() {
         let postText = document.getElementById("postInput").value.trim();
         let fileInput = document.getElementById("fileA").files.length > 0;
+        let privacySelect = document.getElementById("privacySelect").value;
         let postButton = document.getElementById("postButton");
 
-        if (postText || fileInput) {
+        if (postText || fileInput || privacySelect) {
             postButton.disabled = false;
             postButton.style.backgroundColor = "#007bff";
             postButton.style.color = "white";
@@ -308,7 +332,7 @@
 
     .ListImage img {
         width: 410px;
-        height: 250px;
+        height: 300px;
         object-fit: cover;
         border-radius: 5px;
     }

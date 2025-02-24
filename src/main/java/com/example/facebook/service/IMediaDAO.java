@@ -11,5 +11,6 @@ public interface IMediaDAO {
     List<PostMedia> selectAllPostMedia(int postId) throws SQLException;
     boolean insertPostMedia(int postId, String type, String url) throws SQLException;
 
+    boolean deleteAllImagePostByID(int postId);
 
 }

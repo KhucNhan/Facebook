@@ -18,17 +18,60 @@
     </script>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function showError(message) {
+            Swal.fire({
+                icon: "error",
+                title: "Lỗi!",
+                text: message,
+                timer:1500,
+                showConfirmButton: false
+            });
+        }
+        function showSuccess(message) {
+            Swal.fire({
+                title: "Cập nhật thành công!",
+                icon: "success",
+                draggable: true,
+                timer:1500,
+                showConfirmButton: false
+            });
+        }
+    </script>
 
     <title>Facebook</title>
 </head>
 <body>
+
 <div id="iclusst" style="display: none;">
     <div id="popup-content" style="width: 30%;margin-left: 1%;margin-top:1%;background: white; border-radius: 10px;">
         <jsp:include page="NewPost.jsp"/>
     </div>
 </div>
 <div class="menu">
+    <%
+        String errorMessage = (String) request.getAttribute("errorMessage");
+        if (errorMessage != null) {
+    %>
+    <script>
+        showError("<%= errorMessage.replace("\"", "\\\"").replace("\n", "\\n") %>");
+    </script>
+
+    <%
+        }
+
+        HttpSession session1 = request.getSession();
+        String successMessage = (String) session1.getAttribute("successMessage");
+        if (successMessage != null) {
+            session1.removeAttribute("successMessage");
+    %>
+    <script>
+        showSuccess("<%= successMessage.replace("\"", "\\\"").replace("\n", "\\n") %>");
+    </script>
+    <%
+        }
+    %>
 
     <!-- Logo Facebook -->
     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="45" fill="currentColor" class="bi bi-facebook"
@@ -272,11 +315,6 @@
 
 
 <script>
-    function newPost() {
-        document.getElementById("iclusst").style.display = "block";
-    }
-
-
     document.addEventListener("DOMContentLoaded", function () {
         const iclusst = document.getElementById("iclusst");
         const popupContent = document.getElementById("popup-content");

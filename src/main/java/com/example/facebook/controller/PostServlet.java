@@ -30,7 +30,6 @@ public class PostServlet extends HttpServlet {
     private static final String UPLOAD_DIR = "uploads";
     PostDAO postDAO = new PostDAO();
     UserDAO userDAO = new UserDAO();
-
     MediaDAO mediaDAO = new MediaDAO();
 
     @Override
@@ -75,12 +74,9 @@ public class PostServlet extends HttpServlet {
             req.setAttribute("editPost", post);
             req.getRequestDispatcher("user/EditPost.jsp").forward(req,resp);
         }else {
-            resp.setContentType("application/json");
-            resp.setCharacterEncoding("UTF-8");
             req.setAttribute("errorMessage", "Bạn không có quyền chỉnh sửa bài viết này!");
-//            req.getRequestDispatcher("user/Home.jsp").forward(req, resp);
+            req.getRequestDispatcher("/home").forward(req, resp);
         }
-
     }
 
     private void showNewsFeed(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
@@ -107,12 +103,53 @@ public class PostServlet extends HttpServlet {
                 case "newPost":
                     newPost(req, resp);
                     break;
+                case "updatePost":
+                    updatePost(req,resp);
+                    break;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+    private void updatePost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
 
+        int postId = Integer.parseInt(req.getParameter("postId"));
+
+        String deleteAllImages = req.getParameter("deleteAllImages");
+
+        if (deleteAllImages.equals("true")){
+            mediaDAO.deleteAllImagePostByID(postId);
+        }
+
+        Collection<Part> fileParts = req.getParts().stream()
+                .filter(part -> (part.getName().startsWith("fileA") || part.getName().startsWith("fileB")) && part.getSize() > 0)
+                .collect(Collectors.toList());
+
+
+        String content = req.getParameter("content");
+        String privacy = req.getParameter("privacy");
+
+        File uploadDir = new File("C:\\uploads\\postMedias");
+        if (!uploadDir.exists()) uploadDir.mkdirs();
+
+
+        for (Part filePart : fileParts) {
+            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+            String filePartss = "C:\\uploads\\postMedias" + File.separator + fileName;
+            filePart.write(filePartss);
+
+            mediaDAO.insertPostMedia(postId, "picture", fileName);
+        }
+
+        postDAO.updatePost(postId,content,privacy);
+
+        HttpSession session = req.getSession();
+        session.setAttribute("successMessage", "Cập nhật bài viết thành công!");
+
+        // Chuyển hướng về trang /home
+        resp.sendRedirect(req.getContextPath() + "/home");
+
+    }
 
 
     private void newPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
