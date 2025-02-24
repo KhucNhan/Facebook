@@ -106,10 +106,6 @@
             text-align: center;
         }
 
-        .gender-options input[type="radio"] {
-            display: none;
-        }
-
         .gender-options input[type="radio"]:checked + label {
             background-color: #1877f2;
             color: white;
@@ -147,7 +143,7 @@
             if (event.target.files.length > 0) {
                 reader.readAsDataURL(event.target.files[0]);
             } else {
-                document.getElementById('preview').src = "${pageContext.request.contextPath}/resources/avatars/default_avt.jpg";
+                document.getElementById('preview').src = "${pageContext.request.contextPath}/uploads/avatars/default_avt.jpg";
             }
         }
 
@@ -182,7 +178,7 @@
         <div class="form-group">
             <label for="image">Ảnh đại diện</label>
             <input type="file" id="image" accept=".png,.jpg" name="image" onchange="previewImage(event)" title="png, jpg only!">
-            <img id="preview" class="circular-img" alt="">
+            <img id="preview" src="${pageContext.request.contextPath}/uploads/avatars/default_avt.jpg" class="circular-img" alt="">
         </div>
 
         <div class="form-group">

@@ -15,11 +15,12 @@ public class UserDAO implements IUserDAO {
 
     private static UserDAO userDAO = new UserDAO();
 
-    private static final String select_all_users = "select * from users";
+
+    private static final String select_all_users = "select * from users order by userId desc";
     private static final String insert_user = "INSERT INTO users (name, email, phone, password, dateOfBirth, gender, bio, image, createAt, updateAt) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
 
-    private static final String update_user = "UPDATE users SET image = ?, name = ?, email = ?, phone = ?, dateOfBirth = ?, gender = ?, updateAt = NOW(), status = ? WHERE userId = ?";
+    private static final String update_user = "UPDATE users SET image = ?, name = ?, email = ?, phone = ?, dateOfBirth = ?, gender = ?, updateAt = NOW(), status = ?, password = ? WHERE userId = ?";
 
     private static final String select_user_by_id = "SELECT * FROM users WHERE userId = ?";
 
@@ -43,7 +44,7 @@ public class UserDAO implements IUserDAO {
                     resultSet.getString(2),
                     resultSet.getString(3),
                     resultSet.getString(4),
-                    resultSet.getInt(5),
+                    resultSet.getString(5),
                     resultSet.getString(6),
                     resultSet.getDate(7),
                     resultSet.getBoolean(8),
@@ -63,7 +64,7 @@ public class UserDAO implements IUserDAO {
         PreparedStatement preparedStatement = connection.prepareStatement(insert_user);
         preparedStatement.setString(1, user.getName());
         preparedStatement.setString(2, user.getEmail());
-        preparedStatement.setInt(3, user.getPhone());
+        preparedStatement.setString(3, user.getPhone());
         preparedStatement.setString(4, user.getPassword());
         preparedStatement.setDate(5, user.getDateOfBirth());
         preparedStatement.setBoolean(6, user.isGender());
@@ -86,7 +87,7 @@ public class UserDAO implements IUserDAO {
                     resultSet.getString(2),
                     resultSet.getString(3),
                     resultSet.getString(4),
-                    resultSet.getInt(5),
+                    resultSet.getString(5),
                     resultSet.getString(6),
                     resultSet.getDate(7),
                     resultSet.getBoolean(8),
@@ -107,11 +108,12 @@ public class UserDAO implements IUserDAO {
         preparedStatement.setString(1, user.getImage());
         preparedStatement.setString(2, user.getName());
         preparedStatement.setString(3, user.getEmail());
-        preparedStatement.setInt(4, user.getPhone());
+        preparedStatement.setString(4, user.getPhone());
         preparedStatement.setDate(5, user.getDateOfBirth());
         preparedStatement.setBoolean(6, user.isGender());
         preparedStatement.setBoolean(7, user.isStatus());
-        preparedStatement.setInt(8, userId);
+        preparedStatement.setString(8, user.getPassword());
+        preparedStatement.setInt(9, userId);
 
         int rowsAffected = preparedStatement.executeUpdate();
         return rowsAffected > 0;
@@ -130,7 +132,7 @@ public class UserDAO implements IUserDAO {
         Set<User> resultSet = new HashSet<>();
 
         if (value != null) {
-            if (value.matches("^0\\d*$")) {
+            if (value.matches("^\\d+$")) {
                 resultSet.addAll(userDAO.selectUsersByPhone(value));
             } else {
                 resultSet.addAll(userDAO.selectUsersByName(value));
@@ -154,7 +156,7 @@ public class UserDAO implements IUserDAO {
                     resultSet.getString(2),
                     resultSet.getString(3),
                     resultSet.getString(4),
-                    resultSet.getInt(5),
+                    resultSet.getString(5),
                     resultSet.getString(6),
                     resultSet.getDate(7),
                     resultSet.getBoolean(8),
@@ -172,8 +174,10 @@ public class UserDAO implements IUserDAO {
     @Override
     public List<User> selectUsersByPhone(String value) throws SQLException {
         List<User> users = new ArrayList<>();
+        System.out.println(value);
         PreparedStatement preparedStatement = connection.prepareStatement(select_user_by_phone);
         preparedStatement.setString(1, "%" + value + "%");
+        System.out.println(preparedStatement);
         ResultSet resultSet = preparedStatement.executeQuery();
 
         while (resultSet.next()) {
@@ -182,7 +186,7 @@ public class UserDAO implements IUserDAO {
                     resultSet.getString(2),
                     resultSet.getString(3),
                     resultSet.getString(4),
-                    resultSet.getInt(5),
+                    resultSet.getString(5),
                     resultSet.getString(6),
                     resultSet.getDate(7),
                     resultSet.getBoolean(8),
@@ -210,7 +214,7 @@ public class UserDAO implements IUserDAO {
                     resultSet.getString(2),
                     resultSet.getString(3),
                     resultSet.getString(4),
-                    resultSet.getInt(5),
+                    resultSet.getString(5),
                     resultSet.getString(6),
                     resultSet.getDate(7),
                     resultSet.getBoolean(8),

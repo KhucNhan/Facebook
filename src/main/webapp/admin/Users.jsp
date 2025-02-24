@@ -98,7 +98,7 @@
             userId: ${user.userId},
             name: '${user.name}',
             email: '${user.email}',
-            phone: '0${user.phone}',
+            phone: '${user.phone}',
             gender: '${user.gender ? "Nam" : "Nữ"}',
             dateOfBirth: '${user.dateOfBirth}',
             image: '${user.image}',
@@ -122,7 +122,7 @@
             paginatedUsers.forEach(function (user) {
                 const row = '<tr class="d-flex">' +
                     '<td style="width: 5%;" class="text-center">' + user.userId + '</td>' +
-                    '<td style="width: 10%;" class="text-center"><img style="width: 100%;" src="/resources/avatars/' + user.image + '" /></td>' +
+                    '<td style="width: 10%;" class="text-center"><img style="width: 100%;" src="${pageContext.request.contextPath}/uploads/avatars/' + user.image + '" /></td>' +
                     '<td style="width: 10%;" class="text-center">' + user.name + '</td>' +
                     '<td style="width: 15%;" class="text-center">' + user.email + '</td>' +
                     '<td style="width: 10%;" class="text-center">' + user.phone + '</td>' +

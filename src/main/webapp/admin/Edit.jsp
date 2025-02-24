@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: ThinkpadX1
@@ -19,11 +20,12 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f2f5;
+            justify-items: center;
+            align-content: center;
         }
 
         .signup-container {
             width: 400px;
-            margin: 100px auto;
             padding: 20px;
             background-color: white;
             border-radius: 10px;
@@ -110,10 +112,6 @@
             text-align: center;
         }
 
-        .gender-options input[type="radio"] {
-            display: none;
-        }
-
         .gender-options input[type="radio"]:checked + label {
             background-color: #1877f2;
             color: white;
@@ -145,13 +143,22 @@
 <body>
 <div class="signup-container">
     <h1 class="form-header">Chỉnh sửa tài khoản</h1>
-
+    <c:if test="${status == 'success'}">
+        <div>
+            <p style="color: green; text-align: center; font-weight: bold">Cập nhật tài khoản thành công!</p>
+        </div>
+    </c:if>
+    <c:if test="${status != 'success'}">
+        <div>
+            <p style="color: white">hehehe</p>
+        </div>
+    </c:if>
     <form action="/users?action=update&userId=${user.userId}" method="post" class="signup-form" enctype="multipart/form-data">
 
         <div class="form-group">
             <label for="image">Ảnh đại diện</label>
             <input type="file" id="image" name="image" accept="image/*" onchange="previewImage(event)">
-            <img id="preview" class="circular-img" alt="Xem ảnh" src="${user.image}">
+            <img id="preview" class="circular-img" alt="Xem ảnh" src="${pageContext.request.contextPath}/uploads/avatars/${user.image}">
         </div>
 
         <div class="form-group">
@@ -175,10 +182,10 @@
             <label>Giới tính</label>
             <div class="gender-options">
                 <label>
-                    <input type="radio" name="gender" value="true" ${user.gender ? "checked" : ""}> Nam
+                    <input type="radio" name="gender" value="true" ${user.gender == true ? "checked" : ""}> Nam
                 </label>
                 <label>
-                    <input type="radio" name="gender" value="false" ${!user.gender ? "checked" : ""}> Nữ
+                    <input type="radio" name="gender" value="false" ${!user.gender == true ? "checked" : ""}> Nữ
                 </label>
             </div>
         </div>
