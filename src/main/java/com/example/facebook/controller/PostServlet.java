@@ -1,6 +1,8 @@
 package com.example.facebook.controller;
 
 import com.example.facebook.model.Post;
+import com.example.facebook.model.PostMedia;
+import com.example.facebook.model.User;
 import com.example.facebook.service.MediaDAO;
 import com.example.facebook.service.PostDAO;
 import com.example.facebook.service.UserDAO;
@@ -46,10 +48,39 @@ public class PostServlet extends HttpServlet {
                 default:
                     showNewsFeed(req, resp);
                     break;
+                case "userEditPost":
+                    userEditPost(req,resp);
+                    break;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+    private void userEditPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
+        HttpSession session = req.getSession();
+        int userId = (int) session.getAttribute("userId");
+
+        int postId = Integer.parseInt(req.getParameter("postId"));
+
+        int userIdPost = postDAO.getPostId(postId);
+        if (userId == userIdPost){
+            Post post = postDAO.getInformationPostId(postId);
+
+            List<PostMedia> postMediaList = postDAO.getAllImageLinksPost(postId);
+
+            User user = userDAO.selectUserById(userId);
+
+            req.setAttribute("user", user);
+            req.setAttribute("imageLinks",postMediaList);
+            req.setAttribute("editPost", post);
+            req.getRequestDispatcher("user/EditPost.jsp").forward(req,resp);
+        }else {
+            resp.setContentType("application/json");
+            resp.setCharacterEncoding("UTF-8");
+            req.setAttribute("errorMessage", "Bạn không có quyền chỉnh sửa bài viết này!");
+//            req.getRequestDispatcher("user/Home.jsp").forward(req, resp);
+        }
+
     }
 
     private void showNewsFeed(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
@@ -81,6 +112,8 @@ public class PostServlet extends HttpServlet {
             throw new RuntimeException(e);
         }
     }
+
+
 
     private void newPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
 
