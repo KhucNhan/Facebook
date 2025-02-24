@@ -7,6 +7,7 @@ import java.util.List;
 public class Post {
     private int postId;
     private User user;
+    private int userId;
     private String content;
     private String privacy;
     private Timestamp createAt;
@@ -27,6 +28,26 @@ public class Post {
         this.updateAt = updateAt;
         this.totalEmotions = totalEmotions;
         this.totalComments = totalComments;
+    }
+
+    public Post(int postId, int userId, String content, String privacy, Timestamp createAt, Timestamp updateAt, int totalEmotions, int totalComments) {
+        this.postId = postId;
+        this.userId = userId;
+        this.content = content;
+        this.privacy = privacy;
+        this.createAt = createAt;
+        this.updateAt = updateAt;
+        this.totalEmotions = totalEmotions;
+        this.totalComments = totalComments;
+    }
+
+    public Post(int postId, int userId, String content, String privacy, Timestamp createAt, Timestamp updateAt) {
+        this.postId = postId;
+        this.userId = userId;
+        this.content = content;
+        this.privacy = privacy;
+        this.createAt = createAt;
+        this.updateAt = updateAt;
     }
 
     public List<PostMedia> getMediaUrls() {
