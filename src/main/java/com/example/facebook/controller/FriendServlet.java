@@ -2,7 +2,7 @@ package com.example.facebook.controller;
 
 
 import com.example.facebook.model.User;
-import com.example.facebook.service.FriendShip;
+import com.example.facebook.service.FriendShipDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,7 +18,7 @@ import java.util.List;
 public class FriendServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        FriendShip friendShip = new FriendShip();
+        FriendShipDAO friendShip = new FriendShipDAO();
         HttpSession session = req.getSession();
 //        String userIdStr = session.getAttribute("userId").toString();
         try {

@@ -2,7 +2,7 @@ package com.example.facebook.controller;
 
 import com.example.facebook.model.Post;
 import com.example.facebook.model.User;
-import com.example.facebook.service.FriendShip;
+import com.example.facebook.service.FriendShipDAO;
 import com.example.facebook.service.PostDAO;
 import com.example.facebook.service.UserDAO;
 
@@ -20,7 +20,7 @@ import java.util.List;
 public class HomeServlet extends HttpServlet {
     UserDAO userDAO = new UserDAO();
     PostDAO postDAO = new PostDAO();
-    FriendShip friendShip = new FriendShip();
+    FriendShipDAO friendShip = new FriendShipDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
