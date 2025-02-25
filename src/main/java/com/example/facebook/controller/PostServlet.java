@@ -3,6 +3,7 @@ package com.example.facebook.controller;
 import com.example.facebook.model.Comment;
 import com.example.facebook.model.Post;
 import com.example.facebook.model.PostMedia;
+import com.example.facebook.model.User;
 import com.example.facebook.service.CommentDAO;
 import com.example.facebook.service.MediaDAO;
 import com.example.facebook.service.PostDAO;
@@ -21,8 +22,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@MultipartConfig(
-        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
         maxFileSize = 1024 * 1024 * 10,      // 10MB
         maxRequestSize = 1024 * 1024 * 50    // 50MB
 )
@@ -63,6 +63,9 @@ public class PostServlet extends HttpServlet {
         Post post = postDAO.selectPostById(Integer.parseInt(postId));
         List<PostMedia> mediaList = mediaDAO.selectAllPostMedia(Integer.parseInt(postId));
         List<Comment> comments = commentDAO.selectAllComments(post.getPostId());
+
+        HttpSession session = req.getSession();
+        User user = userDAO.selectUserById(Integer.parseInt(session.getAttribute("userId").toString()));
 
         resp.setContentType("text/html;charset=UTF-8");
         PrintWriter out = resp.getWriter();
@@ -115,22 +118,37 @@ public class PostServlet extends HttpServlet {
         } else {
 
             // Hiển thị danh sách bình luận
-            out.println("<ul class='comments-list'>");
+            out.println("<ul class='comments-list' style=\"list-style-type:none\">");
 
             for (Comment comment : comments) {
                 out.println("<li class='comment-item'>");
 
                 // Ảnh đại diện và thông tin người bình luận
-                out.println("<div class='comment-header'>");
-                out.println("<img src='/uploads/avatars/" + comment.getUser().getImage() + "' class='avatar'>");
-                out.println("<div class='comment-info'>");
-                out.println("<strong class='comment-name'>" + comment.getUser().getName() + "</strong>");
-                out.println("<span class='comment-time'>" + comment.getCreateAt() + "</span>");
-                out.println("</div>");
+                out.println("<div class='comment-item' style='display: flex; align-items: flex-start; gap: 10px;'>");
+
+// Avatar bên trái
+                out.println("<div class='comment-avatar'>");
+                out.println("<img style='width:50px;height:50px;border-radius:50%;' src='/uploads/avatars/" + comment.getUser().getImage() + "' class='avatar'>");
                 out.println("</div>");
 
-                // Nội dung bình luận
-                out.println("<div class='comment-content'>" + comment.getContent() + "</div>");
+// Nội dung bình luận bên phải
+                out.println("<div class='comment-body' style='background: #f0f2f5; padding: 10px; border-radius: 10px; max-width: 85%;'>");
+
+// Tên và thời gian
+                out.println("<div class='comment-info' style='display: flex; align-items: center; gap: 8px; margin-bottom: 5px;'>");
+                out.println("<strong class='comment-name' style='color: #050505;'>" + comment.getUser().getName() + "</strong>");
+                out.println("<span class='comment-time' style='color: #65676b; font-size: 12px;'>" + comment.getCreateAt() + "</span>");
+                out.println("</div>");
+
+// Nội dung bình luận
+                out.println("<div class='comment-content' style='color: #050505;'>" + comment.getContent() + "</div>");
+
+// Đóng div comment-body
+                out.println("</div>");
+
+// Đóng div comment-item
+                out.println("</div>");
+
 
                 // Nếu bình luận có media (ảnh/video)
 //            if (comment.getMediaUrl() != null && !comment.getMediaUrl().isEmpty()) {
@@ -142,9 +160,9 @@ public class PostServlet extends HttpServlet {
 //            }
 
                 // Nút thích và phản hồi
-                out.println("<div class='comment-actions'>");
-                out.println("<button class='like-button' onclick='likeComment(" + comment.getCommentId() + ")'>Thích</button>");
-                out.println("<button class='reply-button' onclick='replyToComment(" + comment.getCommentId() + ")'>Phản hồi</button>");
+                out.println("<div class='comment-actions' style=\"display: flex; justify-content: start; padding-left: 70px;\">");
+                out.println("<a class='like-button' style=\"background-color: inherit; width: fit-content; margin-right: 20px; cursor: pointer;color: gray;\" onclick='likeComment(" + comment.getCommentId() + ")'>Thích</a>");
+                out.println("<a class='reply-button' style=\"background-color: inherit; width: fit-content; cursor: pointer;color: gray;\" onclick='replyToComment(" + comment.getCommentId() + ")'>Phản hồi</a>");
                 out.println("</div>");
 
                 out.println("</li>");
@@ -152,6 +170,21 @@ public class PostServlet extends HttpServlet {
 
             out.println("</ul>"); // Đóng danh sách bình luận
         }
+
+        // Khu vực nhập bình luận
+        out.println("<div class='comment-input-section' style='display: flex; align-items: center; padding: 10px; border-top: 1px solid lightgray;'>");
+
+// Avatar của người dùng hiện tại
+        out.println("<img src='/uploads/avatars/" + user.getImage() + "' style='width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;'>");
+
+// Ô nhập bình luận
+        out.println("<input id='comment-input-" + post.getPostId() + "' type='text' placeholder='Viết bình luận...' style='flex: 1; padding: 8px; border-radius: 20px; border: 1px solid #ddd;'>");
+
+// Nút gửi bình luận
+        out.println("<button onclick='submitComment(" + post.getPostId() + ")' style='margin-left: 10px; background: blue; color: white; padding: 5px 15px; border: none; border-radius: 10px; cursor: pointer;width:fit-content;'>Gửi</button>");
+
+        out.println("</div>");
+
 
         out.println("</div>"); // Đóng khu vực bình luận
         out.println("</div></div>"); // Đóng post-modal và modal-overlay
@@ -205,9 +238,7 @@ public class PostServlet extends HttpServlet {
 
     private void newPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
 
-        Collection<Part> fileParts = req.getParts().stream()
-                .filter(part -> (part.getName().startsWith("fileA") || part.getName().startsWith("fileB")) && part.getSize() > 0)
-                .collect(Collectors.toList());
+        Collection<Part> fileParts = req.getParts().stream().filter(part -> (part.getName().startsWith("fileA") || part.getName().startsWith("fileB")) && part.getSize() > 0).collect(Collectors.toList());
 
 
         String content = req.getParameter("content");

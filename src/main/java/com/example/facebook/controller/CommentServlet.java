@@ -2,8 +2,10 @@ package com.example.facebook.controller;
 
 import com.example.facebook.model.Comment;
 import com.example.facebook.model.Post;
+import com.example.facebook.model.User;
 import com.example.facebook.service.CommentDAO;
 import com.example.facebook.service.PostDAO;
+import com.example.facebook.service.UserDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,27 +16,49 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
-@WebServlet("/getPostComments")
+@WebServlet("/comments")
 public class CommentServlet extends HttpServlet {
     CommentDAO commentDAO = new CommentDAO();
     PostDAO postDAO = new PostDAO();
+    UserDAO userDAO = new UserDAO();
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int postId = Integer.parseInt(request.getParameter("postId"));
+
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
+
+        if (action == null) {
+            action = "";
+        }
 
         try {
-            Post post = postDAO.selectPostById(postId);
-            List<Comment> comments = commentDAO.selectAllComments(postId);
-            PrintWriter out = response.getWriter();
-            out.println("<p>" + post.getContent() + "</p>");
-            out.println("<h3>Bình luận</h3>");
-            for (Comment comment : comments) {
-                out.println("<div style='border-bottom: 1px solid #ddd; padding: 5px;'>");
-                out.println("<strong>" + comment.getUser().getName() + ":</strong> " + comment.getContent());
-                out.println("<p style='color: gray; font-size: 12px;'>" + comment.getCreateAt() + "</p>");
-                out.println("</div>");
+            switch (action) {
+                case "add":
+                    addComment(req, resp);
+                    break;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
+    }
+
+    private void addComment(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+        int postId = Integer.parseInt(req.getParameter("postId"));
+        String content = req.getParameter("content");
+        String userId = req.getSession().getAttribute("userId").toString(); // Lấy user từ session
+        User user = userDAO.selectUserById(Integer.parseInt(userId));
+
+        Comment newComment = new Comment();
+        newComment.setPostId(postId);
+        newComment.setUser(user);
+        newComment.setContent(content);
+        System.out.println(commentDAO.insertComment(newComment));
+
+        // Trả về JSON chứa thông tin bình luận mới
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8"); // Đảm bảo mã hóa UTF-8
+        resp.getWriter().write("{\"image\": \"" + user.getImage() + "\", \"name\": \"" + user.getName() + "\", \"content\": \"" + content + "\"}");
     }
 }
