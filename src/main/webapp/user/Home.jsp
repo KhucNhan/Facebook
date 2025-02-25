@@ -129,7 +129,7 @@
                                  style="border-radius: 50%;margin-top: -10px;margin-right: -20px;position: relative">
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/users?action=userUpdateInformation">Cập nhật thông tin
+                            <li><a  class="dropdown-item" href="/users?action=userUpdateInformation">Cập nhật thông tin
                                 cá nhân</a></li>
                             <li><a class="dropdown-item" href="/users?action=changePassword">Đổi mật khẩu</a></li>
                             <li>
@@ -146,7 +146,7 @@
 <div style="display: flex;height: 90%">
     <div class="left">
         <div class="leftIcon" style="justify-content: left">
-            <div>
+            <div onclick="loadProfileUser()">
                 <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
                      alt="User Icon" width="50" height="50" style="border-radius: 50%;">
             </div>
@@ -297,7 +297,7 @@
             <c:forEach items="${usersFriendShip}" var="user">
                 <a class="frend">
                     <div class="left_bottom">
-                        <div>
+                        <div >
                             <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
                                  alt="User Icon" width="50" height="50" style="border-radius: 50%;">
                         </div>
@@ -316,6 +316,13 @@
 
 
 <script>
+    function loadProfileUser(){
+        window.location.href = 'user/Profile.jsp';
+    }
+    function newPost() {
+        document.getElementById("iclusst").style.display = "block";
+    }
+
 
     document.addEventListener("DOMContentLoaded", function () {
 

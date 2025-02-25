@@ -258,4 +258,5 @@ public class UserServlet extends HttpServlet {
         req.setAttribute("user", user);
         req.getRequestDispatcher("admin/EditPost.jsp").forward(req, resp);
     }
+
 }
