@@ -125,7 +125,7 @@ public class PostServlet extends HttpServlet {
             out.println("<ul class='comments-list' style=\"list-style-type:none\">");
 
             for (Comment comment : comments) {
-                out.println("<li class='comment-item'>");
+                out.println("<li class='comment-item' style=\"margin-block:10px;\">");
 
                 // Ảnh đại diện và thông tin người bình luận
                 out.println("<div class='comment-item' style='display: flex; align-items: flex-start; gap: 10px;'>");
@@ -165,8 +165,8 @@ public class PostServlet extends HttpServlet {
 
                 // Nút thích và phản hồi
                 out.println("<div class='comment-actions' style=\"display: flex; justify-content: start; padding-left: 70px;\">");
-                out.println("<a class='like-button' style=\"background-color: inherit; width: fit-content; margin-right: 20px; cursor: pointer;color: gray;\" onclick='likeComment(" + comment.getCommentId() + ")'>Thích</a>");
-                out.println("<a class='reply-button' style=\"background-color: inherit; width: fit-content; cursor: pointer;color: gray;\" onclick='replyToComment(" + comment.getCommentId() + ")'>Phản hồi</a>");
+                out.println("<a class='like-button' style=\"text-decoration: none;background-color: inherit; width: fit-content; margin-right: 20px; cursor: pointer;color: gray;\" onclick='likeComment(" + comment.getCommentId() + ")'>Thích</a>");
+                out.println("<a class='reply-button' style=\"text-decoration: none;background-color: inherit; width: fit-content; cursor: pointer;color: gray;\" onclick='replyToComment(" + comment.getCommentId() + ")'>Phản hồi</a>");
                 out.println("</div>");
 
                 out.println("</li>");
@@ -210,12 +210,12 @@ public class PostServlet extends HttpServlet {
         }
     }
         
-    private void deletePostById(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void deletePostById(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         HttpSession session = req.getSession();
         int userId = (int) session.getAttribute("userId");
 
         int postId = Integer.parseInt(req.getParameter("postId"));
-        int userIdPost = postDAO.getPostId(postId);
+        int userIdPost = postDAO.selectPostById(postId).getUser().getUserId();
         if (userId == userIdPost){
             postDAO.deletePost(postId);
 
@@ -235,19 +235,16 @@ public class PostServlet extends HttpServlet {
     private void userEditPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         HttpSession session = req.getSession();
         int userId = (int) session.getAttribute("userId");
-
         int postId = Integer.parseInt(req.getParameter("postId"));
+        int userIdPost = postDAO.selectPostById(postId).getUser().getUserId();
 
-        int userIdPost = postDAO.getPostId(postId);
+
         if (userId == userIdPost){
-            Post post = postDAO.getInformationPostId(postId);
-
-            List<PostMedia> postMediaList = postDAO.getAllImageLinksPost(postId);
+            Post post = postDAO.selectPostById(postId);
 
             User user = userDAO.selectUserById(userId);
 
             req.setAttribute("user", user);
-            req.setAttribute("imageLinks",postMediaList);
             req.setAttribute("editPost", post);
             req.getRequestDispatcher("user/EditPost.jsp").forward(req,resp);
         }else {

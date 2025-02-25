@@ -70,7 +70,7 @@ public class HomeServlet extends HttpServlet {
             req.setAttribute("likedPosts", likedPosts);
             req.setAttribute("posts", posts);
             req.setAttribute("user", user);
-//            req.setAttribute("usersFriendShip",usersFriendShip);
+            req.setAttribute("usersFriendShip",usersFriendShip);
 
             req.getRequestDispatcher("/user/Home.jsp").forward(req, resp);
         }
