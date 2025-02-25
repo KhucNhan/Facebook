@@ -317,7 +317,7 @@
 
 <script>
     function loadProfileUser(){
-        window.location.href = 'user/Profile.jsp';
+        window.location.href = '/home?action=loadProfile';
     }
     function newPost() {
         document.getElementById("iclusst").style.display = "block";
@@ -412,11 +412,10 @@
 
             mediaElements.forEach(media => {
                 mediaList.push({
-                    url: media.dataset.url,
-                    type: media.dataset.type
+                    type: media.dataset.type,
+                    url: media.dataset.url
                 });
             });
-            console.log(mediaList);
             mediaArea.innerHTML = generateMediaLayout(mediaList);
         });
     });

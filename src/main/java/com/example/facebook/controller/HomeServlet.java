@@ -4,6 +4,7 @@ import com.example.facebook.model.Post;
 import com.example.facebook.model.User;
 
 //import com.example.facebook.service.FriendShip;
+import com.example.facebook.service.FriendShipDAO;
 import com.example.facebook.service.PostDAO;
 import com.example.facebook.service.UserDAO;
 
@@ -22,7 +23,7 @@ public class HomeServlet extends HttpServlet {
     UserDAO userDAO = new UserDAO();
     PostDAO postDAO = new PostDAO();
 
-//    FriendShip friendShip = new FriendShip();
+    FriendShipDAO friendShip = new FriendShipDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -34,6 +35,9 @@ public class HomeServlet extends HttpServlet {
 
         try {
             switch (action) {
+                case "loadProfile":
+                    interfaceProfile(req,resp);
+                    break;
                 default:
                     showHome(req, resp);
                     break;
@@ -41,6 +45,20 @@ public class HomeServlet extends HttpServlet {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void interfaceProfile(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
+        HttpSession session = req.getSession();
+        String userIdStr = session.getAttribute("userId").toString();
+        User user = userDAO.selectUserById(Integer.parseInt(userIdStr));
+
+        List<Post> posts = postDAO.selectPostsById(Integer.parseInt(userIdStr));
+
+        req.setAttribute("posts", posts);
+        req.setAttribute("user", user);
+
+        req.getRequestDispatcher("/user/Profile.jsp").forward(req, resp);
+
     }
 
     private void showHome(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
@@ -53,13 +71,13 @@ public class HomeServlet extends HttpServlet {
             req.setAttribute("users", users);
             req.getRequestDispatcher("/admin/Users.jsp").forward(req, resp);
         } else {
-//            List<User> usersFriendShip = friendShip.getAllFriendsAdded(Integer.parseInt(userIdStr));
+            List<User> usersFriendShip = friendShip.getAllFriendsAdded(Integer.parseInt(userIdStr));
             List<Post> posts = postDAO.selectAllPosts(Integer.parseInt(userIdStr));
 
 
             req.setAttribute("posts", posts);
             req.setAttribute("user", user);
-//            req.setAttribute("usersFriendShip",usersFriendShip);
+            req.setAttribute("usersFriendShip",usersFriendShip);
 
             req.getRequestDispatcher("/user/Home.jsp").forward(req, resp);
         }

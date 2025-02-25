@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface IPostDAO {
     List<Post> selectAllPosts(int userId) throws SQLException;
+    List<Post> selectPostsById(int userId) throws SQLException;
     int insertPost(Post post) throws SQLException;
 
     int getPostId(int post);
