@@ -19,6 +19,7 @@
     </script>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function showError(message) {
@@ -43,14 +44,13 @@
 
     <title>Facebook</title>
 </head>
-<body>
-
+<body style="align-content: center">
 <div id="iclusst" style="display: none;">
     <div id="popup-content" style="width: 30%;margin-left: 1%;margin-top:1%;background: white; border-radius: 10px;">
         <jsp:include page="NewPost.jsp"/>
     </div>
 </div>
-<div class="menu">
+<div class="menu" style="position: fixed; top: 0; width: 100%">
     <%
         String errorMessage = (String) request.getAttribute("errorMessage");
         if (errorMessage != null) {
@@ -74,7 +74,6 @@
             session.removeAttribute("successMessage");
         }
     %>
-
     <!-- Logo Facebook -->
     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="45" fill="currentColor" class="bi bi-facebook"
          viewBox="0 0 16 16" style="color: #0866ff; margin-right: 20px;">
@@ -92,7 +91,7 @@
 
     <div class="menuCenter">
         <div class="home">
-            <svg onclick="loadHome()" xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="silver"
+            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="silver"
                  class="bi bi-house-door-fill iconHome" viewBox="0 0 16 16">
                 <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5"/>
             </svg>
@@ -130,8 +129,7 @@
                                  style="border-radius: 50%;margin-top: -10px;margin-right: -20px;position: relative">
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a  class="dropdown-item" href="/users?action=userUpdateInformation">Cập nhật thông tin
-                                cá nhân</a></li>
+                            <li><a class="dropdown-item" href="/users?action=userUpdateInformation">Cập nhật thông tin cá nhân</a></li>
                             <li><a class="dropdown-item" href="/users?action=changePassword">Đổi mật khẩu</a></li>
                             <li>
                                 <hr class="dropdown-divider">
@@ -144,10 +142,10 @@
         </div>
     </div>
 </div>
-<div style="display: flex;height: 90%">
+<div style="display: flex;height: 90%; position: fixed; top:70px;">
     <div class="left">
         <div class="leftIcon" style="justify-content: left">
-            <div onclick="loadProfileUser()">
+            <div>
                 <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
                      alt="User Icon" width="50" height="50" style="border-radius: 50%;">
             </div>
@@ -187,15 +185,14 @@
                          alt="User Icon" width="60" height="60" style="border-radius: 50%">
                 </div>
                 <div class="addPostInput" style="width: 100%">
-                    <input type="button" style="text-align: left;padding-left: 15px" id="postInput" onclick="newPost()"
-                           value="Bạn đang nghĩ gì thế?">
+                    <input  type="button" style="text-align: left;padding-left: 15px" id="postInput" onclick="newPost()" value="Bạn đang nghĩ gì thế?" >
                 </div>
             </div>
         </form>
 
         <div class="post-container">
             <c:forEach items="${posts}" var="post">
-                <div class="post-card" data-post-id="${post.getPostId()}" onclick="showPostPopup('${post.getPostId()}')">
+                <div class="post-card" data-post-id="${post.getPostId()}">
                     <div class="introduce" style="display: flex; justify-content: space-between">
                         <div style="display: flex">
                             <img src="${pageContext.request.contextPath}/uploads/avatars/${post.user.image}"
@@ -223,7 +220,7 @@
                                                 <h1></h1>
                                                 <li><a class="dropdown-item" href="/posts?action=userEditPost&postId=${post.getPostId()}">Sửa bài viết</a></li>
                                                 <li><a class="dropdown-item delete-link" href="/posts?action=deletePost&&postId=${post.getPostId()}">Xóa</a>
-                                        </li>
+                                                </li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -239,10 +236,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="content">
+                    <div class="content" onclick="showPostPopup('${post.getPostId()}')">
                         <p>${post.content}</p>
                     </div>
-                    <div class="media-area">
+                    <div class="media-area" onclick="showPostPopup('${post.getPostId()}')">
                         <c:forEach items="${post.mediaUrls}" var="media">
                             <div style="height: fit-content" class="media" data-url="${media.url}"
                                  data-type="${media.type}"></div>
@@ -257,7 +254,7 @@
                             </svg>
                             <span>${post.totalEmotions}</span>
                         </a>
-                        <a>
+                        <a onclick="showPostPopup('${post.getPostId()}')">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor"
                                  class="bi bi-chat" viewBox="0 0 10 20">
                                 <path d="M2.678 11.894a1 1 0 0 1 .287.801 11 11 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8 8 0 0 0 8 14c3.996 0 7-2.807 7-6s-3.004-6-7-6-7 2.808-7 6c0 1.468.617 2.83 1.678 3.894m-.493 3.905a22 22 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a10 10 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9 9 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105"/>
@@ -297,7 +294,7 @@
             <c:forEach items="${usersFriendShip}" var="user">
                 <a class="frend">
                     <div class="left_bottom">
-                        <div >
+                        <div>
                             <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
                                  alt="User Icon" width="50" height="50" style="border-radius: 50%;">
                         </div>
@@ -318,36 +315,6 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-    function loadProfileUser(){
-        window.location.href = 'user/Profile.jsp';
-    }
-    function newPost() {
-        document.getElementById("iclusst").style.display = "block";
-    }
-
-
-    document.addEventListener("DOMContentLoaded", function () {
-
-        document.querySelector(".delete-link").addEventListener("click", function (event) {
-            event.preventDefault();
-
-            let deleteUrl = this.href; // Lưu link xóa
-
-            Swal.fire({
-                title: "Bạn có chắc chắn muốn xóa bài viết?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Có, xóa ngay!",
-                cancelButtonText: "Hủy",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = deleteUrl;
-                }
-            });
-        });
-
-
-
         const iclusst = document.getElementById("iclusst");
         const popupContent = document.getElementById("popup-content");
 
@@ -375,10 +342,6 @@
 
     function confirmLogout() {
         window.location.href = '/login?action=logout';
-    }
-
-    function loadHome(){
-        window.location.href = '/home';
     }
 
     function showSearchInput() {
@@ -522,8 +485,6 @@
             }
         });
     }
-
-
 </script>
 <style>
     /* Overlay che mờ nền */
