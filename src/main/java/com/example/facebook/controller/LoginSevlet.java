@@ -1,6 +1,7 @@
 package com.example.facebook.controller;
 
 import com.example.facebook.ConnectDatabase;
+import com.example.facebook.service.LikeDAO;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

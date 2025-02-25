@@ -4,10 +4,7 @@ import com.example.facebook.model.Comment;
 import com.example.facebook.model.Post;
 import com.example.facebook.model.PostMedia;
 import com.example.facebook.model.User;
-import com.example.facebook.service.CommentDAO;
-import com.example.facebook.service.MediaDAO;
-import com.example.facebook.service.PostDAO;
-import com.example.facebook.service.UserDAO;
+import com.example.facebook.service.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -31,6 +28,7 @@ public class PostServlet extends HttpServlet {
     private static final String UPLOAD_DIR = "uploads";
     PostDAO postDAO = new PostDAO();
     UserDAO userDAO = new UserDAO();
+    LikeDAO likeDAO = new LikeDAO();
     CommentDAO commentDAO = new CommentDAO();
     MediaDAO mediaDAO = new MediaDAO();
 
@@ -285,11 +283,37 @@ public class PostServlet extends HttpServlet {
                 case "updatePost":
                     updatePost(req,resp);
                     break;
+                case "likePost":
+                    likePost(req,resp);
+                    break;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
+    private void likePost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        HttpSession session = req.getSession();
+        int userIdStr = (int) session.getAttribute("userId");
+
+        int postId = Integer.parseInt(req.getParameter("postId"));
+
+
+        boolean checkLike = likeDAO.checkLikePost(userIdStr,postId);
+
+        if (checkLike){
+            likeDAO.deleteLikePost(userIdStr,postId);
+        }else {
+            likeDAO.addLikeToPost(postId,userIdStr);
+        }
+
+        int totalLikes = likeDAO.getTotalLikePost(postId);
+
+        resp.setContentType("application/json");
+        resp.getWriter().write("{\"success\": true, \"totalLikes\": " + totalLikes + "}");
+    }
+
+
     private void updatePost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
 
         int postId = Integer.parseInt(req.getParameter("postId"));
