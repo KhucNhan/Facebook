@@ -349,6 +349,24 @@
         const includeNewPost = document.getElementById("includeNewPost");
         const popupContent = document.getElementById("popup-content");
 
+        document.querySelector(".delete-link").addEventListener("click", function (event) {
+            event.preventDefault();
+
+            let deleteUrl = this.href; // Lưu link xóa
+
+            Swal.fire({
+                title: "Bạn có chắc chắn muốn xóa bài viết?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Có, xóa ngay!",
+                cancelButtonText: "Hủy",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = deleteUrl;
+                }
+            });
+        });
+
         // Hiển thị popup
         function newPost() {
             includeNewPost.style.display = "flex";
