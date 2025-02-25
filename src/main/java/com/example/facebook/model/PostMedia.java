@@ -9,11 +9,11 @@ public class PostMedia {
     public PostMedia(){
 
     }
-    public PostMedia(int postMediaId, int postId, String url, String type){
+    public PostMedia(int postMediaId, int postId, String type, String url){
         this.postMediaId = postMediaId;
         this.postId = postId;
-        this.url = url;
         this.type = type;
+        this.url = url;
     }
 
     public int getPostMediaId() {

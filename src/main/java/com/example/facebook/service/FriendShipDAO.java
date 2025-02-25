@@ -21,11 +21,13 @@ public class FriendShipDAO implements IFriendShipDAO {
             "AND users.userId != ?";
 
     @Override
+
     public List<User> getAllFriendsAdded(int userId) throws SQLException {
         List<User> usersFriendShip = new ArrayList<>();
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(getAllFriendsAdded);
+
             preparedStatement.setInt(1, userId);
             preparedStatement.setInt(2, userId);
             preparedStatement.setInt(3, userId);
