@@ -1,0 +1,97 @@
+
+.menuRight div:hover svg {
+    fill: #0866ff;
+}
+
+.menuRight {
+    display: flex;
+    gap: 20px;
+    padding: 30px;
+    height: 100%;
+    align-items: center;
+    fill: silver;
+}
+
+.menuCenter div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+    padding: 20px;
+}
+
+.menuCenter div:hover svg,
+.menuCenter div:hover svg {
+    fill: #0866ff;
+}
+
+.menuCenter div:hover::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #0866ff;
+    transition: width 0.3s ease;
+}
+
+.menuCenter {
+    width: 20%;
+    margin: auto;
+    gap: 5px;
+    display: flex;
+    height: 100%;
+    align-items: center;
+}
+
+.menu {
+    width: 100%;
+    height: 70px;
+    border: 0 solid silver;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.iconFacebook {
+    position: absolute;
+    left: 20px;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.search {
+    width: 250px;
+    height: 50px;
+    padding-left: 65px;
+    font-family: inherit;
+    border-radius: 37px;
+    border: 0;
+    background: #ececec;
+    transition: all 0.3s ease-in-out;
+}
+
+.search:focus {
+    width: 250px;
+    padding-left: 20px;
+    outline: none;
+}
+
+.search:focus + .iconFacebook {
+    opacity: 0;
+}
+
+.center {
+    width: 60%;
+    padding: 20px 60px;
+}
+
+

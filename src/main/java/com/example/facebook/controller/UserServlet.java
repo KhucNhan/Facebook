@@ -64,14 +64,14 @@ public class UserServlet extends HttpServlet {
         String userIdStr = session.getAttribute("userId").toString();
         User user = userDAO.selectUserById(Integer.parseInt(userIdStr));
         req.setAttribute("user", user);
-        req.getRequestDispatcher("user/Edit.jsp").forward(req, resp);
+        req.getRequestDispatcher("user/EditPost.jsp").forward(req, resp);
     }
 
     private void showUpdateUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
         String userIdStr = req.getParameter("userId");
         User user = userDAO.selectUserById(Integer.parseInt(userIdStr));
         req.setAttribute("user", user);
-        req.getRequestDispatcher("admin/Edit.jsp").forward(req, resp);
+        req.getRequestDispatcher("admin/EditPost.jsp").forward(req, resp);
     }
 
     private void showUserList(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
@@ -164,7 +164,7 @@ public class UserServlet extends HttpServlet {
         boolean status = userDAO.updateUser(user, Integer.parseInt(userIdStr));
         if (status) req.setAttribute("status", "success");
         req.setAttribute("user", user);
-        req.getRequestDispatcher("user/Edit.jsp").forward(req, resp);
+        req.getRequestDispatcher("user/EditPost.jsp").forward(req, resp);
     }
 
     private void changeUserStatus(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
@@ -256,6 +256,7 @@ public class UserServlet extends HttpServlet {
         boolean status = userDAO.updateUser(user, Integer.parseInt(userId));
         if (status) req.setAttribute("status", "success");
         req.setAttribute("user", user);
-        req.getRequestDispatcher("admin/Edit.jsp").forward(req, resp);
+        req.getRequestDispatcher("admin/EditPost.jsp").forward(req, resp);
     }
+
 }
