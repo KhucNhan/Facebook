@@ -1,6 +1,8 @@
 package com.example.facebook.controller;
 
+import com.example.facebook.model.Post;
 import com.example.facebook.model.User;
+import com.example.facebook.service.PostDAO;
 import com.example.facebook.service.UserDAO;
 
 import javax.servlet.ServletException;
@@ -25,6 +27,7 @@ import java.util.List;
 )
 public class UserServlet extends HttpServlet {
     UserDAO userDAO = new UserDAO();
+    PostDAO postDAO = new PostDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -50,6 +53,9 @@ public class UserServlet extends HttpServlet {
                 case "changePassword":
                     req.getRequestDispatcher("user/ChangePassword.jsp").forward(req, resp);
                     break;
+                case "myProfile":
+                    showMyProfile(req, resp);
+                    break;
                 default:
                     showUserList(req, resp);
                     break;
@@ -59,12 +65,24 @@ public class UserServlet extends HttpServlet {
         }
     }
 
+    private void showMyProfile(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
+        HttpSession session = req.getSession();
+        String userIdStr = session.getAttribute("userId").toString();
+        User user = userDAO.selectUserById(Integer.parseInt(userIdStr));
+        req.setAttribute("user", user);
+
+        List<Post> myPosts = postDAO.selectPostsByUserId(user.getUserId());
+        req.setAttribute("user", user);
+        req.setAttribute("posts", myPosts);
+        req.getRequestDispatcher("user/Profile.jsp").forward(req, resp);
+    }
+
     private void showUserUpdateInformation(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
         HttpSession session = req.getSession();
         String userIdStr = session.getAttribute("userId").toString();
         User user = userDAO.selectUserById(Integer.parseInt(userIdStr));
         req.setAttribute("user", user);
-        req.getRequestDispatcher("user/EditPost.jsp").forward(req, resp);
+        req.getRequestDispatcher("user/Edit.jsp").forward(req, resp);
     }
 
     private void showUpdateUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {

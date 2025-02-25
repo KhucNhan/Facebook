@@ -27,11 +27,6 @@
 </head>
 <body>
 
-<%
-    User user = (User) request.getAttribute("user");
-    Post editPost = (Post) request.getAttribute("editPost");
-%>
-
 <div>
     <div>
         <jsp:include page="Nav3.jsp"/>
@@ -41,7 +36,7 @@
     <div class="all">
         <form action="posts?action=updatePost" method="post" enctype="multipart/form-data">
             <!-- Header section -->
-            <input type="hidden" name="postId" value="<%= editPost.getPostId() %>">
+            <input type="hidden" name="postId" value="${editPost.postId}">
 
             <div class="top_nav">
                 <div style="font-size: 2em; text-align: center; border-bottom: 1px solid black">
@@ -57,15 +52,15 @@
                         <select onchange="checkPostStatus()" class="form-select form-select-sm mt-1 select"
                                 name="privacy" id="privacySelect"
                                 style="padding-right: 0px">
-                            <option value="Public" <%= "Public".equals(editPost.getPrivacy()) ? "selected" : "" %> >🌍
+                            <option value="Public" ${"Public" == editPost.privacy ? "selected" : ""} >🌍
                                 Công
                                 khai
                             </option>
-                            <option value="Private" <%= "Private".equals(editPost.getPrivacy()) ? "selected" : "" %>>🔒
+                            <option value="Private" ${"Private" == editPost.privacy ? "selected" : ""}>🔒
                                 Chỉ
                                 mình tôi
                             </option>
-                            <option value="Friends" <%= "Friends".equals(editPost.getPrivacy()) ? "selected" : "" %>>👥
+                            <option value="Friends" ${"Friends" == editPost.privacy ? "selected" : ""}>👥
                                 Bạn
                                 của bạn bè
                             </option>
@@ -74,7 +69,7 @@
                 </div>
                 <div class="text">
                 <textarea style="width: 410px" id="postInput" name="content"
-                          oninput="checkPostStatus()"><%=editPost.getContent()%></textarea>
+                          oninput="checkPostStatus()">${editPost.content}</textarea>
                 </div>
             </div>
             <div>
@@ -95,8 +90,8 @@
                                 name="deleteAllImages" class="delete-button" onclick="clearImages(event)">Xóa ảnh
                         </button>
                     </div>
-                    <c:forEach var="media" items="${imageLinks}">
-                        <img src="${pageContext.request.contextPath}/uploads/postMedias/${media.type}"
+                    <c:forEach var="media" items="${editPost.mediaUrls}">
+                        <img src="${pageContext.request.contextPath}/uploads/postMedias/${media.url}"
                              width="100" alt="Ảnh bài viết">
                     </c:forEach>
                 </div>

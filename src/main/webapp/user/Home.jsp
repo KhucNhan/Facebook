@@ -9,17 +9,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <link rel="stylesheet" href="/css/Nav3.css">
+    <link rel="stylesheet" href="/css/Post.css">
+    <link rel="stylesheet" href="/css/PostModal.css.css">
+    <script src="/js/PostMedia.js.js"></script>
+    <script src="/js/PostModal.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous">
-
     </script>
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function showError(message) {
@@ -27,16 +29,17 @@
                 icon: "error",
                 title: "Lỗi!",
                 text: message,
-                timer:1500,
+                timer: 1500,
                 showConfirmButton: false
             });
         }
+
         function showSuccess(message) {
             Swal.fire({
                 title: message,
                 icon: "success",
                 draggable: true,
-                timer:1500,
+                timer: 1500,
                 showConfirmButton: false
             });
         }
@@ -44,13 +47,13 @@
 
     <title>Facebook</title>
 </head>
-<body style="align-content: center">
-<div id="iclusst" style="display: none;">
+<body>
+<div id="includeNewPost" style="display: none;">
     <div id="popup-content" style="width: 30%;margin-left: 1%;margin-top:1%;background: white; border-radius: 10px;">
         <jsp:include page="NewPost.jsp"/>
     </div>
 </div>
-<div class="menu" style="position: fixed; top: 0; width: 100%">
+<div class="menu">
     <%
         String errorMessage = (String) request.getAttribute("errorMessage");
         if (errorMessage != null) {
@@ -129,7 +132,8 @@
                                  style="border-radius: 50%;margin-top: -10px;margin-right: -20px;position: relative">
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/users?action=userUpdateInformation">Cập nhật thông tin cá nhân</a></li>
+                            <li><a class="dropdown-item" href="/users?action=userUpdateInformation">Cập nhật thông tin
+                                cá nhân</a></li>
                             <li><a class="dropdown-item" href="/users?action=changePassword">Đổi mật khẩu</a></li>
                             <li>
                                 <hr class="dropdown-divider">
@@ -142,9 +146,9 @@
         </div>
     </div>
 </div>
-<div style="display: flex;height: 90%; position: fixed; top:70px;">
+<div style="display: flex;height: 90%;">
     <div class="left">
-        <div class="leftIcon" style="justify-content: left">
+        <div class="leftIcon" style="justify-content: left" onclick="goToMyProfile()">
             <div>
                 <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
                      alt="User Icon" width="50" height="50" style="border-radius: 50%;">
@@ -185,7 +189,8 @@
                          alt="User Icon" width="60" height="60" style="border-radius: 50%">
                 </div>
                 <div class="addPostInput" style="width: 100%">
-                    <input  type="button" style="text-align: left;padding-left: 15px" id="postInput" onclick="newPost()" value="Bạn đang nghĩ gì thế?" >
+                    <input type="button" style="text-align: left;padding-left: 15px" id="postInput" onclick="newPost()"
+                           value="Bạn đang nghĩ gì thế?">
                 </div>
             </div>
         </form>
@@ -211,16 +216,33 @@
                                 <div>
                                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                         <li class="nav-item dropdown">
-                                            <a style="margin-top: -10px;font-size: 20px;width: 20px;overflow: hidden;" class="nav-link dropdown-toggle" href="#" role="button"
+                                            <a style="margin-top: -10px;font-size: 20px;width: 20px;overflow: hidden;"
+                                               class="nav-link dropdown-toggle" href="#" role="button"
                                                data-bs-toggle="dropdown"
                                                aria-expanded="false">
                                                 ...
                                             </a>
                                             <ul class="dropdown-menu">
                                                 <h1></h1>
-                                                <li><a class="dropdown-item" href="/posts?action=userEditPost&postId=${post.getPostId()}">Sửa bài viết</a></li>
-                                                <li><a class="dropdown-item delete-link" href="/posts?action=deletePost&&postId=${post.getPostId()}">Xóa</a>
-                                                </li>
+                                                <c:if test="${post.user.userId == user.userId}">
+                                                    <li><a class="dropdown-item"
+                                                           href="/posts?action=userEditPost&postId=${post.getPostId()}">Sửa
+                                                        bài viết</a></li>
+                                                </c:if>
+                                                <c:if test="${post.user.userId == user.userId}">
+                                                    <li>
+                                                        <a class="dropdown-item delete-link"
+                                                           href="/posts?action=deletePost&&postId=${post.getPostId()}">Xóa
+                                                        </a>
+                                                    </li>
+                                                </c:if>
+                                                <c:if test="${post.user.userId != user.userId}">
+                                                    <li>
+                                                        <a class="dropdown-item delete-link"
+                                                           href="/posts?action=report&&postId=${post.getPostId()}">Báo cáo bài viết
+                                                        </a>
+                                                    </li>
+                                                </c:if>
                                             </ul>
                                         </li>
                                     </ul>
@@ -292,7 +314,7 @@
         </div>
         <div>
             <c:forEach items="${usersFriendShip}" var="user">
-                <a class="frend">
+                <a class="friends">
                     <div class="left_bottom">
                         <div>
                             <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
@@ -314,22 +336,26 @@
 
 
 <script>
+    function goToMyProfile() {
+        window.location.href = "/users?action=myProfile";
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
-        const iclusst = document.getElementById("iclusst");
+        const includeNewPost = document.getElementById("includeNewPost");
         const popupContent = document.getElementById("popup-content");
 
         // Hiển thị popup
         function newPost() {
-            iclusst.style.display = "flex";
+            includeNewPost.style.display = "flex";
         }
 
         // Ẩn popup
         function hidePopup() {
-            iclusst.style.display = "none";
+            includeNewPost.style.display = "none";
         }
 
         // Ẩn popup khi click bên ngoài popup-content
-        iclusst.addEventListener("click", function (event) {
+        includeNewPost.addEventListener("click", function (event) {
             if (!popupContent.contains(event.target)) {
                 hidePopup();
             }
@@ -423,98 +449,10 @@
         return "";
     }
 
-    function showPostPopup(postId) {
-        fetch("/posts?action=postModal&postId=" + postId)
-            .then(response => response.text())
-            .then(html => {
-                let modalContainer = document.createElement("div");
-                modalContainer.classList.add("modal-overlay");
-                modalContainer.innerHTML = html;
-                document.body.appendChild(modalContainer);
-            })
-            .catch(error => console.error("Lỗi khi tải bài viết:", error));
-    }
-
-    function closePostModal() {
-        let modal = document.querySelector(".modal-overlay");
-        if (modal) modal.remove();
-    }
-
-    function submitComment(postId) {
-        let inputField = document.getElementById("comment-input-" + postId);
-        let commentText = inputField.value.trim();
-
-        if (commentText === "") {
-            alert("Vui lòng nhập bình luận!");
-            return;
-        }
-
-        $.ajax({
-            url: "/comments?action=add",
-            type: "POST",
-            data: { postId: postId, content: commentText },
-            success: function(response) {
-                let commentsList = document.querySelector(".comments-list");
-                let newComment = document.createElement("li");
-                newComment.className = "comment-item";
-                newComment.innerHTML = `
-        <div class='comment-item' style='display: flex; align-items: flex-start; gap: 10px;'>
-            <div class='comment-avatar'>
-                <img style='width:50px;height:50px;border-radius:50%;' src='/uploads/avatars/` + response.image + `' class='avatar'>
-            </div>
-            <div class='comment-body' style='background: #f0f2f5; padding: 10px; border-radius: 10px; max-width: 85%;'>
-                <div class='comment-info' style='display: flex; align-items: center; gap: 8px; margin-bottom: 5px;'>
-                    <strong class='comment-name' style='color: #050505;'>` + response.name + `</strong>
-                    <span class='comment-time' style='color: #65676b; font-size: 12px;'>Vừa xong</span>
-                </div>
-                <div class='comment-content' style='color: #050505;'>` + response.content + `</div>
-            </div>
-        </div>
-        <div class='comment-actions' style='display: flex; justify-content: start; padding-left: 70px;'>
-                 <a class='like-button' style='background-color: inherit; width: fit-content; margin-right: 20px; cursor: pointer; color: grey;' onclick='likeComment(` + response.commentId + `)'>Thích</a>
-                 <a class='reply-button' style='background-color: inherit; width: fit-content; cursor: pointer; color: grey;' onclick='replyToComment(` + response.commentId + `)'>Phản hồi</a>
-        </div>
-    `;
-
-                commentsList.appendChild(newComment);
-                inputField.value = ""; // Xóa nội dung input sau khi gửi
-            },
-
-            error: function() {
-                alert("Có lỗi xảy ra, vui lòng thử lại!");
-            }
-        });
-    }
 </script>
 <style>
-    /* Overlay che mờ nền */
-    .modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5); /* Màu nền đen mờ */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-    }
 
-    /* Căn giữa modal */
-    .post-modal {
-        background: white;
-        width: 794px;
-        max-height: 80vh; /* Giới hạn chiều cao modal */
-        overflow-y: auto; /* Kích hoạt cuộn dọc */
-        border-radius: 10px;
-        padding: 10px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-        z-index: 1001;
-    }
-
-
-    #iclusst {
+    #includeNewPost {
         display: none; /* Mặc định ẩn */
         position: fixed;
         top: 50%;
@@ -530,7 +468,7 @@
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     }
 
-    #iclusst .content {
+    #includeNewPost .content {
         background: white;
         padding: 20px;
         border-radius: 10px;
@@ -540,11 +478,11 @@
     }
 
 
-    .frend:hover {
+    .friends:hover {
         background: #ececec;
     }
 
-    .frend {
+    .friends {
         color: black;
         display: block;
     }
@@ -619,175 +557,9 @@
         display: block;
     }
 
-    .menuRight div:hover svg {
-        fill: #0866ff;
-    }
-
-    .menuRight {
-        display: flex;
-        gap: 20px;
-        padding: 30px;
-        height: 100%;
-        align-items: center;
-        fill: silver;
-    }
-
-    .menuCenter div {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        cursor: pointer;
-        padding: 20px;
-    }
-
-    .menuCenter div:hover svg,
-    .menuCenter div:hover svg {
-        fill: #0866ff;
-    }
-
-    .menuCenter div:hover::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 3px;
-        background-color: #0866ff;
-        transition: width 0.3s ease;
-    }
-
-    .menuCenter {
-        width: 20%;
-        margin: auto;
-        gap: 5px;
-        display: flex;
-        height: 100%;
-        align-items: center;
-    }
-
-    .menu {
-        width: 100%;
-        height: 70px;
-        border: 0 solid silver;
-        display: flex;
-        align-items: center;
-        padding: 0 20px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .search-container {
-        position: relative;
-        display: flex;
-        align-items: center;
-    }
-
-    .iconFacebook {
-        position: absolute;
-        left: 20px;
-        transition: opacity 0.3s ease-in-out;
-    }
-
-    .search {
-        width: 250px;
-        height: 50px;
-        padding-left: 65px;
-        font-family: inherit;
-        border-radius: 37px;
-        border: 0;
-        background: #ececec;
-        transition: all 0.3s ease-in-out;
-    }
-
-    .search:focus {
-        width: 250px;
-        padding-left: 20px;
-        outline: none;
-    }
-
-    .search:focus + .iconFacebook {
-        opacity: 0;
-    }
-
     .center {
         width: 60%;
         padding: 20px 60px;
-    }
-
-    .post-card {
-        padding: 10px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    }
-
-    .media-area {
-        display: grid;
-        gap: 5px;
-        width: 100%;
-        height: fit-content;
-        position: relative;
-    }
-
-    .media-grid {
-        display: grid;
-        gap: 5px;
-        width: 100%;
-        max-width: 100%;
-        max-height: fit-content;
-        overflow: hidden;
-        grid-template-columns: repeat(2, 1fr);
-        grid-auto-rows: auto;
-        position: relative;
-    }
-
-    .media {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 10px;
-    }
-
-    .full {
-        grid-column: span 2;
-        grid-row: span 2;
-    }
-
-    .half {
-        grid-column: span 1;
-        grid-row: span 2;
-    }
-
-    .large-left {
-        grid-column: span 1;
-        grid-row: span 2;
-    }
-
-    .small-right-top {
-        grid-column: span 1;
-        grid-row: span 1;
-    }
-
-    .small-right-bottom {
-        grid-column: span 1;
-        grid-row: span 1;
-    }
-
-    .quarter {
-        grid-column: span 1;
-        grid-row: span 1;
-    }
-
-    /* ---- Extra Media Count ---- */
-    .extra {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: rgba(0, 0, 0, 0.6);
-        color: white;
-        font-size: 20px;
-        font-weight: bold;
-        border-radius: 10px;
     }
 
 </style>
