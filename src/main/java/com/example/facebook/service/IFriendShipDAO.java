@@ -6,5 +6,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface IFriendShipDAO {
-    List<User> getAllFriendsAdded(int friendShipId) throws SQLException;
+    List<User> getAllFriendsAdded(int userId) throws SQLException;
+    List<User> getAllFriendsRequest(int userId) throws SQLException;
 }

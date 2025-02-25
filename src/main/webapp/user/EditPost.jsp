@@ -96,11 +96,9 @@
                         </button>
                     </div>
                     <c:forEach var="media" items="${imageLinks}">
-                        <img src="${pageContext.request.contextPath}/uploads/postMedias/${media.url}"
+                        <img src="${pageContext.request.contextPath}/uploads/postMedias/${media.type}"
                              width="100" alt="Ảnh bài viết">
                     </c:forEach>
-
-
                 </div>
             </div>
 
