@@ -18,17 +18,61 @@
     </script>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function showError(message) {
+            Swal.fire({
+                icon: "error",
+                title: "Lỗi!",
+                text: message,
+                timer:1500,
+                showConfirmButton: false
+            });
+        }
+        function showSuccess(message) {
+            Swal.fire({
+                title: message,
+                icon: "success",
+                draggable: true,
+                timer:1500,
+                showConfirmButton: false
+            });
+        }
+    </script>
 
     <title>Facebook</title>
 </head>
 <body>
+
 <div id="iclusst" style="display: none;">
     <div id="popup-content" style="width: 30%;margin-left: 1%;margin-top:1%;background: white; border-radius: 10px;">
         <jsp:include page="NewPost.jsp"/>
     </div>
 </div>
 <div class="menu">
+    <%
+        String errorMessage = (String) request.getAttribute("errorMessage");
+        if (errorMessage != null) {
+    %>
+    <script>
+        showError("<%= errorMessage.replace("\"", "\\\"").replace("\n", "\\n") %>");
+    </script>
+
+    <%
+        }
+
+        HttpSession session1 = request.getSession();
+        String successMessage = (String) session1.getAttribute("successMessage");
+        if (successMessage != null) {
+            session1.removeAttribute("successMessage");
+    %>
+    <script>
+        showSuccess("<%= successMessage.replace("\"", "\\\"").replace("\n", "\\n") %>");
+    </script>
+    <%
+            session.removeAttribute("successMessage");
+        }
+    %>
 
     <!-- Logo Facebook -->
     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="45" fill="currentColor" class="bi bi-facebook"
@@ -47,7 +91,7 @@
 
     <div class="menuCenter">
         <div class="home">
-            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="silver"
+            <svg onclick="loadHome()" xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="silver"
                  class="bi bi-house-door-fill iconHome" viewBox="0 0 16 16">
                 <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5"/>
             </svg>
@@ -177,7 +221,7 @@
                                             <ul class="dropdown-menu">
                                                 <h1></h1>
                                                 <li><a class="dropdown-item" href="/posts?action=userEditPost&postId=${post.getPostId()}">Sửa bài viết</a></li>
-<%--                                                <li><a class="dropdown-item" href="/users?action=changePassword">Xóa</a>--%>
+                                                <li><a class="dropdown-item delete-link" href="/posts?action=deletePost&&postId=${post.getPostId()}">Xóa</a>
                                         </li>
                                             </ul>
                                         </li>
@@ -281,6 +325,27 @@
 
 
     document.addEventListener("DOMContentLoaded", function () {
+
+        document.querySelector(".delete-link").addEventListener("click", function (event) {
+            event.preventDefault();
+
+            let deleteUrl = this.href; // Lưu link xóa
+
+            Swal.fire({
+                title: "Bạn có chắc chắn muốn xóa bài viết?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Có, xóa ngay!",
+                cancelButtonText: "Hủy",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = deleteUrl;
+                }
+            });
+        });
+
+
+
         const iclusst = document.getElementById("iclusst");
         const popupContent = document.getElementById("popup-content");
 
@@ -308,6 +373,10 @@
 
     function confirmLogout() {
         window.location.href = '/login?action=logout';
+    }
+
+    function loadHome(){
+        window.location.href = '/home';
     }
 
     function showSearchInput() {

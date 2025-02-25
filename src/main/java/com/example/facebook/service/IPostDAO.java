@@ -17,4 +17,8 @@ public interface IPostDAO {
 
     List<PostMedia> getAllImageLinksPost(int post);
 
+    boolean updatePost(int post,String content,String privacy);
+
+    boolean deletePost(int postID);
+
 }

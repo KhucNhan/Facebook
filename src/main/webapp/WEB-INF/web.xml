@@ -5,5 +5,6 @@
          version="4.0">
     <welcome-file-list>
         <welcome-file>user/Profile.jsp</welcome-file>
+
     </welcome-file-list>
 </web-app>
