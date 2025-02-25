@@ -11,8 +11,7 @@
 <head>
     <link rel="stylesheet" href="/css/Nav3.css">
     <link rel="stylesheet" href="/css/Post.css">
-    <link rel="stylesheet" href="/css/PostModal.css.css">
-    <script src="/js/PostMedia.js.js"></script>
+    <link rel="stylesheet" href="/css/PostModal.css">
     <script src="/js/PostModal.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
