@@ -209,6 +209,9 @@ public class PostServlet extends HttpServlet {
                 return new String[]{"quarter", "quarter", "quarter", "quarter"};
             default:
                 return new String[]{"large-left", "small-right-top", "small-right-bottom", "extra"};
+        }
+    }
+        
     private void deletePostById(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         int userId = (int) session.getAttribute("userId");
