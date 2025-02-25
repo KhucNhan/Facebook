@@ -24,7 +24,14 @@
   <div class="container">
       <div class="row">
           <div class="col-md-2">
-
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <a href="">Lời mời kết bạn</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="">Tất cả bạn bè</a>
+                    </li>
+                </ul>
           </div>
           <div class="col-md-10">
 
