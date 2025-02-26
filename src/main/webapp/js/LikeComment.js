@@ -7,7 +7,7 @@ function toggleLike(commentId) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                let likeButton = document.querySelector(`a[data-comment-id='${commentId}']`);
+                let likeButton = document.querySelector(`button[data-comment-id='${commentId}']`);
                 if (likeButton) {
                     if (data.isLiked) {
                         likeButton.textContent = "Thích";

@@ -191,11 +191,9 @@ function submitReply(commentId) {
         success: function (response) {
             console.log(response);
             if (response.success) {
-                console.log("in");
                 let commentElement = document.getElementById(`comment-${commentId}`);
                 let repliesContainer = commentElement.querySelector(".replies-list");
 
-                console.log(1);
                 // Nếu chưa có danh sách phản hồi, tạo mới
                 if (!repliesContainer) {
                     repliesContainer = document.createElement("ul");
@@ -206,7 +204,6 @@ function submitReply(commentId) {
                     commentElement.appendChild(repliesContainer);
                 }
 
-                console.log(2);
                 // Thêm phản hồi vào danh sách
                 let newReply = document.createElement("li");
                 newReply.className = "reply-item";
@@ -239,8 +236,8 @@ function submitReply(commentId) {
                 </div>
             </div>
             <div class='comment-actions' style='display: flex; justify-content: start; padding-left: 70px;'>
-                 <a class='like-button' style='background-color: inherit; width: fit-content; margin-right: 20px; cursor: pointer; color: grey;' onclick='likeComment(\` + response.commentId + \`)'>Thích</a>
-                 <a class='reply-button' style='background-color: inherit; width: fit-content; cursor: pointer; color: grey;' onclick='replyToComment(\` + response.commentId + \`)'>Phản hồi</a>
+                 <button class='like-button' style='background-color: inherit;padding:0; width: fit-content; margin-right: 20px; cursor: pointer; color: grey;' onclick='toggleLike(${response.commentId})'>Thích</button>
+                 <button class='reply-button' style='background-color: inherit;padding:0; width: fit-content; cursor: pointer; color: grey;' onclick='replyToComment(${response.commentId})'>Phản hồi</button>
             </div>
                 `;
                 repliesContainer.appendChild(newReply);

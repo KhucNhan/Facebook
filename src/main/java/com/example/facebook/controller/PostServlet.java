@@ -204,9 +204,9 @@ public class PostServlet extends HttpServlet {
         out.println("<div class='comment-actions' style=\"display: flex; justify-content: start; padding-left: 70px;\">");
 
         if (isReplyCommentLike) {
-            out.println("<a class='like-button' data-comment-id='" + comment.getCommentId() + "' style=\"text-decoration: none; background-color: inherit; width: fit-content; margin-right: 20px; cursor: pointer; color: blue; font-weight: bold;\" onclick='toggleLike(" + comment.getCommentId() + ")'>Thích</a>");
+            out.println("<button class='like-button' data-comment-id='" + comment.getCommentId() + "' style=\"text-decoration: none; background-color: inherit; width: fit-content; margin-right: 20px; cursor: pointer;padding:0; color: blue; font-weight: bold;\" onclick='toggleLike(" + comment.getCommentId() + ")'>Thích</button>");
         } else {
-            out.println("<a class='like-button' data-comment-id='" + comment.getCommentId() + "' style=\"text-decoration: none; background-color: inherit; width: fit-content; margin-right: 20px; cursor: pointer; color: gray; font-weight: bold;\" onclick='toggleLike(" + comment.getCommentId() + ")'>Thích</a>");
+            out.println("<button class='like-button' data-comment-id='" + comment.getCommentId() + "' style=\"text-decoration: none; background-color: inherit; width: fit-content; margin-right: 20px; cursor: pointer;padding:0; color: gray; font-weight: bold;\" onclick='toggleLike(" + comment.getCommentId() + ")'>Thích</button>");
         }
 
         out.println("<a class='reply-button' style=\"text-decoration: none;background-color: inherit; width: fit-content; cursor: pointer;color: gray;\" onclick='replyToComment(" + comment.getCommentId() + ")'>Phản hồi</a>");
