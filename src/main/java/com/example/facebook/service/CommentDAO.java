@@ -14,6 +14,9 @@ public class CommentDAO implements ICommentDAO{
 
     private static final String select_all_comments = "SELECT * FROM comments WHERE postId = ? ORDER BY createAt ASC";
     private static final String insert_comment = "insert into comments (postId, userId, content) values (?, ?, ?)";
+    private static final String select_comment_by_id = "select * from comments where commentId = ?";
+    private static final String delete_comment = "delete from comments where commentId = ?";
+    private static final String update_comment = "update comments set content = ? where commentId = ?";
     @Override
     public List<Comment> selectAllComments(int postId) throws SQLException {
         List<Comment> comments = new ArrayList<>();
@@ -53,5 +56,44 @@ public class CommentDAO implements ICommentDAO{
             }
         }
         return -1;
+    }
+
+    @Override
+    public Comment selectCommentById(int commentId) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement(select_comment_by_id);
+        preparedStatement.setInt(1, commentId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            Comment comment = new Comment();
+            comment.setCommentId(resultSet.getInt("commentId"));
+            comment.setPostId(resultSet.getInt("postId"));
+            comment.setUser(userDAO.selectUserById(resultSet.getInt("userId")));
+            comment.setParentId(resultSet.getInt("parentId"));
+            comment.setContent(resultSet.getString("content"));
+            comment.setCreateAt(resultSet.getTimestamp("createAt"));
+            comment.setUpdateAt(resultSet.getTimestamp("updateAt"));
+            return comment;
+        }
+
+        return null;
+    }
+
+    @Override
+    public boolean deleteComment(int commentId) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement(delete_comment);
+        preparedStatement.setInt(1, commentId);
+        int row = preparedStatement.executeUpdate();
+
+        return row > 0;
+    }
+
+    @Override
+    public boolean updateComment(Comment comment, int commentId) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement(update_comment);
+        preparedStatement.setString(1, comment.getContent());
+        preparedStatement.setInt(2, commentId);
+
+        int row = preparedStatement.executeUpdate();
+        return row > 0;
     }
 }

@@ -38,6 +38,12 @@ public class CommentServlet extends HttpServlet {
                 case "add":
                     addComment(req, resp);
                     break;
+                case "delete":
+                    deleteComment(req, resp);
+                    break;
+                case "edit":
+                    editComment(req, resp);
+                    break;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -54,11 +60,30 @@ public class CommentServlet extends HttpServlet {
         newComment.setPostId(postId);
         newComment.setUser(user);
         newComment.setContent(content);
-        System.out.println(commentDAO.insertComment(newComment));
+
+        int commentId = commentDAO.insertComment(newComment); // Lấy ID của comment mới
+        newComment.setCommentId(commentId); // Gán ID
 
         // Trả về JSON chứa thông tin bình luận mới
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8"); // Đảm bảo mã hóa UTF-8
-        resp.getWriter().write("{\"image\": \"" + user.getImage() + "\", \"name\": \"" + user.getName() + "\", \"content\": \"" + content + "\"}");
+        resp.getWriter().write("{\"commentId\": \"" + commentId + "\", \"image\": \"" + user.getImage() + "\", \"name\": \"" + user.getName() + "\", \"content\": \"" + content + "\", \"isOwner\": \"true\"}");
+    }
+
+    private void editComment(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+        resp.setContentType("text/plain;charset=UTF-8");
+        String commentIdStr = req.getParameter("commentId");
+        Comment comment = commentDAO.selectCommentById(Integer.parseInt(commentIdStr));
+        String newContent = req.getParameter("content");
+        comment.setContent(newContent);
+        boolean success = commentDAO.updateComment(comment, Integer.parseInt(commentIdStr));
+        resp.getWriter().write(success ? "success" : "error");
+    }
+
+    private void deleteComment(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+        resp.setContentType("text/plain;charset=UTF-8");
+        String commentIdStr = req.getParameter("commentId");
+        boolean success = commentDAO.deleteComment(Integer.parseInt(commentIdStr));
+        resp.getWriter().write(success ? "success" : "error");
     }
 }

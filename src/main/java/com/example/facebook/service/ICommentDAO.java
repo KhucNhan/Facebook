@@ -9,4 +9,9 @@ public interface ICommentDAO {
     List<Comment> selectAllComments(int postId) throws SQLException;
 
     int insertComment(Comment comment) throws SQLException;
+    Comment selectCommentById(int commentId) throws SQLException;
+
+    boolean deleteComment(int commentId) throws SQLException;
+
+    boolean updateComment(Comment comment, int commentId) throws SQLException;
 }
