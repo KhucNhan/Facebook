@@ -36,7 +36,7 @@ function submitComment(postId) {
             newComment.className = "comment-item";
             newComment.id = `comment-${response.commentId}`;
             newComment.innerHTML = `
-            <div class='comment-item' id='comment-${response.commentId}' style='display: flex; align-items: flex-start; gap: 10px;margin-block:10px'>
+            <div class='comment-item' id='comment-${response.commentId}' style='display: flex; align-items: flex-start; gap: 10px;'>
                 <div class='comment-avatar'>
                     <img style='width:50px;height:50px;border-radius:50%;' src='/uploads/avatars/${response.image}' class='avatar'>
                 </div>
@@ -51,10 +51,10 @@ function submitComment(postId) {
                             </a>
                             <ul class='dropdown-menu'>
                                 ${response.isOwner ? `
-                                    <li><a class='dropdown-item text-primary' href='#' onclick='editComment(${response.commentId})'>Sửa</a></li>
-                                    <li><a class='dropdown-item text-danger' href='#' onclick='deleteComment(${response.commentId})'>Xóa</a></li>
+                                    <li><a class='dropdown-item' href='#' onclick='editComment(${response.commentId})'>Sửa</a></li>
+                                    <li><a class='dropdown-item' href='#' onclick='deleteComment(${response.commentId})'>Xóa</a></li>
                                 ` : `
-                                    <li><a class='dropdown-item text-warning' href='#' onclick='reportComment(${response.commentId})'>Báo cáo</a></li>
+                                    <li><a class='dropdown-item' href='#' onclick='reportComment(${response.commentId})'>Báo cáo</a></li>
                                 `}
                             </ul>
                         </div>
@@ -62,6 +62,10 @@ function submitComment(postId) {
 
                     <div class='comment-content' style='color: #050505;'>${response.content}</div>
                 </div>
+            </div>
+            <div class='comment-actions' style='display: flex; justify-content: start; padding-left: 70px;'>
+                 <a class='like-button' style='background-color: inherit; width: fit-content; margin-right: 20px; cursor: pointer; color: grey;' onclick='likeComment(\` + response.commentId + \`)'>Thích</a>
+                 <a class='reply-button' style='background-color: inherit; width: fit-content; cursor: pointer; color: grey;' onclick='replyToComment(\` + response.commentId + \`)'>Phản hồi</a>
             </div>
         `;
 

@@ -125,6 +125,7 @@ public class PostServlet extends HttpServlet {
             out.println("<ul class='comments-list' style=\"list-style-type:none\">");
 
             for (Comment comment : comments) {
+                boolean isCommmentLike = likeDAO.checkLikeComment( user.getUserId(),comment.getCommentId());
                 out.println("<li class='comment-item' id='comment-" + comment.getCommentId() + "' style=\"margin-block:10px;\">");
 
 
