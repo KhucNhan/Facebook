@@ -9,10 +9,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <link rel="stylesheet" href="/css/Nav3.css">
-    <link rel="stylesheet" href="/css/Post.css">
-    <link rel="stylesheet" href="/css/PostModal.css">
-    <script src="/js/PostModal.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Nav3.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Post.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/PostModal.css">
+    <script src="${pageContext.request.contextPath}/js/PostModal.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -20,8 +20,8 @@
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous">
     </script>
-    <link href="/css/LikePost.css">
-    <script src="/js/LikePost.js"></script>
+    <link href="${pageContext.request.contextPath}/css/LikePost.css">
+    <script src="${pageContext.request.contextPath}/js/LikePost.js"></script>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -474,7 +474,7 @@
 </script>
 <style>
 .like-btn {
-        color: gray; /* Mặc định nếu chưa like */
+        color: grey; /* Mặc định nếu chưa like */
         cursor: pointer;
         text-decoration: none;
     }

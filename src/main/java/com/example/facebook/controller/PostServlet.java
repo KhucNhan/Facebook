@@ -125,43 +125,52 @@ public class PostServlet extends HttpServlet {
             out.println("<ul class='comments-list' style=\"list-style-type:none\">");
 
             for (Comment comment : comments) {
-                out.println("<li class='comment-item' style=\"margin-block:10px;\">");
+                out.println("<li class='comment-item' id='comment-" + comment.getCommentId() + "' style=\"margin-block:10px;\">");
 
                 // Ảnh đại diện và thông tin người bình luận
                 out.println("<div class='comment-item' style='display: flex; align-items: flex-start; gap: 10px;'>");
 
-// Avatar bên trái
+                // Avatar bên trái
                 out.println("<div class='comment-avatar'>");
                 out.println("<img style='width:50px;height:50px;border-radius:50%;' src='/uploads/avatars/" + comment.getUser().getImage() + "' class='avatar'>");
                 out.println("</div>");
 
-// Nội dung bình luận bên phải
-                out.println("<div class='comment-body' style='background: #f0f2f5; padding: 10px; border-radius: 10px; max-width: 85%;'>");
+                // Nội dung bình luận bên phải
+                out.println("<div class='comment-body' style='background: #f0f2f5; padding: 10px; border-radius: 10px; max-width: 85%; position: relative;'>");
 
-// Tên và thời gian
+                // Tên và thời gian + Dropdown
                 out.println("<div class='comment-info' style='display: flex; align-items: center; gap: 8px; margin-bottom: 5px;'>");
                 out.println("<strong class='comment-name' style='color: #050505;'>" + comment.getUser().getName() + "</strong>");
                 out.println("<span class='comment-time' style='color: #65676b; font-size: 12px;'>" + comment.getCreateAt() + "</span>");
-                out.println("</div>");
 
-// Nội dung bình luận
+                // Dropdown menu
+                out.println("<div class='nav-item dropdown ms-auto'>");
+                out.println("<a class='nav-link' href='#' role='button' data-bs-toggle='dropdown' data-bs-auto-close='outside' aria-expanded='false'>");
+                out.println("<i class='bi bi-three-dots'></i>"); // Icon 3 dấu chấm của Bootstrap
+                out.println("</a>");
+                out.println("<ul class='dropdown-menu'>");
+
+                if (comment.getUser().getUserId() == user.getUserId()) {
+                    out.println("<li><a class='dropdown-item' onclick='editComment(" + comment.getCommentId() + ")'>Sửa</a></li>");
+                    out.println("<li><a class='dropdown-item' onclick='deleteComment(" + comment.getCommentId() + ")'>Xóa</a></li>");
+                } else {
+                    // Nếu không phải chủ sở hữu, chỉ hiển thị "Báo cáo"
+                    out.println("<li><a class='dropdown-item' href='#' onclick='reportComment(" + comment.getCommentId() + ")'>Báo cáo</a></li>");
+                }
+
+                out.println("</ul>");
+                out.println("</div>"); // Đóng dropdown menu
+
+                out.println("</div>"); // Đóng div comment-info
+
+                // Nội dung bình luận
                 out.println("<div class='comment-content' style='color: #050505;'>" + comment.getContent() + "</div>");
 
-// Đóng div comment-body
+                // Đóng div comment-body
                 out.println("</div>");
 
-// Đóng div comment-item
+                // Đóng div comment-item
                 out.println("</div>");
-
-
-                // Nếu bình luận có media (ảnh/video)
-//            if (comment.getMediaUrl() != null && !comment.getMediaUrl().isEmpty()) {
-//                if (comment.getMediaType().equals("picture")) {
-//                    out.println("<img src='/uploads/commentMedias/" + comment.getMediaUrl() + "' class='comment-media'>");
-//                } else if (comment.getMediaType().equals("video")) {
-//                    out.println("<video src='/uploads/commentMedias/" + comment.getMediaUrl() + "' class='comment-media' controls></video>");
-//                }
-//            }
 
                 // Nút thích và phản hồi
                 out.println("<div class='comment-actions' style=\"display: flex; justify-content: start; padding-left: 70px;\">");
@@ -171,6 +180,7 @@ public class PostServlet extends HttpServlet {
 
                 out.println("</li>");
             }
+
 
             out.println("</ul>"); // Đóng danh sách bình luận
         }
