@@ -6,7 +6,7 @@ function loadHome(){
     window.location.href = '/home';
 }
 
-function loadFriend(){
+function goToFriends(){
     window.location.href = '/users?action=friends';
 }
 
