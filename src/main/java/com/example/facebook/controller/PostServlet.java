@@ -116,17 +116,16 @@ public class PostServlet extends HttpServlet {
 
         // Khu vực bình luận
         out.println("<h4 style=\"margin-block:10px;padding:5px ;color:gray; border-block:1px solid lightgrey;\">Bình luận</h4>");
+        out.println("<ul class='comments-list' style=\"list-style-type:none\">");
         if (comments.isEmpty()) {
-            out.println("<p style=\"text-align:center\">Không có bình luận</p>");
+            out.println("<p id='commentListIsNull' style=\"text-align:center\">Không có bình luận</p>");
         } else {
-            out.println("<ul class='comments-list' style=\"list-style-type:none\">");
-
             for (Comment comment : comments) {
                 renderComment(comment, user, out); // Gọi hàm render bình luận (đệ quy)
             }
-
-            out.println("</ul>"); // Đóng danh sách bình luận
         }
+        out.println("</ul>"); // Đóng danh sách bình luận
+
 
         // Khu vực nhập bình luận
         out.println("<div class='comment-input-section' style='display: flex; align-items: center; padding: 10px; border-top: 1px solid lightgray;'>");

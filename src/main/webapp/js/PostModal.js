@@ -116,6 +116,8 @@ function editComment(commentId) {
 }
 
 function saveComment(commentId) {
+    let commentListIsNull = document.getElementById("commentListIsNull");
+
     let newContent = document.querySelector(`#edit-textarea-${commentId}`).value;
 
     $.ajax({
@@ -125,6 +127,7 @@ function saveComment(commentId) {
         success: function (response) {
             if (response.trim() === "success") {
                 document.querySelector(`#comment-${commentId} .comment-content`).innerText = newContent;
+                commentListIsNull.style.display = "none";
             } else {
                 alert("Cập nhật thất bại! Vui lòng thử lại.");
             }
