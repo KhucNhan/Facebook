@@ -78,6 +78,7 @@ function submitComment(postId) {
         }
     });
 
+
 }
 
 function deleteComment(commentId) {

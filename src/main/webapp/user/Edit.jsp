@@ -102,16 +102,20 @@
             <p style="color: white">hehehe</p>
         </div>
     </c:if>
-    <form action="/users?action=userUpdateInformation&userId=${user.userId}" method="post" enctype="multipart/form-data">
+    <form action="/users?action=userUpdateInformation&userId=${user.userId}" method="post"
+          enctype="multipart/form-data">
         <table>
             <tr>
-                <td colspan="2"><input type="text" id="name" name="name" value="${user.name}" placeholder="Họ và Tên" required></td>
+                <td colspan="2"><input type="text" id="name" name="name" value="${user.name}" placeholder="Họ và Tên"
+                                       required></td>
             </tr>
             <tr>
-                <td colspan="2"><input type="email" id="email" name="email" value="${user.email}" placeholder="Email" required></td>
+                <td colspan="2"><input type="email" id="email" name="email" value="${user.email}" placeholder="Email"
+                                       required></td>
             </tr>
             <tr>
-                <td colspan="2"><input type="tel" id="phone" name="phone" value="${user.phone}" placeholder="Số điện thoại" required></td>
+                <td colspan="2"><input type="tel" id="phone" name="phone" value="${user.phone}"
+                                       placeholder="Số điện thoại" required></td>
             </tr>
             <tr>
                 <td colspan="2">Ngày sinh</td>
@@ -127,7 +131,8 @@
             <tr>
                 <td colspan="2">
                     <div class="gender-options">
-                        <label><input type="radio" name="gender" value="Nam" ${user.gender ? 'checked' : ''} required> Nam</label>
+                        <label><input type="radio" name="gender" value="Nam" ${user.gender ? 'checked' : ''} required>
+                            Nam</label>
                         <label><input type="radio" name="gender" value="Nữ" ${!user.gender ? "checked" : ""}> Nữ</label>
                     </div>
                 </td>
