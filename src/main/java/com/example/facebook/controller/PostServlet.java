@@ -425,6 +425,9 @@ public class PostServlet extends HttpServlet {
             mediaDAO.insertPostMedia(postId, "picture", fileName);
 
         }
+        HttpSession session1 = req.getSession();
+        session1.setAttribute("successMessage", "Đăng bài thành công!");
+
         resp.sendRedirect(req.getContextPath() + "/home");
 
     }
