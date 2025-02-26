@@ -68,7 +68,7 @@
                     </div>
                 </div>
                 <div class="text">
-                <textarea style="width: 410px" id="postInput" name="content"
+                <textarea style="width: 100%" id="postInput" name="content"
                           oninput="checkPostStatus()">${editPost.content}</textarea>
                 </div>
             </div>
@@ -101,7 +101,7 @@
                 <button type="submit" id="postButton">Cập nhật</button>
             </div>
         </form>
-        <button style="background: #00ff3c;color: white;width: 100px;margin-top: -55px;margin-left: 340px" type="submit"
+        <button style="background: #00ff3c;color: white;width: 100px;margin-top: -56px;margin-left: 73%" type="submit"
                 onclick="exit()">Thoát
         </button>
     </div>
