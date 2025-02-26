@@ -164,7 +164,7 @@
                 </b>
             </div>
         </div>
-        <div class="leftIcon" style="justify-content: left">
+        <div class="leftIcon" style="justify-content: left" onclick="goToFriends()">
             <div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" style=""
                      class="bi bi-people-fill iconPeople"
@@ -348,6 +348,10 @@
 <script>
     function goToMyProfile() {
         window.location.href = "/users?action=myProfile";
+    }
+
+    function goToFriends() {
+        window.location.href = "/users?action=friends";
     }
 
     document.addEventListener("DOMContentLoaded", function () {
