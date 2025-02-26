@@ -131,15 +131,15 @@
             <tr>
                 <td colspan="2">
                     <div class="gender-options">
-                        <label><input type="radio" name="gender" value="Nam" ${user.gender ? 'checked' : ''} required>
+                        <label><input type="radio" name="gender" value="true" ${user.gender == true ? 'checked' : ''} required>
                             Nam</label>
-                        <label><input type="radio" name="gender" value="Nữ" ${!user.gender ? "checked" : ""}> Nữ</label>
+                        <label><input type="radio" name="gender" value="false" ${!user.gender == true ? "checked" : ""}> Nữ</label>
                     </div>
                 </td>
             </tr>
         </table>
         <button type="submit">Lưu thông tin</button>
-        <a style="display: block;text-align: center" href="/home">Quay lại</a>
+        <a style="margin-top: 20px;display: block;text-align: center" href="/home">Quay lại</a>
     </form>
 </div>
 
