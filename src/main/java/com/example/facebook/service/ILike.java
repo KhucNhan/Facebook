@@ -10,4 +10,12 @@ public interface ILike {
     void addLikeToPost(int postId,int userId);
 
     int getTotalLikePost(int postId);
+
+
+    boolean checkLikeComment(int userId,int commentId);
+
+    boolean deleteLikeComment(int userId, int commentId);
+    void addLikeToComment(int commentId,int userId);
+
+
 }

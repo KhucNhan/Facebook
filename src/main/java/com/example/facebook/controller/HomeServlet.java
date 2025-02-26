@@ -1,12 +1,9 @@
 package com.example.facebook.controller;
 
+import com.example.facebook.model.Comment;
 import com.example.facebook.model.Post;
 import com.example.facebook.model.User;
-import com.example.facebook.service.FriendShipDAO;
-
-import com.example.facebook.service.LikeDAO;
-import com.example.facebook.service.PostDAO;
-import com.example.facebook.service.UserDAO;
+import com.example.facebook.service.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,6 +21,8 @@ import java.util.Map;
 public class HomeServlet extends HttpServlet {
     UserDAO userDAO = new UserDAO();
     LikeDAO likeDAO = new LikeDAO();
+
+    CommentDAO commentDAO = new CommentDAO();
 
     PostDAO postDAO = new PostDAO();
     FriendShipDAO friendShipDAO = new FriendShipDAO();
@@ -63,11 +62,24 @@ public class HomeServlet extends HttpServlet {
             List<Post> posts = postDAO.selectAllPosts(Integer.parseInt(userIdStr));
 //
             Map<Integer, Boolean> likedPosts = new HashMap<>();
+            Map<Integer, Boolean> likedComments = new HashMap<>();
+
+
             for (Post post : posts) {
                 boolean isLiked = likeDAO.checkLikePost(Integer.parseInt(userIdStr), post.getPostId());
                 likedPosts.put(post.getPostId(), isLiked);
+
+
+                List<Comment> comments = commentDAO.selectAllComments(post.getPostId());
+                for (Comment comment: comments) {
+                    boolean isCommentLiked = likeDAO.checkLikeComment(Integer.parseInt(userIdStr),comment.getCommentId());
+                    likedComments.put(comment.getCommentId(),isCommentLiked);
+                }
             }
+
+
             req.setAttribute("likedPosts", likedPosts);
+            req.setAttribute("likedComments", likedComments);
             req.setAttribute("posts", posts);
             req.setAttribute("user", user);
             req.setAttribute("usersFriendShip",usersFriendShip);
