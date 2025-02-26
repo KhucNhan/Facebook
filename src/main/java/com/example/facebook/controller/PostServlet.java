@@ -115,81 +115,15 @@ public class PostServlet extends HttpServlet {
         out.println("</div>"); // Đóng media-grid
 
         // Khu vực bình luận
-        out.println("<div class='comments-section'>");
         out.println("<h4 style=\"margin-block:10px;padding:5px ;color:gray; border-block:1px solid lightgrey;\">Bình luận</h4>");
         if (comments.isEmpty()) {
             out.println("<p style=\"text-align:center\">Không có bình luận</p>");
         } else {
-
-            // Hiển thị danh sách bình luận
             out.println("<ul class='comments-list' style=\"list-style-type:none\">");
 
             for (Comment comment : comments) {
-                boolean isCommmentLike = likeDAO.checkLikeComment( user.getUserId(),comment.getCommentId());
-                out.println("<li class='comment-item' id='comment-" + comment.getCommentId() + "' style=\"margin-block:10px;\">");
-
-
-                // Ảnh đại diện và thông tin người bình luận
-                out.println("<div class='comment-item' style='display: flex; align-items: flex-start; gap: 10px;'>");
-
-                // Avatar bên trái
-                out.println("<div class='comment-avatar'>");
-                out.println("<img style='width:50px;height:50px;border-radius:50%;' src='/uploads/avatars/" + comment.getUser().getImage() + "' class='avatar'>");
-                out.println("</div>");
-
-                // Nội dung bình luận bên phải
-                out.println("<div class='comment-body' style='background: #f0f2f5; padding: 10px; border-radius: 10px; max-width: 85%; position: relative;'>");
-
-                // Tên và thời gian + Dropdown
-                out.println("<div class='comment-info' style='display: flex; align-items: center; gap: 8px; margin-bottom: 5px;'>");
-                out.println("<strong class='comment-name' style='color: #050505;'>" + comment.getUser().getName() + "</strong>");
-                out.println("<span class='comment-time' style='color: #65676b; font-size: 12px;'>" + comment.getCreateAt() + "</span>");
-
-                // Dropdown menu
-                out.println("<div class='nav-item dropdown ms-auto'>");
-                out.println("<a class='nav-link' href='#' role='button' data-bs-toggle='dropdown' data-bs-auto-close='outside' aria-expanded='false'>");
-                out.println("<i class='bi bi-three-dots'></i>"); // Icon 3 dấu chấm của Bootstrap
-                out.println("</a>");
-                out.println("<ul class='dropdown-menu'>");
-
-                if (comment.getUser().getUserId() == user.getUserId()) {
-                    out.println("<li><a class='dropdown-item' onclick='editComment(" + comment.getCommentId() + ")'>Sửa</a></li>");
-                    out.println("<li><a class='dropdown-item' onclick='deleteComment(" + comment.getCommentId() + ")'>Xóa</a></li>");
-                } else {
-                    // Nếu không phải chủ sở hữu, chỉ hiển thị "Báo cáo"
-                    out.println("<li><a class='dropdown-item' href='#' onclick='reportComment(" + comment.getCommentId() + ")'>Báo cáo</a></li>");
-                }
-
-                out.println("</ul>");
-                out.println("</div>"); // Đóng dropdown menu
-
-                out.println("</div>"); // Đóng div comment-info
-
-                // Nội dung bình luận
-                out.println("<div class='comment-content' style='color: #050505;'>" + comment.getContent() + "</div>");
-
-                // Đóng div comment-body
-                out.println("</div>");
-
-                // Đóng div comment-item
-                out.println("</div>");
-
-                // Nút thích và phản hồi
-                out.println("<div class='comment-actions' style=\"display: flex; justify-content: start; padding-left: 70px;\">");
-
-                if (isCommmentLike) {
-                    out.println("<a class='like-button' data-comment-id='" + comment.getCommentId() + "' style=\"text-decoration: none; background-color: inherit; width: fit-content; margin-right: 20px; cursor: pointer; color: blue; font-weight: bold;\" onclick='toggleLike(" + comment.getCommentId() + ")'>Thích</a>");
-                } else {
-                    out.println("<a class='like-button' data-comment-id='" + comment.getCommentId() + "' style=\"text-decoration: none; background-color: inherit; width: fit-content; margin-right: 20px; cursor: pointer; color: gray; font-weight: bold;\" onclick='toggleLike(" + comment.getCommentId() + ")'>Thích</a>");
-                }
-
-
-                out.println("<a class='reply-button' style=\"text-decoration: none;background-color: inherit; width: fit-content; cursor: pointer;color: gray;\" onclick='replyToComment(" + comment.getCommentId() + ")'>Phản hồi</a>");
-                out.println("</div>");
-
-                out.println("</li>");
+                renderComment(comment, user, out); // Gọi hàm render bình luận (đệ quy)
             }
-
 
             out.println("</ul>"); // Đóng danh sách bình luận
         }
@@ -215,6 +149,79 @@ public class PostServlet extends HttpServlet {
 
         out.println("<script src='/js/LikeComment.js'></script>");
 
+    }
+
+    private void renderComment(Comment comment, User user, PrintWriter out) throws SQLException {
+        boolean isReplyCommentLike = likeDAO.checkLikeComment( user.getUserId(), comment.getCommentId());
+        out.println("<li class='comment-item' id='comment-" + comment.getCommentId() + "' style=\"margin-block:10px;\">");
+
+        // Ảnh đại diện và thông tin người bình luận
+        out.println("<div class='comment-item' style='display: flex; align-items: flex-start; gap: 10px;'>");
+
+        // Avatar bên trái
+        out.println("<div class='comment-avatar'>");
+        out.println("<img style='width:50px;height:50px;border-radius:50%;' src='/uploads/avatars/" + comment.getUser().getImage() + "' class='avatar'>");
+        out.println("</div>");
+
+        // Nội dung bình luận bên phải
+        out.println("<div class='comment-body' style='background: #f0f2f5; padding: 10px; border-radius: 10px; max-width: 85%; position: relative;'>");
+
+        // Tên và thời gian + Dropdown
+        out.println("<div class='comment-info' style='display: flex; align-items: center; gap: 8px; margin-bottom: 5px;'>");
+        out.println("<strong class='comment-name' style='color: #050505;'>" + comment.getUser().getName() + "</strong>");
+        out.println("<span class='comment-time' style='color: #65676b; font-size: 12px;'>" + comment.getCreateAt() + "</span>");
+
+        // Dropdown menu
+        out.println("<div class='nav-item dropdown ms-auto'>");
+        out.println("<a class='nav-link' href='#' role='button' data-bs-toggle='dropdown' data-bs-auto-close='outside' aria-expanded='false'>");
+        out.println("<i class='bi bi-three-dots'></i>"); // Icon 3 dấu chấm của Bootstrap
+        out.println("</a>");
+        out.println("<ul class='dropdown-menu'>");
+
+        if (comment.getUser().getUserId() == user.getUserId()) {
+            out.println("<li><a class='dropdown-item' onclick='editComment(" + comment.getCommentId() + ")'>Sửa</a></li>");
+            out.println("<li><a class='dropdown-item' onclick='deleteComment(" + comment.getCommentId() + ")'>Xóa</a></li>");
+        } else {
+            // Nếu không phải chủ sở hữu, chỉ hiển thị "Báo cáo"
+            out.println("<li><a class='dropdown-item' href='#' onclick='reportComment(" + comment.getCommentId() + ")'>Báo cáo</a></li>");
+        }
+
+        out.println("</ul>");
+        out.println("</div>"); // Đóng dropdown menu
+
+        out.println("</div>"); // Đóng div comment-info
+
+        // Nội dung bình luận
+        out.println("<div class='comment-content' style='color: #050505;'>" + comment.getContent() + "</div>");
+
+        // Đóng div comment-body
+        out.println("</div>");
+
+        // Đóng div comment-item
+        out.println("</div>");
+
+        // Nút thích và phản hồi
+        out.println("<div class='comment-actions' style=\"display: flex; justify-content: start; padding-left: 70px;\">");
+
+        if (isReplyCommentLike) {
+            out.println("<button class='like-button' data-comment-id='" + comment.getCommentId() + "' style=\"text-decoration: none; background-color: inherit; width: fit-content; margin-right: 20px; cursor: pointer;padding:0; color: blue; font-weight: bold;\" onclick='toggleLike(" + comment.getCommentId() + ")'>Thích</button>");
+        } else {
+            out.println("<button class='like-button' data-comment-id='" + comment.getCommentId() + "' style=\"text-decoration: none; background-color: inherit; width: fit-content; margin-right: 20px; cursor: pointer;padding:0; color: gray; font-weight: bold;\" onclick='toggleLike(" + comment.getCommentId() + ")'>Thích</button>");
+        }
+
+        out.println("<a class='reply-button' style=\"text-decoration: none;background-color: inherit; width: fit-content; cursor: pointer;color: gray;\" onclick='replyToComment(" + comment.getCommentId() + ")'>Phản hồi</a>");
+        out.println("</div>");
+
+        List<Comment> replies = commentDAO.getReplies(comment.getCommentId());
+        if (!replies.isEmpty()) {
+            out.println("<ul class='replies-list' style='list-style-type:none; padding-left: 60px; margin-top: 10px;'>");
+            for (Comment reply : replies) {
+                renderComment(reply, user, out); // Gọi đệ quy để hiển thị phản hồi con
+            }
+            out.println("</ul>"); // Đóng danh sách replies
+        }
+
+        out.println("</li>"); // Đóng comment-item
     }
 
     // Hàm xác định layout dựa vào số lượng media

@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -44,10 +45,35 @@ public class CommentServlet extends HttpServlet {
                 case "edit":
                     editComment(req, resp);
                     break;
+                case "reply":
+                    addReplyComment(req, resp);
+                    break;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void addReplyComment(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+        int parentId = Integer.parseInt(req.getParameter("parentCommentId"));
+        Comment comment = commentDAO.selectCommentById(parentId);
+
+        String content = req.getParameter("content");
+
+        HttpSession session = req.getSession();
+        User user = userDAO.selectUserById(Integer.parseInt(session.getAttribute("userId").toString()));
+
+        Comment replyComment = new Comment();
+        replyComment.setContent(content);
+        replyComment.setPostId(comment.getPostId());
+        replyComment.setUser(user);
+
+        int replyCommentId = commentDAO.insertReplyComment(replyComment, parentId);
+        boolean success = replyCommentId != -1;
+
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8"); // Đảm bảo mã hóa UTF-8
+        resp.getWriter().write("{\"success\": \"" + success + "\", \"name\": \"" + user.getName() + "\", \"content\": \"" + content + "\", \"image\": \"" + user.getImage() + "\", \"commentId\": \"" + replyCommentId + "\", \"isOwner\" : \"true\"}");
     }
 
     private void addComment(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
