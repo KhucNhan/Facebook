@@ -12,12 +12,12 @@ public class CommentDAO implements ICommentDAO{
     Connection connection = connectDatabase.connection();
     UserDAO userDAO = new UserDAO();
 
-    private static final String select_all_comments = "SELECT * FROM comments WHERE postId = ? ORDER BY createAt ASC";
+    private static final String select_all_comments = "SELECT * FROM comments WHERE postId = ? and parentId is null ORDER BY createAt ASC";
     private static final String insert_comment = "insert into comments (postId, userId, content) values (?, ?, ?)";
     private static final String select_comment_by_id = "select * from comments where commentId = ?";
     private static final String delete_comment = "delete from comments where commentId = ?";
     private static final String update_comment = "update comments set content = ? where commentId = ?";
-    private static final String insert_reply_comment = "INSERT INTO comments (parentId, userId, content) VALUES (?, ?, ?)";
+    private static final String insert_reply_comment = "INSERT INTO comments (parentId, userId, content, postId) VALUES (?, ?, ?, ?)";
 
     private static final String select_all_replies = "select * from comments where parentId = ?";
     @Override
@@ -106,6 +106,7 @@ public class CommentDAO implements ICommentDAO{
         preparedStatement.setInt(1, parentId);
         preparedStatement.setInt(2, comment.getUser().getUserId());
         preparedStatement.setString(3, comment.getContent());
+        preparedStatement.setInt(4, comment.getPostId());
 
         int row = preparedStatement.executeUpdate();
         if (row > 0) {

@@ -6,6 +6,10 @@ function loadHome(){
     window.location.href = '/home';
 }
 
+function loadFriend(){
+    window.location.href = '/users?action=friends';
+}
+
 function hideSearchInput(event) {
     const searchContainer = document.getElementById('search-container');
     const contactLabel = document.getElementById('contactLabel');

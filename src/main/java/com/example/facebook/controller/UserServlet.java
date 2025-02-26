@@ -2,6 +2,7 @@ package com.example.facebook.controller;
 
 import com.example.facebook.model.Post;
 import com.example.facebook.model.User;
+import com.example.facebook.service.FriendShipDAO;
 import com.example.facebook.service.PostDAO;
 import com.example.facebook.service.UserDAO;
 
@@ -28,6 +29,7 @@ import java.util.List;
 public class UserServlet extends HttpServlet {
     UserDAO userDAO = new UserDAO();
     PostDAO postDAO = new PostDAO();
+    FriendShipDAO friendShipDAO = new FriendShipDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -56,6 +58,9 @@ public class UserServlet extends HttpServlet {
                 case "myProfile":
                     showMyProfile(req, resp);
                     break;
+                case "friends":
+                    showFriends(req, resp);
+                    break;
                 default:
                     showUserList(req, resp);
                     break;
@@ -63,6 +68,17 @@ public class UserServlet extends HttpServlet {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void showFriends(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
+        HttpSession session = req.getSession();
+        String userIdStr = session.getAttribute("userId").toString();
+        User user = userDAO.selectUserById(Integer.parseInt(userIdStr));
+
+        List<User> friendRequests = friendShipDAO.getAllFriendsRequest(user.getUserId());
+        req.setAttribute("user", user);
+        req.setAttribute("friends", friendRequests);
+        req.getRequestDispatcher("user/FriendRequests.jsp").forward(req, resp);
     }
 
     private void showMyProfile(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
