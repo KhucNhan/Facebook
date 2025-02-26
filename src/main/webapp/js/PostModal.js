@@ -236,7 +236,7 @@ function submitReply(commentId) {
                 </div>
             </div>
             <div class='comment-actions' style='display: flex; justify-content: start; padding-left: 70px;'>
-                 <button class='like-button' style='background-color: inherit;padding:0; width: fit-content; margin-right: 20px; cursor: pointer; color: grey;' onclick='toggleLike(${response.commentId})'>Thích</button>
+                 <button class='like-button' data-comment-id='${response.commentId}'  style='background-color: inherit;padding:0; width: fit-content; margin-right: 20px; cursor: pointer; color: grey;font-weight: bold' onclick='toggleLike(${response.commentId})'>Thích</button>
                  <button class='reply-button' style='background-color: inherit;padding:0; width: fit-content; cursor: pointer; color: grey;' onclick='replyToComment(${response.commentId})'>Phản hồi</button>
             </div>
                 `;
