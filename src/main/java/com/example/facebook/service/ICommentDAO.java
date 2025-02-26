@@ -14,4 +14,8 @@ public interface ICommentDAO {
     boolean deleteComment(int commentId) throws SQLException;
 
     boolean updateComment(Comment comment, int commentId) throws SQLException;
+
+    int insertReplyComment(Comment comment, int parentId) throws SQLException;
+
+    List<Comment> getReplies(int parentId) throws SQLException;
 }
