@@ -22,8 +22,8 @@
     </script>
     <link href="${pageContext.request.contextPath}/css/LikePost.css">
     <script src="${pageContext.request.contextPath}/js/LikePost.js"></script>
-<!--     <link href="/css/LikePost.css"> -->
-<!--     <script src="/js/LikePost.js"></script> -->
+    <!--     <link href="/css/LikePost.css"> -->
+    <!--     <script src="/js/LikePost.js"></script> -->
     <script src="/js/LikeComment.js"></script>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
@@ -245,7 +245,8 @@
                                                 <c:if test="${post.user.userId != user.userId}">
                                                     <li>
                                                         <a class="dropdown-item delete-link"
-                                                           href="/posts?action=report&&postId=${post.getPostId()}">Báo cáo bài viết
+                                                           href="/posts?action=report&&postId=${post.getPostId()}">Báo
+                                                            cáo bài viết
                                                         </a>
                                                     </li>
                                                 </c:if>
@@ -286,7 +287,8 @@
                         </a>
                         <a onclick="showPostPopup('${post.getPostId()}')">
 
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor" class="bi bi-chat-fill" viewBox="0 0 16 16">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor"
+                                 class="bi bi-chat-fill" viewBox="0 0 16 16">
                                 <path d="M8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6-.097 1.016-.417 2.13-.771 2.966-.079.186.074.394.273.362 2.256-.37 3.597-.938 4.18-1.234A9 9 0 0 0 8 15"/>
                             </svg>
                             <span>${post.totalComments}</span>
@@ -352,23 +354,31 @@
         const includeNewPost = document.getElementById("includeNewPost");
         const popupContent = document.getElementById("popup-content");
 
-        document.querySelector(".delete-link").addEventListener("click", function (event) {
-            event.preventDefault();
+        attachDeleteEvent();
 
-            let deleteUrl = this.href; // Lưu link xóa
+        function attachDeleteEvent() {
+            const deleteLinks = document.querySelectorAll(".delete-link");
 
-            Swal.fire({
-                title: "Bạn có chắc chắn muốn xóa bài viết?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Có, xóa ngay!",
-                cancelButtonText: "Hủy",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = deleteUrl;
-                }
+            deleteLinks.forEach(link => {
+                link.addEventListener("click", function (event) {
+                    event.preventDefault();
+
+                    let deleteUrl = this.href; // Lưu link xóa
+
+                    Swal.fire({
+                        title: "Bạn có chắc chắn muốn xóa bài viết?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Có, xóa ngay!",
+                        cancelButtonText: "Hủy",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = deleteUrl;
+                        }
+                    });
+                });
             });
-        });
+        }
 
         // Hiển thị popup
         function newPost() {
@@ -478,7 +488,6 @@
 <style>
 
 
-
     .like-btn {
         color: grey; /* Mặc định nếu chưa like */
         cursor: pointer;
@@ -492,7 +501,7 @@
     .like-btn.liked svg {
         fill: blue; /* Đổi màu icon khi đã like */
     }
-  
+
     #includeNewPost {
         display: none; /* Mặc định ẩn */
         position: fixed;

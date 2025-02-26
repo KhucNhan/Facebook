@@ -64,13 +64,12 @@ function submitComment(postId) {
                 </div>
             </div>
             <div class='comment-actions' style='display: flex; justify-content: start; padding-left: 70px;'>
-                 <a class='like-button' style='background-color: inherit; width: fit-content; margin-right: 20px; cursor: pointer; color: grey;' onclick='likeComment(\` + response.commentId + \`)'>Thích</a>
+                 <a class='like-button ' data-comment-id='${response.commentId}' style='background-color: inherit; width: fit-content; margin-right: 20px; cursor: pointer; color: grey;font-weight: bold' onclick='toggleLike(${response.commentId})'>Thích</a>
                  <a class='reply-button' style='background-color: inherit; width: fit-content; cursor: pointer; color: grey;' onclick='replyToComment(\` + response.commentId + \`)'>Phản hồi</a>
             </div>
         `;
-
-            commentsList.appendChild(newComment);  // Thêm bình luận mới vào danh sách
-            inputField.value = ""; // Xóa nội dung input sau khi gửi
+            commentsList.appendChild(newComment);
+            inputField.value = "";
         },
 
         error: function () {
@@ -149,6 +148,7 @@ function closeDropdown(commentId) {
         }
     }
 }
+
 
 function replyToComment(commentId) {
     let commentElement = document.getElementById(`comment-${commentId}`);
@@ -252,3 +252,10 @@ function submitReply(commentId) {
         }
     });
 }
+
+document.addEventListener("click", function (event) {
+    if (event.target.classList.contains("like-button")) {
+        let commentId = event.target.getAttribute("data-comment-id");
+        toggleLike(commentId);
+    }
+});

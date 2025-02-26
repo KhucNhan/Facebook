@@ -89,7 +89,7 @@ public class UserServlet extends HttpServlet {
         String userIdStr = req.getParameter("userId");
         User user = userDAO.selectUserById(Integer.parseInt(userIdStr));
         req.setAttribute("user", user);
-        req.getRequestDispatcher("admin/EditPost.jsp").forward(req, resp);
+        req.getRequestDispatcher("admin/Edit.jsp").forward(req, resp);
     }
 
     private void showUserList(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
@@ -128,6 +128,7 @@ public class UserServlet extends HttpServlet {
                 case "userUpdateInformation":
                     userUpdateInformation(req, resp);
                     break;
+
                 case "changePassword":
                     changePassword(req, resp);
                     break;
@@ -182,7 +183,8 @@ public class UserServlet extends HttpServlet {
         boolean status = userDAO.updateUser(user, Integer.parseInt(userIdStr));
         if (status) req.setAttribute("status", "success");
         req.setAttribute("user", user);
-        req.getRequestDispatcher("user/EditPost.jsp").forward(req, resp);
+        req.getRequestDispatcher("user/Edit.jsp").forward(req, resp);
+
     }
 
     private void changeUserStatus(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
@@ -245,17 +247,18 @@ public class UserServlet extends HttpServlet {
         Part filePart = req.getPart("image");
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
 
+
         File uploadDir = new File("C:\\uploads\\avatars");
         if (!uploadDir.exists()) uploadDir.mkdirs();
 
         File file = new File(uploadDir, fileName);
 
-        if (file.exists()) {
-            file.delete();
-        }
-
         String filePath = "C:\\uploads\\avatars" + File.separator + fileName;
-        filePart.write(filePath);
+
+
+        if (!file.exists()) {
+            filePart.write(filePath);
+        }
 
         String name = req.getParameter("name");
         String email = req.getParameter("email");
@@ -274,7 +277,7 @@ public class UserServlet extends HttpServlet {
         boolean status = userDAO.updateUser(user, Integer.parseInt(userId));
         if (status) req.setAttribute("status", "success");
         req.setAttribute("user", user);
-        req.getRequestDispatcher("admin/EditPost.jsp").forward(req, resp);
+        req.getRequestDispatcher("admin/Edit.jsp").forward(req, resp);
     }
 
 }
