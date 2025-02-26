@@ -51,10 +51,10 @@ function submitComment(postId) {
                             </a>
                             <ul class='dropdown-menu'>
                                 ${response.isOwner ? `
-                                    <li><a class='dropdown-item text-primary' href='#' onclick='editComment(${response.commentId})'>Sửa</a></li>
-                                    <li><a class='dropdown-item text-danger' href='#' onclick='deleteComment(${response.commentId})'>Xóa</a></li>
+                                    <li><a class='dropdown-item' href='#' onclick='editComment(${response.commentId})'>Sửa</a></li>
+                                    <li><a class='dropdown-item' href='#' onclick='deleteComment(${response.commentId})'>Xóa</a></li>
                                 ` : `
-                                    <li><a class='dropdown-item text-warning' href='#' onclick='reportComment(${response.commentId})'>Báo cáo</a></li>
+                                    <li><a class='dropdown-item' href='#' onclick='reportComment(${response.commentId})'>Báo cáo</a></li>
                                 `}
                             </ul>
                         </div>
