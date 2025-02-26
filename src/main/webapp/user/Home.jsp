@@ -22,6 +22,7 @@
     </script>
     <link href="/css/LikePost.css">
     <script src="/js/LikePost.js"></script>
+    <script src="/js/LikeComment.js"></script>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -473,7 +474,13 @@
     }
 </script>
 <style>
-.like-btn {
+    .like-button.liked {
+        color: blue !important;
+        font-weight: bold;
+    }
+
+
+    .like-btn {
         color: gray; /* Mặc định nếu chưa like */
         cursor: pointer;
         text-decoration: none;
