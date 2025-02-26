@@ -51,10 +51,10 @@ public class PostServlet extends HttpServlet {
                     showNewsFeed(req, resp);
                     break;
                 case "userEditPost":
-                    userEditPost(req,resp);
+                    userEditPost(req, resp);
                     break;
-                case "deletePost" :
-                    deletePostById(req,resp);
+                case "deletePost":
+                    deletePostById(req, resp);
                     break;
             }
         } catch (SQLException e) {
@@ -125,6 +125,9 @@ public class PostServlet extends HttpServlet {
             out.println("<ul class='comments-list' style=\"list-style-type:none\">");
 
             for (Comment comment : comments) {
+                boolean isCommmentLike = likeDAO.checkLikeComment( user.getUserId(),comment.getCommentId());
+
+
                 out.println("<li class='comment-item' style=\"margin-block:10px;\">");
 
                 // Ảnh đại diện và thông tin người bình luận
@@ -165,7 +168,14 @@ public class PostServlet extends HttpServlet {
 
                 // Nút thích và phản hồi
                 out.println("<div class='comment-actions' style=\"display: flex; justify-content: start; padding-left: 70px;\">");
-                out.println("<a class='like-button' style=\"text-decoration: none;background-color: inherit; width: fit-content; margin-right: 20px; cursor: pointer;color: gray;\" onclick='likeComment(" + comment.getCommentId() + ")'>Thích</a>");
+
+                if (isCommmentLike) {
+                    out.println("<a class='like-button' data-comment-id='" + comment.getCommentId() + "' style=\"text-decoration: none; background-color: inherit; width: fit-content; margin-right: 20px; cursor: pointer; color: blue; font-weight: bold;\" onclick='toggleLike(" + comment.getCommentId() + ")'>Thích</a>");
+                } else {
+                    out.println("<a class='like-button' data-comment-id='" + comment.getCommentId() + "' style=\"text-decoration: none; background-color: inherit; width: fit-content; margin-right: 20px; cursor: pointer; color: gray; font-weight: bold;\" onclick='toggleLike(" + comment.getCommentId() + ")'>Thích</a>");
+                }
+
+
                 out.println("<a class='reply-button' style=\"text-decoration: none;background-color: inherit; width: fit-content; cursor: pointer;color: gray;\" onclick='replyToComment(" + comment.getCommentId() + ")'>Phản hồi</a>");
                 out.println("</div>");
 
@@ -187,11 +197,15 @@ public class PostServlet extends HttpServlet {
 // Nút gửi bình luận
         out.println("<button onclick='submitComment(" + post.getPostId() + ")' style='margin-left: 10px; background: blue; color: white; padding: 5px 15px; border: none; border-radius: 10px; cursor: pointer;width:fit-content;'>Gửi</button>");
 
+
         out.println("</div>");
 
 
         out.println("</div>"); // Đóng khu vực bình luận
         out.println("</div></div>"); // Đóng post-modal và modal-overlay
+
+        out.println("<script src='/js/LikeComment.js'></script>");
+
     }
 
     // Hàm xác định layout dựa vào số lượng media
@@ -209,14 +223,14 @@ public class PostServlet extends HttpServlet {
                 return new String[]{"large-left", "small-right-top", "small-right-bottom", "extra"};
         }
     }
-        
+
     private void deletePostById(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         HttpSession session = req.getSession();
         int userId = (int) session.getAttribute("userId");
 
         int postId = Integer.parseInt(req.getParameter("postId"));
         int userIdPost = postDAO.selectPostById(postId).getUser().getUserId();
-        if (userId == userIdPost){
+        if (userId == userIdPost) {
             postDAO.deletePost(postId);
 
 
@@ -225,7 +239,7 @@ public class PostServlet extends HttpServlet {
 
             resp.sendRedirect(req.getContextPath() + "/home");
 
-        }else {
+        } else {
             req.setAttribute("errorMessage", "Bạn không có quyền xóa bài viết này!");
             req.getRequestDispatcher("/home").forward(req, resp);
         }
@@ -239,15 +253,15 @@ public class PostServlet extends HttpServlet {
         int userIdPost = postDAO.selectPostById(postId).getUser().getUserId();
 
 
-        if (userId == userIdPost){
+        if (userId == userIdPost) {
             Post post = postDAO.selectPostById(postId);
 
             User user = userDAO.selectUserById(userId);
 
             req.setAttribute("user", user);
             req.setAttribute("editPost", post);
-            req.getRequestDispatcher("user/EditPost.jsp").forward(req,resp);
-        }else {
+            req.getRequestDispatcher("user/EditPost.jsp").forward(req, resp);
+        } else {
             req.setAttribute("errorMessage", "Bạn không có quyền chỉnh sửa bài viết này!");
             req.getRequestDispatcher("/home").forward(req, resp);
         }
@@ -278,15 +292,40 @@ public class PostServlet extends HttpServlet {
                     newPost(req, resp);
                     break;
                 case "updatePost":
-                    updatePost(req,resp);
+                    updatePost(req, resp);
                     break;
                 case "likePost":
-                    likePost(req,resp);
+                    likePost(req, resp);
+                    break;
+                case "likeComment":
+                    likeComment(req, resp);
                     break;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void likeComment(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        HttpSession session = req.getSession();
+        int userIdStr = (int) session.getAttribute("userId");
+
+        int commentID = Integer.parseInt(req.getParameter("commentId"));
+
+        boolean checkComment = likeDAO.checkLikeComment(userIdStr, commentID);
+        boolean isLiked;
+
+        if (checkComment) {
+            likeDAO.deleteLikeComment(userIdStr, commentID);
+            isLiked = false;
+        } else {
+            likeDAO.addLikeToComment(commentID, userIdStr);
+            isLiked = true;
+        }
+
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+        resp.getWriter().write("{\"success\": true, \"isLiked\": " + isLiked + "}");
     }
 
     private void likePost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -296,12 +335,12 @@ public class PostServlet extends HttpServlet {
         int postId = Integer.parseInt(req.getParameter("postId"));
 
 
-        boolean checkLike = likeDAO.checkLikePost(userIdStr,postId);
+        boolean checkLike = likeDAO.checkLikePost(userIdStr, postId);
 
-        if (checkLike){
-            likeDAO.deleteLikePost(userIdStr,postId);
-        }else {
-            likeDAO.addLikeToPost(postId,userIdStr);
+        if (checkLike) {
+            likeDAO.deleteLikePost(userIdStr, postId);
+        } else {
+            likeDAO.addLikeToPost(postId, userIdStr);
         }
 
         int totalLikes = likeDAO.getTotalLikePost(postId);
@@ -317,7 +356,7 @@ public class PostServlet extends HttpServlet {
 
         String deleteAllImages = req.getParameter("deleteAllImages");
 
-        if (deleteAllImages.equals("true")){
+        if (deleteAllImages.equals("true")) {
             mediaDAO.deleteAllImagePostByID(postId);
         }
 
@@ -341,7 +380,7 @@ public class PostServlet extends HttpServlet {
             mediaDAO.insertPostMedia(postId, "picture", fileName);
         }
 
-        postDAO.updatePost(postId,content,privacy);
+        postDAO.updatePost(postId, content, privacy);
 
         HttpSession session = req.getSession();
         session.setAttribute("successMessage", "Cập nhật bài viết thành công!");
