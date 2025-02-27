@@ -17,6 +17,7 @@
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous">
     </script>
+    <script src="${pageContext.request.contextPath}/js/AcceptFriend.js"></script>
     <script src="${pageContext.request.contextPath}/js/Nav3.js"></script>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
@@ -84,16 +85,28 @@
             <div class="row">
                 <c:if test="${friends.size() != 0}">
                     <c:forEach var="friend" items="${friends}" varStatus="status">
+                        <input style="display: none" value="${friend.userId}">
                         <div class="col-md-2 mb-4">
                             <div class="card text-center">
                                 <img src="${pageContext.request.contextPath}/uploads/avatars/${friend.image}"
                                      class="card-img-top" alt="Avatar">
                                 <div class="card-body">
                                     <h6 class="card-title">${friend.name}</h6>
-                                    <button style="width: 100%; margin-bottom: 5px;" class="btn btn-primary btn-sm">Xác
-                                        nhận
+                                    <button  style="width: 100%; margin-bottom: 5px;" class="btn btn-primary btn-sm accept-btn"
+                                            onclick="acceptFriend(${friend.userId})" data-id="${friend.userId}">Xác nhận
                                     </button>
-                                    <button style="width: 100%" class="btn btn-secondary btn-sm">Xóa</button>
+                                    <button style="width: 100%" class="btn btn-secondary btn-sm delete-btn"
+                                            onclick="deleteFriend(${friend.userId})" data-id="${friend.userId}" >Xóa
+                                    </button>
+
+                                    <button class="acceptFriend" data-id="${friend.userId}"  style="display: none; width: 100%;
+                                            pointer-events: none; opacity: 0.5; background-color: #ccc; margin-top: 45px;height: 30px;border-radius: 5px;
+                                            border: 1px solid #999; cursor: default;">Đã xác nhận...
+                                    </button>
+                                    <button class="deleteFriend" data-id="${friend.userId}"  style="display: none; width: 100%;
+                                            pointer-events: none; opacity: 0.5; background-color: #ccc; margin-top: 45px;height: 30px;border-radius: 5px;
+                                            border: 1px solid #999; cursor: default;">Đã xóa yêu cầu
+                                    </button>
                                 </div>
                             </div>
                         </div>
