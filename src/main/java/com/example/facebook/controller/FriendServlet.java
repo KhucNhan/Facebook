@@ -111,15 +111,63 @@ public class FriendServlet extends HttpServlet {
                 case "deleteFriend":
                     deleteFriendUser(req, resp);
                     break;
+                case "cancelFriend":
+                    cancelFriend(req,resp);
+                    break;
                 case "searchInRequests":
                     searchInRequests(req, resp);
                     break;
                 case "searchInFriends":
                     searchInFriends(req, resp);
                     break;
+                case "addFriend":
+                    addFriend(req,resp);
+                    break;
+                case "unfriend":
+                    unFriend(req,resp);
+                    break;
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void unFriend(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        HttpSession session = req.getSession();
+        int userID = (int) session.getAttribute("userId");
+
+        int userFriendID = Integer.parseInt(req.getParameter("friendId"));
+
+        if (friendShipDAO.deleteFriend(userID,userFriendID)){
+            resp.setContentType("application/json");
+            resp.setCharacterEncoding("UTF-8");
+            resp.getWriter().write("{\"success\": true}");
+        }
+    }
+
+    private void cancelFriend(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        HttpSession session = req.getSession();
+        int userID = (int) session.getAttribute("userId");
+
+        int userFriendID = Integer.parseInt(req.getParameter("friendId"));
+
+        if (friendShipDAO.deleteFriend(userFriendID,userID)){
+            resp.setContentType("application/json");
+            resp.setCharacterEncoding("UTF-8");
+            resp.getWriter().write("{\"success\": true}");
+        }
+    }
+
+    private void addFriend(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        HttpSession session = req.getSession();
+        int userID = (int) session.getAttribute("userId");
+
+        int userFriendID = Integer.parseInt(req.getParameter("friendId"));
+
+        if (friendShipDAO.addFriend(userID,userFriendID)){
+            resp.setContentType("application/json");
+            resp.setCharacterEncoding("UTF-8");
+            resp.getWriter().write("{\"success\": true}");
         }
     }
 

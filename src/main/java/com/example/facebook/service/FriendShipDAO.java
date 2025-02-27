@@ -14,6 +14,7 @@ public class FriendShipDAO implements IFriendShipDAO {
     private ConnectDatabase connectDatabase = new ConnectDatabase();
     private Connection connection = connectDatabase.connection();
 
+    private final static String addFriend = "INSERT INTO friendships (senderId, receiverId, status) VALUES (?, ?, 'pending')";
     private final static String acceptFriend = "UPDATE friendships SET status = 'accepted' WHERE (receiverId = ? and senderId = ?);";
     private final static String deleteFriend = "DELETE FROM friendships WHERE (receiverId = ? and senderId = ?)";
 
@@ -102,6 +103,22 @@ public class FriendShipDAO implements IFriendShipDAO {
         }
 
         return requests;
+    }
+
+    @Override
+    public boolean addFriend(int userId, int userIdFriend) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(addFriend);
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, userIdFriend);
+
+            int row = preparedStatement.executeUpdate();
+
+            return row > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
@@ -209,4 +226,5 @@ public class FriendShipDAO implements IFriendShipDAO {
 
         }
     }
+
 }
