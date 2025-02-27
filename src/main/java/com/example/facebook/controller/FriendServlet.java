@@ -103,19 +103,23 @@ public class FriendServlet extends HttpServlet {
             action = "";
         }
 
-        switch (action){
-            case "acceptFriend" :
-                acceptFrinedUser(req,resp);
-                break;
-            case "deleteFriend":
-                deleteFriendUser(req,resp);
-                break;
-             case "searchInRequests":
+        try {
+            switch (action) {
+                case "acceptFriend":
+                    acceptFrinedUser(req, resp);
+                    break;
+                case "deleteFriend":
+                    deleteFriendUser(req, resp);
+                    break;
+                case "searchInRequests":
                     searchInRequests(req, resp);
                     break;
                 case "searchInFriends":
                     searchInFriends(req, resp);
                     break;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
