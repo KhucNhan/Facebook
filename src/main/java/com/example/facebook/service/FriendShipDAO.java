@@ -14,6 +14,9 @@ public class FriendShipDAO implements IFriendShipDAO {
     private ConnectDatabase connectDatabase = new ConnectDatabase();
     private Connection connection = connectDatabase.connection();
 
+    private final static String acceptFriend = "UPDATE friendships SET status = 'accepted' WHERE (receiverId = ? and senderId = ?);";
+    private final static String deleteFriend = "DELETE FROM friendships WHERE (receiverId = ? and senderId = ?)";
+
     private final static String select_all_friends_of_user_by_userId = "SELECT * FROM users " +
             "JOIN friendships  ON (users.userId = friendships.senderId OR users.userId = friendships.receiverId)" +
             "WHERE (friendships.senderId = ? OR friendships.receiverId = ?)" +
@@ -96,5 +99,39 @@ public class FriendShipDAO implements IFriendShipDAO {
             e.printStackTrace();
         }
         return usersFriendshipRequest;
+    }
+
+    @Override
+    public boolean acceptFriend(int userId, int userIdFriend) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(acceptFriend);
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, userIdFriend);
+
+            int resultSet = preparedStatement.executeUpdate();
+
+            return resultSet > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+
+        }
+    }
+
+    @Override
+    public boolean deleteFriend(int userId, int userIdFriend) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(deleteFriend);
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, userIdFriend);
+
+            int resultSet = preparedStatement.executeUpdate();
+
+            return resultSet > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+
+        }
     }
 }

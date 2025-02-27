@@ -65,6 +65,45 @@ public class FriendServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
 
+        if (action == null) {
+            action = "";
+        }
+
+        switch (action){
+            case "acceptFriend" :
+                acceptFrinedUser(req,resp);
+                break;
+            case "deleteFriend":
+                deleteFriendUser(req,resp);
+                break;
+        }
+    }
+
+    private void deleteFriendUser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        HttpSession session = req.getSession();
+        int userID = (int) session.getAttribute("userId");
+
+        int userFriendID = Integer.parseInt(req.getParameter("friendId"));
+
+        if (friendShipDAO.deleteFriend(userID,userFriendID)){
+            resp.setContentType("application/json");
+            resp.setCharacterEncoding("UTF-8");
+            resp.getWriter().write("{\"success\": true}");
+        }
+    }
+
+    private void acceptFrinedUser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        HttpSession session = req.getSession();
+        int userID = (int) session.getAttribute("userId");
+
+        int userFriendID = Integer.parseInt(req.getParameter("friendId"));
+
+        if (friendShipDAO.acceptFriend(userID,userFriendID)){
+            resp.setContentType("application/json");
+            resp.setCharacterEncoding("UTF-8");
+            resp.getWriter().write("{\"success\": true}");
+        }
     }
 }
