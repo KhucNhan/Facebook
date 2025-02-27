@@ -351,7 +351,7 @@
     }
 
     function goToFriends() {
-        window.location.href = "/users?action=friends";
+        window.location.href = "/friends?action=friendRequests";
     }
 
     document.addEventListener("DOMContentLoaded", function () {
