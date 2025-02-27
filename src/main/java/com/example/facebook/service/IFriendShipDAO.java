@@ -11,4 +11,6 @@ public interface IFriendShipDAO {
 
     boolean acceptFriend(int userId,int userIdFriend);
     boolean deleteFriend(int userId,int userIdFriend);
+    List<User> searchUsersInRequests(String value, int userId)  throws SQLException;
+    List<User> searchUsersFriends(String value, int userId) throws SQLException;
 }

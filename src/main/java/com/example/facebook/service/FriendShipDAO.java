@@ -28,8 +28,83 @@ public class FriendShipDAO implements IFriendShipDAO {
             "JOIN users u ON f.senderId = u.userId\n" +
             "WHERE f.receiverId = ? AND f.status = 'pending';";
 
-    @Override
+    private final static String select_all_friends_of_user_by_name = "SELECT u.* \n" +
+            "FROM friendships f\n" +
+            "JOIN users u ON \n" +
+            "    (f.senderId = u.userId AND f.receiverId = ?) \n" +
+            "    OR (f.receiverId = u.userId AND f.senderId = ?)\n" +
+            "WHERE f.status = 'accepted' \n" +
+            "AND u.name LIKE ?;\n";
+    private final static String select_all_friend_requests_of_user_by_name = "SELECT u.* \n" +
+            "FROM friendships f\n" +
+            "JOIN users u ON f.senderId = u.userId\n" +
+            "WHERE f.receiverId = ? \n" +
+            "AND f.status = 'pending' \n" +
+            "AND u.name LIKE ?;\n";
 
+
+    @Override
+    public List<User> searchUsersInRequests(String value, int userId) throws SQLException {
+        List<User> requests = new ArrayList<>();
+        PreparedStatement preparedStatement = connection.prepareStatement(select_all_friend_requests_of_user_by_name);
+        preparedStatement.setInt(1, userId);
+        preparedStatement.setString(2, "%" + value + "%");
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        while (resultSet.next()) {
+            requests.add(new User(
+                    resultSet.getInt(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getString(4),
+                    resultSet.getString(5),
+                    resultSet.getString(6),
+                    resultSet.getDate(7),
+                    resultSet.getBoolean(8),
+                    resultSet.getString(9),
+                    resultSet.getString(10),
+                    resultSet.getTimestamp(11),
+                    resultSet.getTimestamp(12),
+                    resultSet.getBoolean(13)
+            ));
+        }
+
+        return requests;
+    }
+
+    @Override
+    public List<User> searchUsersFriends(String value, int userId) throws SQLException {
+        List<User> requests = new ArrayList<>();
+        PreparedStatement preparedStatement = connection.prepareStatement(select_all_friends_of_user_by_name);
+        preparedStatement.setInt(1, userId);
+        preparedStatement.setInt(2, userId);
+        preparedStatement.setString(3, "%" + value + "%");
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        while (resultSet.next()) {
+            requests.add(new User(
+                    resultSet.getInt(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getString(4),
+                    resultSet.getString(5),
+                    resultSet.getString(6),
+                    resultSet.getDate(7),
+                    resultSet.getBoolean(8),
+                    resultSet.getString(9),
+                    resultSet.getString(10),
+                    resultSet.getTimestamp(11),
+                    resultSet.getTimestamp(12),
+                    resultSet.getBoolean(13)
+            ));
+        }
+
+        return requests;
+    }
+
+    @Override
     public List<User> getAllFriendsAdded(int userId) throws SQLException {
         List<User> usersFriendShip = new ArrayList<>();
 

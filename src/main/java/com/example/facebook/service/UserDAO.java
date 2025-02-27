@@ -128,6 +128,7 @@ public class UserDAO implements IUserDAO {
         return rowsAffected > 0;
     }
 
+    @Override
     public List<User> searchUsers(String value) throws SQLException {
         Set<User> resultSet = new HashSet<>();
 
