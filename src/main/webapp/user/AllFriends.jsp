@@ -18,6 +18,7 @@
             crossorigin="anonymous">
     </script>
     <script src="${pageContext.request.contextPath}/js/Nav3.js"></script>
+    <script src="${pageContext.request.contextPath}/js/AcceptFriend.js"></script>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
@@ -90,7 +91,11 @@
                                      class="card-img-top" alt="Avatar">
                                 <div class="card-body">
                                     <h6 class="card-title">${friend.name}</h6>
-                                    <button style="width: 100%;" class="btn btn-primary btn-sm">Hủy kết bạn</button>
+                                    <button style="width: 100%;" class="btn btn-primary btn-sm friend" onclick="unFriend(${friend.userId})" data-id="${friend.userId}">Hủy kết bạn</button>
+                                    <button class="unFiend" data-id="${friend.userId}"  style="display: none; width: 100%;
+                                            pointer-events: none; opacity: 0.5; background-color: #ccc;height: 30px;border-radius: 5px;
+                                            border: 1px solid #999; cursor: default;">Đã hủy kết bạn
+                                    </button>
                                 </div>
                             </div>
                         </div>
