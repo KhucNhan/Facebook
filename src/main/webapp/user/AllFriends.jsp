@@ -72,11 +72,11 @@
             </ul>
         </div>
         <div class="col-md-10">
-            <h3>Lời mời kết bạn</h3>
+            <h3>Tất cả bạn bè</h3>
             <div style="padding-block: 10px;" class="row">
-                <form class="searchForm" action="/friends?action=searchInRequests" method="post">
+                <form class="searchForm" action="/friends?action=searchInFriends" method="post">
                     <div class="input-group mb-3">
-                        <input type="text" name="value" class="form-control" placeholder="Tìm kiếm trong danh sách lời mời..." aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <input type="text" name="value" class="form-control" placeholder="Tìm kiếm trong danh sách bạn bè..." aria-label="Recipient's username" aria-describedby="button-addon2">
                         <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Tìm</button>
                     </div>
                 </form>
@@ -90,19 +90,16 @@
                                      class="card-img-top" alt="Avatar">
                                 <div class="card-body">
                                     <h6 class="card-title">${friend.name}</h6>
-                                    <button style="width: 100%; margin-bottom: 5px;" class="btn btn-primary btn-sm">Xác
-                                        nhận
-                                    </button>
-                                    <button style="width: 100%" class="btn btn-secondary btn-sm">Xóa</button>
+                                    <button style="width: 100%;" class="btn btn-primary btn-sm">Hủy kết bạn</button>
                                 </div>
                             </div>
                         </div>
                     </c:forEach>
                 </c:if>
-                <c:if test="${friends.size() == 0 && action != 'requests'}">
+                <c:if test="${friends.size() == 0 && action != 'allFriends'}">
                     <p>Không có lời mời kết bạn nào</p>
                 </c:if>
-                <c:if test="${friends.size() == 0 && action == 'requests'}">
+                <c:if test="${friends.size() == 0 && action == 'allFriends'}">
                     <p>Không tìm thấy kết quả phù hợp</p>
                 </c:if>
             </div>

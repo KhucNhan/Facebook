@@ -29,16 +29,59 @@ public class FriendServlet extends HttpServlet {
 
         try {
             switch (action) {
-                case "listfriends":
-                    showListFriends(req, resp);
-                    break;
                 case "friendRequests":
                     showFriendRequests(req, resp);
+                    break;
+                case "allFriends":
+                    showAllFriends(req, resp);
+                    break;
+                case "searchInRequests":
+                    searchInRequests(req, resp);
+                    break;
+                case "searchInFriends":
+                    searchInFriends(req, resp);
                     break;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void searchInFriends(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
+        HttpSession session = req.getSession();
+        String userIdStr = session.getAttribute("userId").toString();
+        User user = userDAO.selectUserById(Integer.parseInt(userIdStr));
+
+        String value = req.getParameter("value");
+        List<User> searchInFriends = friendShipDAO.searchUsersFriends(value, user.getUserId());
+        req.setAttribute("user", user);
+        req.setAttribute("friends", searchInFriends);
+        req.setAttribute("action", "allFriends");
+        req.getRequestDispatcher("user/AllFriends.jsp").forward(req, resp);
+    }
+
+    private void searchInRequests(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
+        HttpSession session = req.getSession();
+        String userIdStr = session.getAttribute("userId").toString();
+        User user = userDAO.selectUserById(Integer.parseInt(userIdStr));
+
+        String value = req.getParameter("value");
+        List<User> searchInRequests = friendShipDAO.searchUsersInRequests(value, user.getUserId());
+        req.setAttribute("user", user);
+        req.setAttribute("friends", searchInRequests);
+        req.setAttribute("action", "requests");
+        req.getRequestDispatcher("user/FriendRequests.jsp").forward(req, resp);
+    }
+
+    private void showAllFriends(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
+        HttpSession session = req.getSession();
+        String userIdStr = session.getAttribute("userId").toString();
+        User user = userDAO.selectUserById(Integer.parseInt(userIdStr));
+
+        List<User> friends = friendShipDAO.getAllFriendsAdded(user.getUserId());
+        req.setAttribute("user", user);
+        req.setAttribute("friends", friends);
+        req.getRequestDispatcher("user/AllFriends.jsp").forward(req, resp);
     }
 
     private void showFriendRequests(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
@@ -52,19 +95,25 @@ public class FriendServlet extends HttpServlet {
         req.getRequestDispatcher("user/FriendRequests.jsp").forward(req, resp);
     }
 
-    private void showListFriends(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
-        HttpSession session = req.getSession();
-        String userIdStr = session.getAttribute("userId").toString();
-        User user = userDAO.selectUserById(Integer.parseInt(userIdStr));
-
-        List<User> friends = friendShipDAO.getAllFriendsAdded(user.getUserId());
-        req.setAttribute("user", user);
-        req.setAttribute("friends", friends);
-        req.getRequestDispatcher("user/FriendRequests.jsp").forward(req, resp);
-    }
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
 
+        if (action == null) {
+            action = "";
+        }
+
+        try {
+            switch (action) {
+                case "searchInRequests":
+                    searchInRequests(req, resp);
+                    break;
+                case "searchInFriends":
+                    searchInFriends(req, resp);
+                    break;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
