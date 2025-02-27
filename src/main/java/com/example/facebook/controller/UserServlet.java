@@ -130,14 +130,27 @@ public class UserServlet extends HttpServlet {
                 case "userUpdateInformation":
                     userUpdateInformation(req, resp);
                     break;
-
                 case "changePassword":
                     changePassword(req, resp);
+                    break;
+                case "userSearchUsers":
+                    userSearchUsers(req, resp);
                     break;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void userSearchUsers(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
+        HttpSession session = req.getSession();
+        User user = userDAO.selectUserById(Integer.parseInt(session.getAttribute("userId").toString()));
+
+        String value = req.getParameter("value");
+        List<User> searchList = userDAO.userSearchUsers(value, user.getUserId());
+        req.setAttribute("searchList", searchList);
+        req.setAttribute("user", user);
+        req.getRequestDispatcher("user/SearchUsers.jsp").forward(req, resp);
     }
 
     private void changePassword(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
@@ -199,7 +212,7 @@ public class UserServlet extends HttpServlet {
 
     private void searchUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
         String value = req.getParameter("value");
-        List<User> users = userDAO.searchUsers(value);
+        List<User> users = userDAO.adminSearchUsers(value);
         req.setAttribute("users", users);
         req.getRequestDispatcher("/admin/Users.jsp").forward(req, resp);
     }

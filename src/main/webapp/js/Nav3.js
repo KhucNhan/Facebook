@@ -24,3 +24,9 @@ function hideSearchInput(event) {
 document.getElementById('search-container').addEventListener('mouseout', hideSearchInput);
 document.getElementById('contactLabel').addEventListener('mouseout', hideSearchInput);
 
+document.getElementById("searchInputNav").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault(); // Ngăn chặn hành vi mặc định nếu cần
+        this.closest("form").submit(); // Submit form
+    }
+});

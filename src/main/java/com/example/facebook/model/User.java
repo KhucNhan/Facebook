@@ -19,6 +19,7 @@ public class User {
     private Timestamp updateAt;
     private boolean status;
 
+    private int friendStatus;
     public User() {
     }
 
@@ -46,6 +47,14 @@ public class User {
         this.password = password;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
+    }
+
+    public int getFriendStatus() {
+        return friendStatus;
+    }
+
+    public void setFriendStatus(int friendStatus) {
+        this.friendStatus = friendStatus;
     }
 
     public String getRole() {

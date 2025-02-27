@@ -32,6 +32,20 @@ public class UserDAO implements IUserDAO {
 
     private static final String select_user_by_name = "SELECT * FROM users WHERE name LIKE ?";
 
+    private static final String select_user_by_name_sort_by_status = "SELECT u.* ,\n" +
+            "       CASE \n" +
+            "           WHEN f.status = 'accepted' THEN 1  -- Đã kết bạn\n" +
+            "           WHEN f.status = 'pending' AND f.receiverId = ? THEN 2  -- Lời mời kết bạn (user hiện tại là người nhận)\n" +
+            "           when f.status = 'pending' and f.senderId = ? then 3\n" +
+            "           ELSE 4  -- Chưa kết bạn\n" +
+            "       END AS friend_status\n" +
+            "FROM users u\n" +
+            "LEFT JOIN friendships f \n" +
+            "    ON (f.senderId = u.userId AND f.receiverId = ?) \n" +
+            "    OR (f.receiverId = u.userId AND f.senderId = ?)\n" +
+            "WHERE u.name LIKE ? AND u.userId != ?\n" +
+            "ORDER BY friend_status, u.name;";
+
     @Override
     public List<User> selectAllUsers() throws SQLException {
         List<User> users = new ArrayList<>();
@@ -129,7 +143,7 @@ public class UserDAO implements IUserDAO {
     }
 
     @Override
-    public List<User> searchUsers(String value) throws SQLException {
+    public List<User> adminSearchUsers(String value) throws SQLException {
         Set<User> resultSet = new HashSet<>();
 
         if (value != null) {
@@ -142,6 +156,41 @@ public class UserDAO implements IUserDAO {
         }
 
         return new ArrayList<>(resultSet);
+    }
+
+    @Override
+    public List<User> userSearchUsers(String value, int userId) throws SQLException {
+        List<User> searchList = new ArrayList<>();
+        PreparedStatement preparedStatement = connection.prepareStatement(select_user_by_name_sort_by_status);
+        preparedStatement.setInt(1, userId);
+        preparedStatement.setInt(2, userId);
+        preparedStatement.setInt(3, userId);
+        preparedStatement.setInt(4, userId);
+        preparedStatement.setString(5, "%" + value + "%");
+        preparedStatement.setInt(6, userId);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        User user;
+        while (resultSet.next()) {
+             user = new User(
+                    resultSet.getInt(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getString(4),
+                    resultSet.getString(5),
+                    resultSet.getString(6),
+                    resultSet.getDate(7),
+                    resultSet.getBoolean(8),
+                    resultSet.getString(9),
+                    resultSet.getString(10),
+                    resultSet.getTimestamp(11),
+                    resultSet.getTimestamp(12),
+                    resultSet.getBoolean(13));
+             user.setFriendStatus(resultSet.getInt(14));
+            searchList.add(user);
+        }
+
+        return searchList;
     }
 
     @Override

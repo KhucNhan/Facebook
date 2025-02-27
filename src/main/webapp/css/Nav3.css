@@ -67,7 +67,7 @@
     transition: opacity 0.3s ease-in-out;
 }
 
-.search {
+#searchInputNav {
     width: 250px;
     height: 50px;
     padding-left: 65px;
@@ -78,13 +78,13 @@
     transition: all 0.3s ease-in-out;
 }
 
-.search:focus {
+#searchInputNav:focus {
     width: 250px;
     padding-left: 20px;
     outline: none;
 }
 
-.search:focus + .iconFacebook {
+#searchInputNav:focus + .iconFacebook {
     opacity: 0;
 }
 
