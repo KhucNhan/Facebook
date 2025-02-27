@@ -39,13 +39,13 @@
     </svg>
 
     <!-- Ô tìm kiếm -->
-    <div class="search-container">
-        <input class="search" type="text" placeholder="Tìm kiếm trên Facebook">
+    <form style="margin: 0" class="search-container" action="/users?action=userSearchUsers" method="post">
+        <input id="searchInputNav" name="value" type="text" placeholder="Tìm kiếm trên Facebook">
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="silver" class="bi bi-search iconFacebook"
              viewBox="0 0 16 16">
             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
         </svg>
-    </div>
+    </form>
 
     <div class="menuCenter">
         <div class="home">
