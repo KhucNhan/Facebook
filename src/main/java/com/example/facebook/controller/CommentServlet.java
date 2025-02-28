@@ -73,7 +73,7 @@ public class CommentServlet extends HttpServlet {
 
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8"); // Đảm bảo mã hóa UTF-8
-        resp.getWriter().write("{\"postId\":  \"" + comment.getPostId() + "\", \"success\": \"" + success + "\", \"name\": \"" + user.getName() + "\", \"content\": \"" + content + "\", \"image\": \"" + user.getImage() + "\", \"commentId\": \"" + replyCommentId + "\", \"isOwner\" : \"true\"}");
+        resp.getWriter().write("{\"postId\":  \"" + comment.getPostId() + "\", \"success\": \"" + success + "\", \"name\": \"" + user.getName() + "\", \"content\": \"" + content + "\", \"image\": \"" + user.getImage() + "\", \"commentId\": \"" + replyCommentId + "\", \"isOwner\" : \"true\", \"parentCommentId\": \"" + comment.getCommentId() + "\"}");
     }
 
     private void addComment(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {

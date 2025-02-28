@@ -191,7 +191,7 @@ public class UserServlet extends HttpServlet {
 
         User user = userDAO.selectUserById(Integer.parseInt(userIdStr));
 
-        if(name.equalsIgnoreCase(user.getName()) || email.equalsIgnoreCase(user.getEmail()) || phone.equals(user.getPhone()) || Date.valueOf(dateOfBirth).equals(user.getDateOfBirth()) || gender == user.isGender()) {
+        if(name.equalsIgnoreCase(user.getName()) && email.equalsIgnoreCase(user.getEmail()) && phone.equals(user.getPhone()) && Date.valueOf(dateOfBirth).equals(user.getDateOfBirth()) && gender == user.isGender()) {
             req.setAttribute("status", "noChange");
             req.setAttribute("user", user);
             req.getRequestDispatcher("user/Edit.jsp").forward(req, resp);
