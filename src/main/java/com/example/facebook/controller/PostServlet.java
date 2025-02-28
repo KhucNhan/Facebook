@@ -77,7 +77,7 @@ public class PostServlet extends HttpServlet {
         String[] layoutType = getLayoutType(mediaList.size());
 
         out.println("<div class='modal-overlay' onclick='closePostModal()'>");
-        out.println("<div class='post-modal' data-post-id='" + post.getPostId() + "' onclick='event.stopPropagation();'>");
+        out.println("<div style='padding-bottom:0;' class='post-modal' data-post-id='" + post.getPostId() + "' onclick='event.stopPropagation();'>");
 
         // Thông tin người dùng
         out.println("<div class='introduce' style='display: flex; justify-content: space-between'>");
@@ -128,7 +128,8 @@ public class PostServlet extends HttpServlet {
 
 
         // Khu vực nhập bình luận
-        out.println("<div class='comment-input-section' style='display: flex; align-items: center; padding: 10px; border-top: 1px solid lightgray;'>");
+//        out.println("<div class='comment-input-section' style='display: flex; align-items: center; padding: 10px; border-top: 1px solid lightgray;'>");
+        out.println("<div class='comment-input-section' style='position: sticky; bottom: 0; background: white; display: flex; align-items: center; padding: 10px; border-top: 1px solid lightgray;'>");
 
 // Avatar của người dùng hiện tại
         out.println("<img src='/uploads/avatars/" + user.getImage() + "' style='width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;'>");
