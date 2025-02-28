@@ -147,14 +147,14 @@
                                                 <c:if test="${post.user.userId == user.userId}">
                                                     <li>
                                                         <a class="dropdown-item delete-link"
-                                                           href="/posts?action=deletePost&&postId=${post.getPostId()}">Xóa
+                                                           href="/posts?action=deletePost&postId=${post.getPostId()}">Xóa
                                                         </a>
                                                     </li>
                                                 </c:if>
                                                 <c:if test="${post.user.userId != user.userId}">
                                                     <li>
-                                                        <a class="dropdown-item delete-link"
-                                                           href="/posts?action=report&&postId=${post.getPostId()}">Báo
+                                                        <a class="dropdown-item"
+                                                           href="/posts?action=report&postId=${post.getPostId()}">Báo
                                                             cáo bài viết
                                                         </a>
                                                     </li>
