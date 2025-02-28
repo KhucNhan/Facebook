@@ -118,7 +118,7 @@ public class PostServlet extends HttpServlet {
         out.println("<h4 style=\"margin-block:10px;padding:5px ;color:gray; border-block:1px solid lightgrey;\">Bình luận</h4>");
         out.println("<ul class='comments-list' style=\"list-style-type:none\">");
         if (comments.isEmpty()) {
-            out.println("<p id='commentListIsNull' style=\"text-align:center\">Không có bình luận</p>");
+            out.println("<p id='commentListIsNull" + postId + "' style=\"text-align:center\">Không có bình luận</p>");
         } else {
             for (Comment comment : comments) {
                 renderComment(comment, user, out); // Gọi hàm render bình luận (đệ quy)

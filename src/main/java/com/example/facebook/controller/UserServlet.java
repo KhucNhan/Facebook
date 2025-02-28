@@ -150,6 +150,7 @@ public class UserServlet extends HttpServlet {
         List<User> searchList = userDAO.userSearchUsers(value, user.getUserId());
         req.setAttribute("searchList", searchList);
         req.setAttribute("user", user);
+        req.setAttribute("searchValue", value);
         req.getRequestDispatcher("user/SearchUsers.jsp").forward(req, resp);
     }
 

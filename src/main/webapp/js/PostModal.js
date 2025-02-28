@@ -27,7 +27,7 @@ function submitComment(postId) {
     $.ajax({
         url: "/comments?action=add",
         type: "POST",
-        data: { postId: postId, content: commentText },
+        data: {postId: postId, content: commentText},
         success: function (response) {
             let commentsList = document.querySelector(".comments-list");
 
@@ -70,6 +70,22 @@ function submitComment(postId) {
         `;
             commentsList.appendChild(newComment);
             inputField.value = "";
+            let commentCount = document.getElementById("total-comment-" + response.postId);
+
+            if (commentCount) {
+                let currentCount = parseInt(commentCount.innerText, 10) || 0; // Ép kiểu và xử lý trường hợp NaN
+                commentCount.innerText = currentCount + 1;
+            } else {
+                console.log(commentCount);
+            }
+
+            let commentListIsNull = document.getElementById("commentListIsNull" + response.postId);
+
+            if (commentListIsNull) {
+                commentListIsNull.style.display = "none";
+            } else {
+                console.log(response.postId);
+            }
         },
 
         error: function () {
@@ -86,12 +102,27 @@ function deleteComment(commentId) {
     $.ajax({
         url: "/comments?action=delete",
         type: "POST",
-        data: { commentId: commentId },
+        data: {commentId: commentId},
         success: function (response) {
-            if (response.trim() === "success") {
+            if (response.success === "success") {
                 let comment = "comment-" + commentId;
-                console.log(comment)
                 document.getElementById(comment).remove();
+                let commentCount = document.getElementById("total-comment-" + response.postId);
+
+                if (commentCount) {
+                    let currentCount = parseInt(commentCount.innerText, 10) || 0; // Ép kiểu và xử lý trường hợp NaN
+                    commentCount.innerText = currentCount - 1;
+                } else {
+                    console.log(commentCount);
+                }
+
+                // let commentListIsNull = document.getElementById("commentListIsNull" + response.postId);
+                //
+                // if (commentListIsNull && (response.isEmpty === "true")) {
+                //     commentListIsNull.style.display = "inherit";
+                // } else {
+                //     console.log(commentListIsNull);
+                // }
             } else {
                 alert("Xóa thất bại! Vui lòng thử lại.");
             }
@@ -116,18 +147,15 @@ function editComment(commentId) {
 }
 
 function saveComment(commentId) {
-    let commentListIsNull = document.getElementById("commentListIsNull");
-
     let newContent = document.querySelector(`#edit-textarea-${commentId}`).value;
 
     $.ajax({
         url: "/comments?action=edit&commentId=" + commentId,
         type: "POST",
-        data: { commentId: commentId, content: newContent },
+        data: {commentId: commentId, content: newContent},
         success: function (response) {
-            if (response.trim() === "success") {
+            if (response.success === "success") {
                 document.querySelector(`#comment-${commentId} .comment-content`).innerText = newContent;
-                commentListIsNull.style.display = "none";
             } else {
                 alert("Cập nhật thất bại! Vui lòng thử lại.");
             }
@@ -156,6 +184,7 @@ function closeDropdown(commentId) {
 function replyToComment(commentId) {
     let commentElement = document.getElementById(`comment-${commentId}`);
     if (!commentElement) return;
+    let liCommentElement = commentElement.closest("li");
 
     // Kiểm tra nếu form phản hồi đã tồn tại, tránh tạo nhiều lần
     if (commentElement.querySelector(".reply-form")) return;
@@ -170,7 +199,7 @@ function replyToComment(commentId) {
     `;
 
     // Chèn form vào dưới bình luận
-    commentElement.appendChild(replyForm);
+    liCommentElement.appendChild(replyForm);
 }
 
 function cancelReply(commentId) {
@@ -190,7 +219,7 @@ function submitReply(commentId) {
     $.ajax({
         url: "/comments?action=reply",
         type: "POST",
-        data: { parentCommentId: commentId, content: replyText },
+        data: {parentCommentId: commentId, content: replyText},
         success: function (response) {
             console.log(response);
             if (response.success) {
@@ -246,6 +275,16 @@ function submitReply(commentId) {
                 repliesContainer.appendChild(newReply);
                 inputField.value = ""; // Xóa nội dung sau khi gửi
                 cancelReply(commentId); // Ẩn form phản hồi sau khi gửi
+
+                // sau khi cmt sẽ tăng số lượng cmt
+                let commentCount = document.getElementById("total-comment-" + response.postId);
+
+                if (commentCount) {
+                    let currentCount = parseInt(commentCount.innerText, 10) || 0; // Ép kiểu và xử lý trường hợp NaN
+                    commentCount.innerText = currentCount + 1;
+                } else {
+                    console.log(commentCount);
+                }
             } else {
                 alert("Gửi phản hồi thất bại! Vui lòng thử lại.");
             }
