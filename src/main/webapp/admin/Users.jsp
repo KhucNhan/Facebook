@@ -30,6 +30,7 @@
         td {
             word-break: break-word;
             max-width: 100%;
+            align-content: center;
         }
     </style>
 </head>
@@ -40,12 +41,12 @@
         <jsp:include page="/AdminList.jsp"></jsp:include>
 
         <%--       Right        --%>
-        <div class="col-md-9">
+        <div class="col-md-10">
             <%--            Nav            --%>
             <jsp:include page="/AdminNav.jsp"></jsp:include>
 
             <%--       Center         --%>
-            <div class="row d-flex justify-content-center">
+            <div class="row d-flex justify-content-center" style="margin: 0">
                 <div style="display:flex; justify-content: space-between">
                     <a style="height: fit-content" href="/users?action=add" class="btn btn-primary">Thêm tài khoản</a>
                     <form style="width: 70%" action="users?action=search" method="post">
@@ -68,11 +69,11 @@
                         <th style="width: 5%;" class="text-center">#</th>
                         <th style="width: 10%" class="text-center">Ảnh</th>
                         <th style="width: 10%" class="text-center">Tên</th>
-                        <th style="width: 15%" class="text-center">Email</th>
+                        <th style="width: 20%" class="text-center">Email</th>
                         <th style="width: 10%" class="text-center">SĐT</th>
                         <th style="width: 10%" class="text-center">Giới tính</th>
                         <th style="width: 10%" class="text-center">Ngày sinh</th>
-                        <th style="width: 15%" class="text-center">Trạng thái</th>
+                        <th style="width: 10%" class="text-center">Trạng thái</th>
                         <th style="width: 15%" class="text-center">Hành động</th>
                     </tr>
                     </thead>
@@ -122,16 +123,16 @@
             paginatedUsers.forEach(function (user) {
                 const row = '<tr class="d-flex">' +
                     '<td style="width: 5%;" class="text-center">' + user.userId + '</td>' +
-                    '<td style="width: 10%;" class="text-center"><img style="width: 100%;" src="${pageContext.request.contextPath}/uploads/avatars/' + user.image + '" /></td>' +
+                    '<td style="width: 10%;" class="text-center"><img style="width: 85%;" src="${pageContext.request.contextPath}/uploads/avatars/' + user.image + '" /></td>' +
                     '<td style="width: 10%;" class="text-center">' + user.name + '</td>' +
-                    '<td style="width: 15%;" class="text-center">' + user.email + '</td>' +
+                    '<td style="width: 20%;" class="text-center">' + user.email + '</td>' +
                     '<td style="width: 10%;" class="text-center">' + user.phone + '</td>' +
                     '<td style="width: 10%;" class="text-center">' + user.gender + '</td>' +
                     '<td style="width: 10%;" class="text-center">' + user.dateOfBirth + '</td>' +
-                    '<td style="width: 15%;" class="text-center">' + (user.status ? 'Active' : 'Blocked') + '</td>' +
+                    '<td style="width: 10%;" class="text-center">' + (user.status ? 'Active' : 'Blocked') + '</td>' +
                     '<td style="width: 15%;" class="text-center">' +
                     '<a class="btn btn-warning" style="margin-right: 5px;" href="/users?action=update&userId=' + user.userId + '">Edit</a>' +
-                    '<a class="btn btn-status ' + (user.status ? 'btn-danger' : 'btn-success') + '" data-userid="' + user.userId + '" data-status="' + user.status + '"">' +
+                    '<a style="min-width:83px;" class="btn btn-status ' + (user.status ? 'btn-danger' : 'btn-success') + '" data-userid="' + user.userId + '" data-status="' + user.status + '"">' +
                     (user.status ? 'Block' : 'Activate') +
                     '</a>' +
                     '</td>' +
@@ -151,6 +152,8 @@
                 '</tr>';
             tableBody.innerHTML += emptyRow;
         }
+
+        attachStatusButtonEvents();
     }
 
     function setupPagination() {
@@ -229,7 +232,7 @@
     displayUsers(currentPage);
     setupPagination();
 
-    document.addEventListener("DOMContentLoaded", function () {
+    function attachStatusButtonEvents() {
         document.querySelectorAll(".btn-status").forEach(button => {
             button.addEventListener("click", function () {
                 let userId = this.getAttribute("data-userid");
@@ -253,7 +256,7 @@
                     .catch(error => console.error("Lỗi:", error));
             });
         });
-    });
+    }
 </script>
 </body>
 </html>

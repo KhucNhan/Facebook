@@ -88,7 +88,7 @@
             </c:if>
         </div>
         <button type="submit" class="btn">Xác nhận</button>
-        <a style="display: block;text-align: center" href="/home">Quay lại</a>
+        <a style="margin-top:20px;display: block;text-align: center" href="/home">Quay lại</a>
     </form>
 </div>
 

@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="row">
+<div class="row" style="margin: 0 0 10px 0">
     <ul class="nav justify-content-end">
         <li class="nav-item">
             <a class="nav-link" aria-current="page" href="#">
