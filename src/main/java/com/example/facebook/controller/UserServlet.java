@@ -269,7 +269,11 @@ public class UserServlet extends HttpServlet {
         String userId = req.getParameter("userId");
 
         Part filePart = req.getPart("image");
-        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+
+        String fileName = (filePart != null && filePart.getSubmittedFileName() != null && !filePart.getSubmittedFileName().isEmpty())
+                ? Paths.get(filePart.getSubmittedFileName()).getFileName().toString()
+                : "default_avt.jpg";  // Gán ảnh mặc định nếu không có file
+
 
 
         File uploadDir = new File("C:\\uploads\\avatars");
@@ -291,6 +295,14 @@ public class UserServlet extends HttpServlet {
         boolean gender = Boolean.parseBoolean(req.getParameter("gender"));
 
         User user = userDAO.selectUserById(Integer.parseInt(userId));
+
+        if (name.equalsIgnoreCase(user.getName()) && email.equalsIgnoreCase(user.getEmail()) && phone.equals(user.getPhone()) && Date.valueOf(dateOfBirth).equals(user.getDateOfBirth()) && gender == user.isGender()) {
+            req.setAttribute("status", "Không có sự thay đổi nào");
+            req.setAttribute("user", user);
+            req.getRequestDispatcher("admin/Edit.jsp").forward(req, resp);
+            return;
+        }
+
         user.setImage(fileName);
         user.setName(name);
         user.setEmail(email);

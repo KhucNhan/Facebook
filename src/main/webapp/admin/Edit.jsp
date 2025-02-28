@@ -150,7 +150,7 @@
     </c:if>
     <c:if test="${status != 'success'}">
         <div>
-            <p style="color: white">hehehe</p>
+            <p style="color: orange; text-align: center">${status}</p>
         </div>
     </c:if>
     <form action="/users?action=update&userId=${user.userId}" method="post" class="signup-form" enctype="multipart/form-data">
