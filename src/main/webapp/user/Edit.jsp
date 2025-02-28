@@ -97,9 +97,9 @@
             <p style="color: green; text-align: center; font-weight: bold">Cập nhật tài khoản thành công!</p>
         </div>
     </c:if>
-    <c:if test="${status != 'success'}">
+    <c:if test="${status == 'noChange'}">
         <div>
-            <p style="color: white">hehehe</p>
+            <p style="color: orange">Không có sự thay đổi nào.</p>
         </div>
     </c:if>
     <form action="/users?action=userUpdateInformation&userId=${user.userId}" method="post"

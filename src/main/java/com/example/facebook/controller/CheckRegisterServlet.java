@@ -36,7 +36,7 @@ public class CheckRegisterServlet extends HttpServlet {
         }
 
         try {
-            if (name.matches(".*[^a-zA-Z0-9\\s].*")) {
+            if (name.matches(".*[^a-zA-Z\\sÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬÉÈẺẼẸÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴĐáàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđ].*")) {
                 response.getWriter().write("nameError");
             } else if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.(com|vn|org|net|edu|gov|info)$")) {
                 response.getWriter().write("emailRegex");
