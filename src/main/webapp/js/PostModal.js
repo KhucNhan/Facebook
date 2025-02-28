@@ -65,7 +65,7 @@ function submitComment(postId) {
             </div>
             <div class='comment-actions' style='display: flex; justify-content: start; padding-left: 70px;'>
                  <a class='like-button ' data-comment-id='${response.commentId}' style='background-color: inherit; width: fit-content; margin-right: 20px; cursor: pointer; color: grey;font-weight: bold' onclick='toggleLike(${response.commentId})'>Thích</a>
-                 <a class='reply-button' style='background-color: inherit; width: fit-content; cursor: pointer; color: grey;' onclick='replyToComment(\` + response.commentId + \`)'>Phản hồi</a>
+                 <a class='reply-button' style='background-color: inherit; width: fit-content; cursor: pointer; color: grey;' onclick='replyToComment(${response.commentId})'>Phản hồi</a>
             </div>
         `;
             commentsList.appendChild(newComment);
@@ -187,7 +187,7 @@ function replyToComment(commentId) {
     let liCommentElement = commentElement.closest("li");
 
     // Kiểm tra nếu form phản hồi đã tồn tại, tránh tạo nhiều lần
-    if (commentElement.querySelector(".reply-form")) return;
+    if (liCommentElement.querySelector(".reply-form")) return;
 
     // Tạo form nhập phản hồi
     let replyForm = document.createElement("div");
@@ -203,8 +203,15 @@ function replyToComment(commentId) {
 }
 
 function cancelReply(commentId) {
-    let replyForm = document.querySelector(`#comment-${commentId} .reply-form`);
-    if (replyForm) replyForm.remove();
+    let cmt = document.getElementById("comment-" + commentId);
+    let li = cmt.closest("li");
+    let replyForm = li.querySelector(".reply-form")
+    if (replyForm) {
+        replyForm.remove();
+    } else {
+        console.log(commentId);
+        console.log(replyForm);
+    }
 }
 
 function submitReply(commentId) {
@@ -224,6 +231,7 @@ function submitReply(commentId) {
             console.log(response);
             if (response.success) {
                 let commentElement = document.getElementById(`comment-${commentId}`);
+                let liCommentElement = commentElement.closest("li");
                 let repliesContainer = commentElement.querySelector(".replies-list");
 
                 // Nếu chưa có danh sách phản hồi, tạo mới
@@ -233,7 +241,7 @@ function submitReply(commentId) {
                     repliesContainer.style.listStyleType = "none";
                     repliesContainer.style.paddingLeft = "60px";
                     repliesContainer.style.marginTop = "10px";
-                    commentElement.appendChild(repliesContainer);
+                    liCommentElement.appendChild(repliesContainer);
                 }
 
                 // Thêm phản hồi vào danh sách
