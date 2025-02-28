@@ -75,7 +75,7 @@
 
                     </tbody>
                 </table>
-                <div class="d-flex justify-content-center">
+                <div style="margin-bottom: 10px;" class="d-flex justify-content-center">
                     <nav>
                         <ul class="pagination" id="pagination" style="margin: 0"></ul>
                     </nav>
