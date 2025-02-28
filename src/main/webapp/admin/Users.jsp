@@ -9,7 +9,6 @@
     <style>
         .container-fluid {
             height: 100%;
-            padding: 2%;
             font-size: large;
         }
 
@@ -17,14 +16,12 @@
             border-radius: 8px;
             background-color: #d3d3d373;
             margin: 5px;
-            padding: 10px;
         }
 
         .container-fluid > .row > div:last-child > .row {
             border-radius: 8px;
             background-color: #d3d3d373;
             margin: 5px;
-            padding: 10px;
         }
 
         td {
@@ -37,16 +34,13 @@
 <body>
 <div class="container-fluid">
     <div class="row d-flex justify-content-center">
-        <%--    Left    --%>
-        <jsp:include page="/AdminList.jsp"></jsp:include>
-
         <%--       Right        --%>
-        <div class="col-md-10">
+        <div class="col-md-12">
             <%--            Nav            --%>
             <jsp:include page="/AdminNav.jsp"></jsp:include>
 
             <%--       Center         --%>
-            <div class="row d-flex justify-content-center" style="margin: 0">
+            <div class="row d-flex justify-content-center" style="margin: 0; padding-top:10px;">
                 <div style="display:flex; justify-content: space-between">
                     <a style="height: fit-content" href="/users?action=add" class="btn btn-primary">Thêm tài khoản</a>
                     <form style="width: 70%" action="users?action=search" method="post">
@@ -123,7 +117,7 @@
             paginatedUsers.forEach(function (user) {
                 const row = '<tr class="d-flex">' +
                     '<td style="width: 5%;" class="text-center">' + user.userId + '</td>' +
-                    '<td style="width: 10%;" class="text-center"><img style="width: 85%;" src="${pageContext.request.contextPath}/uploads/avatars/' + user.image + '" /></td>' +
+                    '<td style="width: 10%;" class="text-center"><img style="width: 70%;" src="${pageContext.request.contextPath}/uploads/avatars/' + user.image + '" /></td>' +
                     '<td style="width: 10%;" class="text-center">' + user.name + '</td>' +
                     '<td style="width: 20%;" class="text-center">' + user.email + '</td>' +
                     '<td style="width: 10%;" class="text-center">' + user.phone + '</td>' +
