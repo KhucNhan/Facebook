@@ -138,7 +138,7 @@ public class FriendServlet extends HttpServlet {
 
         int userFriendID = Integer.parseInt(req.getParameter("friendId"));
 
-        if (friendShipDAO.deleteFriend(userID,userFriendID)){
+        if (friendShipDAO.unFriend(userID,userFriendID)){
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");
             resp.getWriter().write("{\"success\": true}");
