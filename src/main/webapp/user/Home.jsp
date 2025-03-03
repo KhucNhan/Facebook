@@ -230,7 +230,7 @@
         </div>
         <div>
             <c:forEach items="${usersFriendShip}" var="user">
-                <a class="friends">
+                <a class="friends" onclick="loadMessages(${user.userId})">
                     <div class="left_bottom">
                         <div>
                             <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
@@ -247,11 +247,57 @@
     </div>
 </div>
 
+<div id="chat-modal" class="modal">
+    <div class="modal-content">
+        <div id="chat-header">Chat</div>
+        <div id="chat-messages"></div>
+        <input type="hidden" id="receiverId">
+        <div style="display: flex;padding: 0 10px 10px 10px ; justify-content: space-between">
+            <input style="border-radius: 24px; padding-left: 10px; border: 1px solid grey; width: 79%;" type="text" id="chat-input" placeholder="Nhập tin nhắn...">
+            <button style="width: fit-content; padding-block: 1px" class="btn btn-primary" id="send-btn">Gửi</button>
+        </div>
+        <a style=" cursor: pointer;font-size: x-large;position: absolute; bottom: 255px; left: 275px; border-radius: 50%; width: 24px;height: 24px;" onclick="closeChat()">x</a>
+    </div>
+</div>
+
 </body>
 </html>
 
 
 <script>
+    // setInterval(loadMessages, 2000);
+
+    document.getElementById("send-btn").addEventListener("click", function () {
+        let message = document.getElementById("chat-input").value;
+        let receiverId = document.getElementById("receiverId").value;
+
+        fetch("messages?action=chat&receiverId=" + receiverId + "&content=" + message, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        }).then(response => response.text()).then(data => {
+            let chatBox = document.getElementById("chat-messages");
+            chatBox.innerHTML += `<div class="message message-right"> <span class="text">` + message + `</span></div>`;
+            document.getElementById("chat-input").value = "";
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+    });
+
+    function loadMessages(receiverId) {
+        fetch(`messages?contactId=` + receiverId)
+            .then(response => response.text())
+            .then(messages => {
+                let chatBox = document.getElementById("chat-messages");
+                chatBox.innerHTML = messages;
+                document.getElementById("receiverId").value = receiverId;
+                document.getElementById('chat-modal').style.display = 'inherit';
+                chatBox.scrollTop = chatBox.scrollHeight;
+            });
+    }
+
+    function closeChat() {
+        document.getElementById("chat-modal").style.display = "none";
+    }
+
     function goToMyProfile() {
         window.location.href = "/users?action=myProfile";
     }
@@ -396,6 +442,49 @@
     }
 </script>
 <style>
+    .modal {
+        display: none;
+        position: fixed;
+        top: 64%;
+        left: 87%;
+        transform: translate(-50%, 0);
+        width: 300px;
+        background: white;
+        border: 1px solid #ccc;
+        box-shadow: 0px 0px 5px grey;
+        height: fit-content;
+        border-radius: 10px;
+    }
+    #chat-messages {
+        height: 200px;
+        overflow-y: auto;
+        margin-bottom: 10px;
+        scrollbar-width: none;
+        padding-inline: 10px;
+        border-block: 1px solid lightgray;
+    }
+
+    .message {
+        display: flex;
+        margin: 5px;
+        padding: 10px;
+        max-width: 60%;
+        border-radius: 10px;
+        font-size: 14px;
+    }
+
+    .message-right {
+        background-color: #0084ff;
+        color: white;
+        justify-self: end;
+        width: fit-content;
+    }
+
+    .message-left {
+        background-color: #e4e6eb;
+        color: black;
+        width: fit-content;
+    }
 
 
     .like-btn {
