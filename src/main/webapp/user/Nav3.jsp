@@ -72,15 +72,17 @@
                 </g>
             </svg>
         </div>
-        <div id="notificationIcon" onclick="gotoNotification(event)"
-             style="position: relative; display: inline-block;">
-            <svg viewBox="0 0 24 24" width="35" height="35" fill="silver" id="iconTB"
-                 class="xfx01vb x1lliihq x1tzjh5l x1k90msu x2h7rmj x1qfuztq iconTB">
-                <path d="M3 9.5a9 9 0 1 1 18 0v2.927c0 1.69.475 3.345 1.37 4.778a1.5 1.5 0 0 1-1.272 2.295h-4.625a4.5 4.5 0 0 1-8.946 0H2.902a1.5 1.5 0 0 1-1.272-2.295A9.01 9.01 0 0 0 3 12.43V9.5zm6.55 10a2.5 2.5 0 0 0 4.9 0h-4.9z"></path>
-            </svg>
-            <div class="notification-container" id="notification"
-                 style="display: none; position: absolute; top: 40px; right: 0;height: 40em">
-                <jsp:include page="Notification.jsp"></jsp:include>
+        <div >
+            <div id="notificationIcon"
+                 style="position: relative; display: inline-block;">
+                <svg viewBox="0 0 24 24" width="35" height="35" fill="silver" onclick="gotoNotification(event)" id="iconTB"
+                     class="xfx01vb x1lliihq x1tzjh5l x1k90msu x2h7rmj x1qfuztq iconTB">
+                    <path d="M3 9.5a9 9 0 1 1 18 0v2.927c0 1.69.475 3.345 1.37 4.778a1.5 1.5 0 0 1-1.272 2.295h-4.625a4.5 4.5 0 0 1-8.946 0H2.902a1.5 1.5 0 0 1-1.272-2.295A9.01 9.01 0 0 0 3 12.43V9.5zm6.55 10a2.5 2.5 0 0 0 4.9 0h-4.9z"></path>
+                </svg>
+                <div class="notification-container" id="notification"
+                     style="display: none; position: absolute; top: 40px; right: 0;height: 40em">
+                    <jsp:include page="Notification.jsp"></jsp:include>
+                </div>
             </div>
         </div>
         <div style="width: 35px;height: 35px">

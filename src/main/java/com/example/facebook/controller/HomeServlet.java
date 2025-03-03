@@ -1,8 +1,6 @@
 package com.example.facebook.controller;
 
-import com.example.facebook.model.Comment;
-import com.example.facebook.model.Post;
-import com.example.facebook.model.User;
+import com.example.facebook.model.*;
 import com.example.facebook.service.*;
 
 import javax.servlet.ServletException;
@@ -13,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +19,8 @@ import java.util.Map;
 @WebServlet(name = "HomeServlet", value = "/home")
 public class HomeServlet extends HttpServlet {
     UserDAO userDAO = new UserDAO();
+    NotificationDAO notificationDAO = new NotificationDAO();
+
     LikeDAO likeDAO = new LikeDAO();
 
     CommentDAO commentDAO = new CommentDAO();
@@ -60,7 +61,6 @@ public class HomeServlet extends HttpServlet {
             List<User> usersFriendShip = friendShipDAO.getAllFriendsAdded(Integer.parseInt(userIdStr));
 
             List<Post> posts = postDAO.selectAllPosts(Integer.parseInt(userIdStr));
-//
             Map<Integer, Boolean> likedPosts = new HashMap<>();
             Map<Integer, Boolean> likedComments = new HashMap<>();
 
@@ -71,10 +71,24 @@ public class HomeServlet extends HttpServlet {
 
 
                 List<Comment> comments = commentDAO.selectAllComments(post.getPostId());
-                for (Comment comment: comments) {
-                    boolean isCommentLiked = likeDAO.checkLikeComment(Integer.parseInt(userIdStr),comment.getCommentId());
-                    likedComments.put(comment.getCommentId(),isCommentLiked);
+                for (Comment comment : comments) {
+                    boolean isCommentLiked = likeDAO.checkLikeComment(Integer.parseInt(userIdStr), comment.getCommentId());
+                    likedComments.put(comment.getCommentId(), isCommentLiked);
                 }
+            }
+
+            HttpSession session1 = req.getSession();
+            String userIdStrs = session1.getAttribute("userId").toString();
+
+            List<Notification> notifications = notificationDAO.getAllNotifictionAddFriend(Integer.parseInt(userIdStrs));
+            List<Activity> activities = new ArrayList<>();
+            List<User> users = new ArrayList<>();
+            for (Notification notification : notifications) {
+                Activity activity = notificationDAO.getNotificationInformation(notification.getActivityId());
+                activities.add(activity);
+
+                User user_1 = userDAO.selectUserById(activity.getUserId());
+                users.add(user_1);
             }
 
 
@@ -82,11 +96,17 @@ public class HomeServlet extends HttpServlet {
             req.setAttribute("likedComments", likedComments);
             req.setAttribute("posts", posts);
             req.setAttribute("user", user);
-            req.setAttribute("usersFriendShip",usersFriendShip);
+            req.setAttribute("usersFriendShip", usersFriendShip);
+
+            req.setAttribute("notifications", notifications);
+            req.setAttribute("usersNotification", users);
+            req.setAttribute("activities", activities);
+
+            System.out.println(notifications);
+            System.out.println(users);
+            System.out.println(activities);
 
             req.getRequestDispatcher("/user/Home.jsp").forward(req, resp);
         }
-
-
     }
 }

@@ -3,10 +3,7 @@ package com.example.facebook.service;
 import com.example.facebook.ConnectDatabase;
 import com.example.facebook.model.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,18 +104,24 @@ public class FriendShipDAO implements IFriendShipDAO {
     }
 
     @Override
-    public boolean addFriend(int userId, int userIdFriend) {
+    public int addFriend(int userId, int userIdFriend) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(addFriend);
+            PreparedStatement preparedStatement = connection.prepareStatement(addFriend, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, userId);
             preparedStatement.setInt(2, userIdFriend);
 
             int row = preparedStatement.executeUpdate();
+            if (row > 0) {
+                ResultSet resultSet = preparedStatement.getGeneratedKeys();
+                if (resultSet.next()) {
+                    return resultSet.getInt(1);
+                }
+            }
 
-            return row > 0;
+            return -1;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return -1;
         }
     }
 

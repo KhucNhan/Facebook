@@ -52,7 +52,7 @@
 }
 
 .notification-text {
-    margin-left: 80px;
+    margin-left: 60px;
     margin-top: -55px;
     flex-grow: 1;
     font-size: 0.95em;
@@ -61,6 +61,7 @@
 }
 
 .notification-actions {
+    margin-left: 60px;
     display: flex;
     justify-content: flex-start;
     gap: 10px;
@@ -79,12 +80,9 @@
 }
 
 .accept-search {
-    background: #28a745;
+    background: #0866ff;
 }
 
-.accept-search:hover {
-    background: #218838;
-}
 
 .cancel-friend-search {
     background: #dc3545;
