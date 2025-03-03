@@ -213,11 +213,11 @@
             <div style="width: 170px" id="contactLabel">
                 <label>Người liên hệ</label>
             </div>
-            <div id="search-container" style="display: none;">
-                <input type="text" id="searchInput" placeholder="Tìm kiếm"
+            <div id="search-contact-container" style="display: none;">
+                <input type="text" id="searchContactInput" placeholder="Tìm kiếm"
                        style="padding: 5px; border-radius: 5px; border: 0px solid #e8e8e8;width: 180px;background: #ececec">
             </div>
-            <div class="searchBB" id="search-input">
+            <div class="searchBB" id="search-input-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor" class="bi bi-search"
                      viewBox="0 0 16 16" onclick="showSearchInput()">
                     <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
@@ -242,7 +242,42 @@
                     </div>
                 </a>
             </c:forEach>
+        </div>
+        <hr>
+        <div class="rightMenu">
+            <div style="width: 170px" id="groupLabel">
+                <label>Nhóm</label>
+            </div>
+            <div id="search-container" style="display: none;">
+                <input type="text" id="searchGroupInput" placeholder="Tìm kiếm"
+                       style="padding: 5px; border-radius: 5px; border: 0px solid #e8e8e8;width: 180px;background: #ececec">
+            </div>
+            <div class="searchBB" id="search-group-input">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor" class="bi bi-search"
+                     viewBox="0 0 16 16" onclick="showSearchInput()">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                </svg>
+            </div>
 
+            <div style="margin-bottom: 15px;font-size: 1em;margin-left: 10px">
+                <b>...</b>
+            </div>
+        </div>
+        <div>
+            <c:choose>
+                <c:when test="${groups.size() > 0}">
+                    <c:forEach items="${groups}" var="group">
+                        <a class="groups" onclick="loadGroupMessages(${group.groupId})">
+                            <div style="margin-left: 20px;width: 100%">
+                                <label>${group.name}</label>
+                            </div>
+                        </a>
+                    </c:forEach>
+                </c:when>
+                <c:when test="${groups.size() == 0}">
+                    <p style="text-align: center">Không tham gia nhóm nào</p>
+                </c:when>
+            </c:choose>
         </div>
     </div>
 </div>
@@ -404,8 +439,8 @@
 
     function showSearchInput() {
         const contactLabel = document.getElementById('contactLabel');
-        const searchContainer = document.getElementById('search-container');
-        const search = document.getElementById('search-input')
+        const searchContainer = document.getElementById('search-contact-container');
+        const search = document.getElementById('search-input-icon')
 
         contactLabel.style.display = 'none';
         searchContainer.style.display = 'block';
@@ -414,7 +449,7 @@
     }
 
     function hideSearchInput(event) {
-        const searchContainer = document.getElementById('search-container');
+        const searchContainer = document.getElementById('search-contact-container');
         const contactLabel = document.getElementById('contactLabel');
 
         if (!searchContainer.contains(event.relatedTarget) && !contactLabel.contains(event.relatedTarget)) {
@@ -424,7 +459,7 @@
         }
     }
 
-    document.getElementById('search-container').addEventListener('mouseout', hideSearchInput);
+    document.getElementById('search-contact-container').addEventListener('mouseout', hideSearchInput);
     document.getElementById('contactLabel').addEventListener('mouseout', hideSearchInput);
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -629,6 +664,15 @@
         display: block;
     }
 
+    .groups:hover {
+        background: #ececec;
+    }
+
+    .groups {
+        color: black;
+        display: block;
+    }
+
     .left_bottom {
         align-items: center;
         display: flex;
@@ -677,6 +721,8 @@
         width: 20%;
         height: 100%;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+        scrollbar-width: none;
     }
 
     .leftIcon {

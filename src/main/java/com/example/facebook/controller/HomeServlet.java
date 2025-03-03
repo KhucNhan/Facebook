@@ -28,6 +28,7 @@ public class HomeServlet extends HttpServlet {
     PostDAO postDAO = new PostDAO();
     FriendShipDAO friendShipDAO = new FriendShipDAO();
 
+    GroupDAO groupDAO = new GroupDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -91,7 +92,9 @@ public class HomeServlet extends HttpServlet {
                 users.add(user_1);
             }
 
+            List<Group> groups = groupDAO.selectAllGroups(user.getUserId());
 
+            req.setAttribute("groups", groups);
             req.setAttribute("likedPosts", likedPosts);
             req.setAttribute("likedComments", likedComments);
             req.setAttribute("posts", posts);
@@ -101,10 +104,6 @@ public class HomeServlet extends HttpServlet {
             req.setAttribute("notifications", notifications);
             req.setAttribute("usersNotification", users);
             req.setAttribute("activities", activities);
-
-            System.out.println(notifications);
-            System.out.println(users);
-            System.out.println(activities);
 
             req.getRequestDispatcher("/user/Home.jsp").forward(req, resp);
         }
