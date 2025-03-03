@@ -274,7 +274,7 @@
     let selectedMessageId = null;
 
     function showMessageMenu(event, messageId) {
-        event.preventDefault(); // Ngăn menu mặc định xuất hiện
+        event.preventDefault();
 
         selectedMessageId = messageId;
         let menu = document.getElementById("message-menu");
@@ -285,12 +285,10 @@
         menu.style.top = event.pageY + "px";
     }
 
-    // Ẩn menu khi click ra ngoài
     document.addEventListener("click", function () {
         document.getElementById("message-menu").style.display = "none";
     });
 
-    // Gửi request xóa tin nhắn
     function deleteMessage() {
         if (confirm('Gỡ tin nhắn?')) {
             fetch("messages?action=delete&messageId=" + selectedMessageId, { method: "POST" })
@@ -308,7 +306,6 @@
             });
         }
     }
-
 
     document.getElementById("send-btn").addEventListener("click", function () {
         let message = document.getElementById("chat-input").value;
