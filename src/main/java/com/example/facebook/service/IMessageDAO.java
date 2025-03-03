@@ -8,4 +8,6 @@ import java.util.List;
 public interface IMessageDAO {
     List<Message> selectAllMessages(int currentUserId, int otherUserId) throws SQLException;
     int insertNewMessage(Message message) throws SQLException;
+
+    boolean deleteMessage(int messageId) throws SQLException;
 }
