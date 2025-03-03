@@ -253,19 +253,62 @@
         <div id="chat-messages"></div>
         <input type="hidden" id="receiverId">
         <div style="display: flex;padding: 0 10px 10px 10px ; justify-content: space-between">
-            <input style="border-radius: 24px; padding-left: 10px; border: 1px solid grey; width: 79%;" type="text" id="chat-input" placeholder="Nhập tin nhắn...">
+            <button style="width: fit-content;background: none;padding: 0" id="emoji-btn">😀</button>
+            <input style="border-radius: 24px; padding-left: 10px; border: 1px solid grey; width: 70%;" type="text" id="chat-input" placeholder="Nhập tin nhắn...">
             <button style="width: fit-content; padding-block: 1px" class="btn btn-primary" id="send-btn">Gửi</button>
         </div>
         <a style=" cursor: pointer;font-size: x-large;position: absolute; bottom: 255px; left: 275px; border-radius: 50%; width: 24px;height: 24px;" onclick="closeChat()">x</a>
     </div>
 </div>
-
+<div id="message-menu" class="message-menu">
+    <button onclick="deleteMessage()">Xóa tin nhắn</button>
+</div>
+<div id="emoji-picker" class="emoji-picker"></div>
 </body>
 </html>
 
 
 <script>
     // setInterval(loadMessages, 2000);
+
+    let selectedMessageId = null;
+
+    function showMessageMenu(event, messageId) {
+        event.preventDefault(); // Ngăn menu mặc định xuất hiện
+
+        selectedMessageId = messageId;
+        let menu = document.getElementById("message-menu");
+
+        // Hiển thị menu tại vị trí chuột
+        menu.style.display = "block";
+        menu.style.left = event.pageX + "px";
+        menu.style.top = event.pageY + "px";
+    }
+
+    // Ẩn menu khi click ra ngoài
+    document.addEventListener("click", function () {
+        document.getElementById("message-menu").style.display = "none";
+    });
+
+    // Gửi request xóa tin nhắn
+    function deleteMessage() {
+        if (confirm('Gỡ tin nhắn?')) {
+            fetch("messages?action=delete&messageId=" + selectedMessageId, { method: "POST" })
+            .then(response => response.text())
+            .then(data => {
+                if (data === "success") {
+                    let messageElement = document.querySelector(`[oncontextmenu*='` + selectedMessageId + `'] .text`);
+                    console.log(messageElement)
+                    if (messageElement) {
+                        messageElement.innerText = "Tin nhắn đã bị gỡ";
+                    }
+                } else {
+                    alert("Xóa tin nhắn thất bại!");
+                }
+            });
+        }
+    }
+
 
     document.getElementById("send-btn").addEventListener("click", function () {
         let message = document.getElementById("chat-input").value;
@@ -440,8 +483,61 @@
         }
         return "";
     }
+
+    document.getElementById("emoji-btn").addEventListener("click", function () {
+        let emojiPicker = document.getElementById("emoji-picker");
+        emojiPicker.style.display = emojiPicker.style.display === "block" ? "none" : "block";
+    });
+
+    // Danh sách emoji cơ bản
+    let emojiList = ["😀", "😂", "😍", "😎", "😢", "😡", "👍", "👎", "🔥", "💖"];
+    let emojiPicker = document.getElementById("emoji-picker");
+
+    // Thêm emoji vào bảng chọn
+    emojiList.forEach(emoji => {
+        let span = document.createElement("span");
+        span.innerText = emoji;
+        span.classList.add("emoji");
+        span.onclick = function () {
+            document.getElementById("chat-input").value += emoji;
+            emojiPicker.style.display = "none";
+        };
+        emojiPicker.appendChild(span);
+    });
+
 </script>
 <style>
+    .emoji-picker {
+        display: none;
+        position: absolute;
+        bottom: 80px;
+        right: 130px;
+        background: white;
+        border: 1px solid #ccc;
+        padding: 10px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        width: 200px;
+    }
+
+    .emoji {
+        font-size: 22px;
+        cursor: pointer;
+        margin: 5px;
+    }
+
+
+    .message-menu {
+        position: absolute;
+        display: none;
+        background: white;
+        border: 1px solid #ccc;
+        padding: 5px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        z-index: 10005;
+    }
+
+
     .modal {
         display: none;
         position: fixed;

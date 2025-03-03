@@ -55,7 +55,7 @@ public class MessageServlet extends HttpServlet {
         for (Message msg : messages) {
             if (msg.getSenderId() == user.getUserId()) {
                 // Tin nhắn của người dùng hiện tại (bên phải)
-                out.println("<div class='message message-right'>");
+                out.println("<div class='message message-right' oncontextmenu='showMessageMenu(event, " + msg.getMessageId() + ")'>");
                 out.println("<span class='text'>" + msg.getContent() + "</span>");
                 out.println("</div>");
             } else {
@@ -84,10 +84,21 @@ public class MessageServlet extends HttpServlet {
                 case "chat":
                     chat(user, req, resp);
                     break;
+                case "delete":
+                    deleteMessage(req, resp);
+                    break;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void deleteMessage(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+        int messageId = Integer.parseInt(req.getParameter("messageId"));
+        boolean success = messageDAO.deleteMessage(messageId);
+
+        resp.setContentType("text/plain");
+        resp.getWriter().write(success ? "success" : "fail");
     }
 
     private void chat(User user, HttpServletRequest req, HttpServletResponse resp) throws SQLException {

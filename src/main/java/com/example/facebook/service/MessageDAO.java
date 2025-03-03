@@ -13,6 +13,7 @@ public class MessageDAO implements IMessageDAO{
     Connection connection = connectDatabase.connection();
     private static final String select_all_message = "SELECT * FROM messages WHERE (senderId = ? AND receiverId = ?) OR (senderId = ? AND receiverId = ?) ORDER BY createAt";
     private static final String insert_new_message = "INSERT INTO messages (senderId, receiverId, content) VALUES (?, ?, ?)";
+    private static final String delete_message = "UPDATE messages SET content = 'Tin nhắn đã bị gỡ' WHERE messageId = ?";
     @Override
     public List<Message> selectAllMessages(int currentUserId, int otherUserId) throws SQLException {
         List<Message> messages = new ArrayList<>();
@@ -53,5 +54,13 @@ public class MessageDAO implements IMessageDAO{
         }
 
         return -1;
+    }
+
+    @Override
+    public boolean deleteMessage(int messageId) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement(delete_message);
+        preparedStatement.setInt(1, messageId);
+        int row = preparedStatement.executeUpdate();
+        return row > 0;
     }
 }
