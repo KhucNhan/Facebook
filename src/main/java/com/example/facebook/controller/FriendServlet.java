@@ -1,6 +1,8 @@
 package com.example.facebook.controller;
 import com.example.facebook.model.User;
+import com.example.facebook.service.ActivityDAO;
 import com.example.facebook.service.FriendShipDAO;
+import com.example.facebook.service.NotificationDAO;
 import com.example.facebook.service.UserDAO;
 
 import javax.servlet.ServletException;
@@ -16,6 +18,8 @@ import java.util.List;
 
 @WebServlet("/friends")
 public class FriendServlet extends HttpServlet {
+    ActivityDAO activityDAO = new ActivityDAO();
+    NotificationDAO notificationDAO = new NotificationDAO();
     FriendShipDAO friendShipDAO = new FriendShipDAO();
     UserDAO userDAO = new UserDAO();
 
@@ -164,7 +168,13 @@ public class FriendServlet extends HttpServlet {
 
         int userFriendID = Integer.parseInt(req.getParameter("friendId"));
 
-        if (friendShipDAO.addFriend(userID,userFriendID)){
+        int friendID = friendShipDAO.addFriend(userID,userFriendID);
+
+        if (friendID != -1){
+            activityDAO.newActivities(userFriendID,friendID);
+
+
+
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");
             resp.getWriter().write("{\"success\": true}");
