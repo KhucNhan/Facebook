@@ -252,11 +252,11 @@
         <div id="chat-header">Chat</div>
         <div id="chat-messages"></div>
         <input type="hidden" id="receiverId">
-        <div style="display: flex; justify-content: space-between">
+        <div style="display: flex;padding: 0 10px 10px 10px ; justify-content: space-between">
             <input style="border-radius: 24px; padding-left: 10px; border: 1px solid grey; width: 79%;" type="text" id="chat-input" placeholder="Nhập tin nhắn...">
             <button style="width: fit-content; padding-block: 1px" class="btn btn-primary" id="send-btn">Gửi</button>
         </div>
-        <a style=" cursor: pointer;font-size: x-large;position: absolute; bottom: 270px; left: 275px; border-radius: 50%; width: 24px;height: 24px;" onclick="closeChat()">x</a>
+        <a style=" cursor: pointer;font-size: x-large;position: absolute; bottom: 255px; left: 275px; border-radius: 50%; width: 24px;height: 24px;" onclick="closeChat()">x</a>
     </div>
 </div>
 
@@ -265,17 +265,20 @@
 
 
 <script>
+    // setInterval(loadMessages, 2000);
+
     document.getElementById("send-btn").addEventListener("click", function () {
         let message = document.getElementById("chat-input").value;
         let receiverId = document.getElementById("receiverId").value;
 
-        fetch("messages", {
+        fetch("messages?action=chat&receiverId=" + receiverId + "&content=" + message, {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: `receiverId=${receiverId}&content=${encodeURIComponent(message)}`
         }).then(response => response.text()).then(data => {
-            document.getElementById("chat-messages").innerHTML += `<div>You: ${message}</div>`;
+            let chatBox = document.getElementById("chat-messages");
+            chatBox.innerHTML += `<div class="message message-right"> <span class="text">` + message + `</span></div>`;
             document.getElementById("chat-input").value = "";
+            chatBox.scrollTop = chatBox.scrollHeight;
         });
     });
 
@@ -283,8 +286,11 @@
         fetch(`messages?contactId=` + receiverId)
             .then(response => response.text())
             .then(messages => {
-                document.getElementById("chat-messages").innerHTML = messages;
+                let chatBox = document.getElementById("chat-messages");
+                chatBox.innerHTML = messages;
+                document.getElementById("receiverId").value = receiverId;
                 document.getElementById('chat-modal').style.display = 'inherit';
+                chatBox.scrollTop = chatBox.scrollHeight;
             });
     }
 
@@ -449,13 +455,13 @@
         height: fit-content;
         border-radius: 10px;
     }
-    .modal-content {
-        padding: 15px;
-    }
     #chat-messages {
         height: 200px;
         overflow-y: auto;
         margin-bottom: 10px;
+        scrollbar-width: none;
+        padding-inline: 10px;
+        border-block: 1px solid lightgray;
     }
 
     .message {

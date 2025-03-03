@@ -66,4 +66,41 @@ public class MessageServlet extends HttpServlet {
             }
         }
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
+
+        if (action == null) {
+            action = "";
+        }
+
+        try {
+            HttpSession session = req.getSession();
+            int userId = (Integer) session.getAttribute("userId");
+            User user = userDAO.selectUserById(userId);
+
+            switch (action) {
+                case "chat":
+                    chat(user, req, resp);
+                    break;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void chat(User user, HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+        String content = req.getParameter("content");
+
+        String receiverId = req.getParameter("receiverId");
+        User receiver = userDAO.selectUserById(Integer.parseInt(receiverId));
+
+        Message message = new Message();
+        message.setContent(content);
+        message.setSenderId(user.getUserId());
+        message.setReceiverId(receiver.getUserId());
+
+        messageDAO.insertNewMessage(message);
+    }
 }
