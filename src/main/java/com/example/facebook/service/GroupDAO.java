@@ -10,11 +10,11 @@ import java.util.List;
 public class GroupDAO implements IGroupDAO{
     ConnectDatabase connectDatabase = new ConnectDatabase();
     Connection connection = connectDatabase.connection();
-    private static final String insert_group = "INSERT INTO groups (name, createdBy) VALUES (?, ?)";
+    private static final String insert_group = "INSERT INTO `groups` (name, createdBy) VALUES (?, ?)";
     private static final String select_all_group = "select g.* from `groups` g join groupmembers gm on g.groupId = gm.groupId where gm.userId = ?";
-    private static final String update_group = "update groups set name = ? where groupId = ?";
-    private static final String delete_group = "delete from groups where groupId = ?";
-    private static final String select_group_by_id = "select * from groups where groupId = ?";
+    private static final String update_group = "update `groups` set name = ? where groupId = ?";
+    private static final String delete_group = "delete from `groups` where groupId = ?";
+    private static final String select_group_by_id = "select * from `groups` where groupId = ?";
     @Override
     public int insertNewGroup(Group group) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement(insert_group, Statement.RETURN_GENERATED_KEYS);

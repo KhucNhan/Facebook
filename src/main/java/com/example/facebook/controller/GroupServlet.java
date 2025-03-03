@@ -1,5 +1,6 @@
 package com.example.facebook.controller;
 
+import com.example.facebook.model.Group;
 import com.example.facebook.model.User;
 import com.example.facebook.service.GroupDAO;
 import com.example.facebook.service.UserDAO;
@@ -56,10 +57,33 @@ public class GroupServlet extends HttpServlet {
             int userId = (Integer) session.getAttribute("userId");
             User user = userDAO.selectUserById(userId);
             switch (action) {
-
+                case "create":
+                    createGroup(user, req, resp);
+                    break;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void createGroup(User user, HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+        String groupName = req.getParameter("groupName");
+        String membersString = req.getParameter("members");
+
+
+        if (groupName == null || membersString == null || groupName.isEmpty() || membersString.isEmpty()) {
+            System.out.println("Thiếu thông tin nhóm hoặc thành viên.");
+            return;
+        }
+
+        String[] memberIds = membersString.split(",");
+        for (String member : memberIds) {
+            System.out.println("Member ID: " + member);
+        }
+
+        Group group = new Group();
+        group.setName(groupName);
+        group.setCreateBy(user.getUserId());
+        groupDAO.insertNewGroup(group);
     }
 }

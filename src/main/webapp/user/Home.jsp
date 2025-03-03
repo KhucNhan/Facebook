@@ -252,12 +252,7 @@
                 <input type="text" id="searchGroupInput" placeholder="Tìm kiếm"
                        style="padding: 5px; border-radius: 5px; border: 0px solid #e8e8e8;width: 180px;background: #ececec">
             </div>
-            <div class="searchBB" id="search-group-input">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor" class="bi bi-search"
-                     viewBox="0 0 16 16" onclick="showSearchInput()">
-                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                </svg>
-            </div>
+            <button class="btn btn-primary" id="openCreateGroupModal">Tạo nhóm</button>
 
             <div style="margin-bottom: 15px;font-size: 1em;margin-left: 10px">
                 <b>...</b>
@@ -299,11 +294,96 @@
     <button onclick="deleteMessage()">Xóa tin nhắn</button>
 </div>
 <div id="emoji-picker" class="emoji-picker"></div>
+
+<div id="createGroupModal" class="modal">
+    <form class="modal-group-content" action="/groups?action=create" method="post">
+        <span class="close">&times;</span>
+        <h2>Tạo nhóm</h2>
+
+        <!-- Nhập tên nhóm -->
+        <label for="groupName">Tên nhóm:</label>
+        <input type="text" name="groupName" id="groupName" placeholder="Nhập tên nhóm">
+
+        <!-- Danh sách bạn bè -->
+        <h3>Thêm thành viên:</h3>
+        <div id="friendList">
+            <c:forEach var="friend" items="${usersFriendShip}">
+                <div class="friend-item">
+                    <span>${friend.name} (${friend.email})</span>
+                    <input type="checkbox" class="select-user" data-userid="${friend.userId}">
+                </div>
+            </c:forEach>
+        </div>
+
+        <!-- Nút tạo nhóm -->
+        <button type="submit" id="createGroupButton">Tạo nhóm</button>
+    </form>
+</div>
+
 </body>
 </html>
 
 
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const modal = document.getElementById("createGroupModal");
+        const openModalBtn = document.getElementById("openCreateGroupModal");
+        const closeModalBtn = document.querySelector(".close");
+        const createGroupBtn = document.getElementById("createGroupButton");
+
+        let selectedUsers = [];
+
+        // Mở modal
+        openModalBtn.addEventListener("click", function () {
+            modal.style.display = "block";
+        });
+
+        // Đóng modal
+        closeModalBtn.addEventListener("click", function () {
+            modal.style.display = "none";
+        });
+
+        // Chọn thành viên
+        document.querySelectorAll(".select-user").forEach(checkbox => {
+            checkbox.addEventListener("change", function () {
+                const userId = this.getAttribute("data-userid");
+                if (this.checked) {
+                    selectedUsers.push(userId);
+                } else {
+                    selectedUsers = selectedUsers.filter(id => id !== userId);
+                }
+            });
+        });
+
+        // Gửi AJAX request để tạo nhóm
+        createGroupBtn.addEventListener("click", function () {
+            event.preventDefault(); // Ngăn form submit mặc định
+
+            const form = document.querySelector(".modal-group-content"); // Lấy form
+            const groupName = document.getElementById("groupName").value;
+            const selectedUsers = Array.from(document.querySelectorAll('.select-user:checked'))
+                .map(checkbox => checkbox.getAttribute('data-userid'));
+
+            if (!groupName) {
+                alert("Vui lòng nhập tên nhóm.");
+                return;
+            }
+            if (selectedUsers.length === 0) {
+                alert("Vui lòng chọn ít nhất một thành viên.");
+                return;
+            }
+
+            const membersInput = document.createElement("input");
+            membersInput.type = "hidden";
+            membersInput.name = "members";
+            membersInput.value = selectedUsers.join(","); // Gửi danh sách ID cách nhau bằng dấu phẩy
+
+            form.appendChild(membersInput);
+            form.submit(); // Gửi form theo cách thủ công
+        });
+    });
+
+
     // setInterval(loadMessages, 2000);
 
     let selectedMessageId = null;
@@ -539,6 +619,37 @@
 
 </script>
 <style>
+    #createGroupModal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 755px;
+        top: 0;
+        width: 100%;
+        height: 99%;
+        background-color: rgba(0,0,0,0.5);
+    }
+
+    #createGroupModal .modal-group-content {
+        background-color: white;
+        padding: 20px;
+        margin: 10% auto;
+        width: 50%;
+        border-radius: 10px;
+    }
+
+    #createGroupModal .close {
+        float: right;
+        cursor: pointer;
+        font-size: 20px;
+    }
+    #createGroupModal .friend-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px;
+    }
+
+
     .emoji-picker {
         display: none;
         position: absolute;
