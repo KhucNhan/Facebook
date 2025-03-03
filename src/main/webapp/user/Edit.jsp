@@ -131,9 +131,9 @@
             <tr>
                 <td colspan="2">
                     <div class="gender-options">
-                        <label><input type="radio" name="gender" value="true" ${user.gender == true ? 'checked' : ''} required>
+                        <label><input style="margin-right: 10px;" type="radio" name="gender" value="true" ${user.gender == true ? 'checked' : ''} required>
                             Nam</label>
-                        <label><input type="radio" name="gender" value="false" ${!user.gender == true ? "checked" : ""}> Nữ</label>
+                        <label><input style="margin-right: 10px;" type="radio" name="gender" value="false" ${!user.gender == true ? "checked" : ""}> Nữ</label>
                     </div>
                 </td>
             </tr>

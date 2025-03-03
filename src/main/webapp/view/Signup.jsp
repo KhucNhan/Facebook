@@ -50,10 +50,10 @@
             <label>Giới tính</label>
             <div class="gender-options">
                 <label>
-                    <input type="radio" name="gender" value="male" required>    Nam
+                    <input style="margin-right: 10px;" type="radio" name="gender" value="male" required>    Nam
                 </label>
                 <label>
-                    <input type="radio" name="gender" value="female" required>    Nữ
+                    <input style="margin-right: 10px;" type="radio" name="gender" value="female" required>    Nữ
                 </label>
             </div>
         </div>
