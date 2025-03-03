@@ -2,11 +2,11 @@ function confirmLogout() {
     window.location.href = '/login?action=logout';
 }
 
-function loadHome(){
+function loadHome() {
     window.location.href = '/home';
 }
 
-function goToFriends(){
+function goToFriends() {
     window.location.href = '/friends?action=friendRequests';
 }
 
@@ -24,9 +24,12 @@ function hideSearchInput(event) {
 document.getElementById('search-container').addEventListener('mouseout', hideSearchInput);
 document.getElementById('contactLabel').addEventListener('mouseout', hideSearchInput);
 
-document.getElementById("searchInputNav").addEventListener("keypress", function(event) {
+document.getElementById("searchInputNav").addEventListener("keypress", function (event) {
     if (event.key === "Enter") {
         event.preventDefault(); // Ngăn chặn hành vi mặc định nếu cần
         this.closest("form").submit(); // Submit form
     }
 });
+
+const notificationIcon = document.querySelector(".iconTB"); // Biểu tượng thông báo
+const notificationContainer = document.getElementById("notification"); // Khung thông báo
