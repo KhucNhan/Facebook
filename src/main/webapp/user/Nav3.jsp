@@ -33,14 +33,16 @@
     %>
 
     <!-- Logo Facebook -->
-    <svg onclick="loadHome()" xmlns="http://www.w3.org/2000/svg" width="40" height="45" fill="currentColor" class="bi bi-facebook"
+    <svg onclick="loadHome()" xmlns="http://www.w3.org/2000/svg" width="40" height="45" fill="currentColor"
+         class="bi bi-facebook"
          viewBox="0 0 16 16" style="color: #0866ff; margin-right: 20px;">
         <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"/>
     </svg>
 
     <!-- Ô tìm kiếm -->
     <form style="margin: 0" class="search-container" action="/users?action=userSearchUsers" method="post">
-        <input id="searchInputNav" name="value" value="${searchValue != null ? searchValue : ''}" type="text" placeholder="Tìm kiếm trên Facebook">
+        <input id="searchInputNav" name="value" value="${searchValue != null ? searchValue : ''}" type="text"
+               placeholder="Tìm kiếm trên Facebook">
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="silver" class="bi bi-search iconFacebook"
              viewBox="0 0 16 16">
             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
@@ -70,11 +72,16 @@
                 </g>
             </svg>
         </div>
-        <div>
-            <svg viewBox="0 0 24 24" width="35" height="35" fill="silver"
+        <div id="notificationIcon" onclick="gotoNotification(event)"
+             style="position: relative; display: inline-block;">
+            <svg viewBox="0 0 24 24" width="35" height="35" fill="silver" id="iconTB"
                  class="xfx01vb x1lliihq x1tzjh5l x1k90msu x2h7rmj x1qfuztq iconTB">
                 <path d="M3 9.5a9 9 0 1 1 18 0v2.927c0 1.69.475 3.345 1.37 4.778a1.5 1.5 0 0 1-1.272 2.295h-4.625a4.5 4.5 0 0 1-8.946 0H2.902a1.5 1.5 0 0 1-1.272-2.295A9.01 9.01 0 0 0 3 12.43V9.5zm6.55 10a2.5 2.5 0 0 0 4.9 0h-4.9z"></path>
             </svg>
+            <div class="notification-container" id="notification"
+                 style="display: none; position: absolute; top: 40px; right: 0;height: 40em">
+                <jsp:include page="Notification.jsp"></jsp:include>
+            </div>
         </div>
         <div style="width: 35px;height: 35px">
             <div id="navbarSupportedContent">
