@@ -85,15 +85,15 @@
                                             tin</a>
                                     </c:when>
                                     <c:when test="${user.friendStatus == 2}">
-                                        <a class="btn btn-warning btn-sm accept-search" data-id="${user.userId}"
+                                        <a class="btn btn-primary btn-sm accept-search" data-id="${user.userId}"
                                            onclick="acceptFriendSearch(${user.userId})">Chấp nhận</a>
                                     </c:when>
                                     <c:when test="${user.friendStatus == 3}">
-                                        <a class="btn btn-warning btn-sm cancel-friend-search" data-id="${user.userId}"
+                                        <a class="btn btn-primary btn-sm cancel-friend-search" data-id="${user.userId}"
                                            onclick="cancelFriend(${user.userId})">Hủy lời mời</a>
                                     </c:when>
                                     <c:otherwise>
-                                        <a class="btn btn-success btn-sm add-search" data-id="${user.userId}"
+                                        <a class="btn btn-primary btn-sm add-search" data-id="${user.userId}"
                                            onclick="addFriend(${user.userId})">Thêm bạn bè</a>
                                     </c:otherwise>
                                 </c:choose>

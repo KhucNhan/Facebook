@@ -192,10 +192,12 @@ function replyToComment(commentId) {
     // Tạo form nhập phản hồi
     let replyForm = document.createElement("div");
     replyForm.className = "reply-form";
+    replyForm.style.display = "flex";
+    replyForm.style.alignItems = "baseline";
     replyForm.innerHTML = `
-        <textarea id="reply-input-${commentId}" class="reply-input" placeholder="Viết phản hồi..." style="width: 100%; margin-top: 10px;"></textarea>
-        <button onclick="submitReply(${commentId})" class="btn btn-primary btn-sm" style="margin-top: 5px;">Gửi</button>
-        <button onclick="cancelReply(${commentId})" class="btn btn-secondary btn-sm" style="margin-top: 5px;">Hủy</button>
+        <textarea id="reply-input-${commentId}" class="reply-input" placeholder="Viết phản hồi..." style=" height: 42px;flex: 1; padding: 8px; border-radius: 20px; border: 1px solid #ddd;width: 80%; margin-top: 10px;"></textarea>
+        <button onclick="submitReply(${commentId})" class="btn btn-primary btn-sm" style='margin-left: 10px; background: blue; color: white; padding: 5px 15px; border: none; border-radius: 10px; cursor: pointer;width:fit-content; height: fit-content'>Gửi</button>
+        <button onclick="cancelReply(${commentId})" class="btn btn-secondary btn-sm" style='margin-left: 10px; background: grey; color: white; padding: 5px 15px; border: none; border-radius: 10px; cursor: pointer;width:fit-content; height: fit-content'>Hủy</button>
     `;
 
     // Chèn form vào dưới bình luận

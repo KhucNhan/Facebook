@@ -223,6 +223,7 @@ public class UserServlet extends HttpServlet {
         String value = req.getParameter("value");
         List<User> users = userDAO.adminSearchUsers(value);
         req.setAttribute("users", users);
+        req.setAttribute("value", value);
         req.getRequestDispatcher("/admin/Users.jsp").forward(req, resp);
     }
 
@@ -296,7 +297,7 @@ public class UserServlet extends HttpServlet {
 
         User user = userDAO.selectUserById(Integer.parseInt(userId));
 
-        if (name.equalsIgnoreCase(user.getName()) && email.equalsIgnoreCase(user.getEmail()) && phone.equals(user.getPhone()) && Date.valueOf(dateOfBirth).equals(user.getDateOfBirth()) && gender == user.isGender()) {
+        if (name.equalsIgnoreCase(user.getName()) && email.equalsIgnoreCase(user.getEmail()) && phone.equals(user.getPhone()) && Date.valueOf(dateOfBirth).equals(user.getDateOfBirth()) && gender == user.isGender() && fileName.equalsIgnoreCase(user.getImage())) {
             req.setAttribute("status", "Không có sự thay đổi nào");
             req.setAttribute("user", user);
             req.getRequestDispatcher("admin/Edit.jsp").forward(req, resp);

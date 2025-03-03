@@ -77,7 +77,7 @@
             <div style="padding-block: 10px;" class="row">
                 <form class="searchForm" action="/friends?action=searchInRequests" method="post">
                     <div class="input-group mb-3">
-                        <input type="text" name="value" class="form-control" placeholder="Tìm kiếm trong danh sách lời mời..." aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <input style="border-color: #6c757d" type="text" name="value" class="form-control" placeholder="Tìm kiếm trong danh sách lời mời..." aria-label="Recipient's username" aria-describedby="button-addon2">
                         <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Tìm</button>
                     </div>
                 </form>

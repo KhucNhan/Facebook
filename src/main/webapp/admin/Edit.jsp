@@ -182,10 +182,10 @@
             <label>Giới tính</label>
             <div class="gender-options">
                 <label>
-                    <input type="radio" name="gender" value="true" ${user.gender == true ? "checked" : ""}> Nam
+                    <input style="margin-right: 10px;" type="radio" name="gender" value="true" ${user.gender == true ? "checked" : ""}> Nam
                 </label>
                 <label>
-                    <input type="radio" name="gender" value="false" ${!user.gender == true ? "checked" : ""}> Nữ
+                    <input style="margin-right: 10px;" type="radio" name="gender" value="false" ${!user.gender == true ? "checked" : ""}> Nữ
                 </label>
             </div>
         </div>
