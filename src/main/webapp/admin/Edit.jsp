@@ -126,7 +126,17 @@
         function previewImage(event) {
             var reader = new FileReader();
             reader.onload = function () {
-                var output = document.getElementById('preview');
+                var output = document.getElementById('previewImg');
+                output.src = reader.result;
+                output.style.display = 'block';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        function previewBannerImage(event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var output = document.getElementById('previewBanner');
                 output.src = reader.result;
                 output.style.display = 'block';
             };
@@ -155,10 +165,17 @@
     </c:if>
     <form action="/users?action=update&userId=${user.userId}" method="post" class="signup-form" enctype="multipart/form-data">
 
-        <div class="form-group">
-            <label for="image">Ảnh đại diện</label>
-            <input type="file" id="image" name="image" accept="image/*" onchange="previewImage(event)">
-            <img id="preview" class="circular-img" alt="Xem ảnh" src="${pageContext.request.contextPath}/uploads/avatars/${user.image}">
+        <div class="form-group" style="display: flex;">
+            <div>
+                <label for="image">Ảnh đại diện</label>
+                <input type="file" id="image" name="image" accept="image/*" onchange="previewImage(event)" style="width: 90%;">
+                <img id="previewImg" class="circular-img" alt="Xem ảnh" src="${pageContext.request.contextPath}/uploads/avatars/${user.image}">
+            </div>
+            <div>
+                <label for="image">Ảnh bìa</label>
+                <input type="file" id="banner" name="banner" accept="image/*" onchange="previewBannerImage(event)" style="width: 90%;">
+                <img id="previewBanner" class="circular-img" alt="Xem ảnh" src="${pageContext.request.contextPath}/uploads/banners/${user.banner}">
+            </div>
         </div>
 
         <div class="form-group">

@@ -7,6 +7,7 @@ import java.util.Objects;
 public class User {
     private int userId;
     private String image;
+    private String banner;
     private String name;
     private String email;
     private String phone;
@@ -47,6 +48,14 @@ public class User {
         this.password = password;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
+    }
+
+    public String getBanner() {
+        return banner;
+    }
+
+    public void setBanner(String banner) {
+        this.banner = banner;
     }
 
     public int getFriendStatus() {
