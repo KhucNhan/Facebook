@@ -175,11 +175,11 @@
     </c:if>
     <form id="addUserForm" action="/users?action=add" method="post" class="signup-form" enctype="multipart/form-data">
 
-        <div class="form-group">
-            <label for="image">Ảnh đại diện</label>
-            <input type="file" id="image" accept=".png,.jpg" name="image" onchange="previewImage(event)" title="png, jpg only!">
-            <img id="preview" src="${pageContext.request.contextPath}/uploads/avatars/default_avt.jpg" class="circular-img" alt="">
-        </div>
+<%--        <div class="form-group">--%>
+<%--            <label for="image">Ảnh đại diện</label>--%>
+<%--            <input type="file" id="image" accept=".png,.jpg" name="image" onchange="previewImage(event)" title="png, jpg only!">--%>
+<%--            <img id="preview" src="${pageContext.request.contextPath}/uploads/avatars/default_avt.jpg" class="circular-img" alt="">--%>
+<%--        </div>--%>
 
         <div class="form-group">
             <input type="text" id="name" name="name" placeholder="Họ và tên" required>
@@ -206,10 +206,10 @@
             <label>Giới tính</label>
             <div class="gender-options">
                 <label>
-                    <input type="radio" name="gender" value="true" required> Nam
+                    <input style="margin-right: 10px;" type="radio" name="gender" value="true" required> Nam
                 </label>
                 <label>
-                    <input type="radio" name="gender" value="false" required> Nữ
+                    <input style="margin-right: 10px;" type="radio" name="gender" value="false" required> Nữ
                 </label>
             </div>
         </div>

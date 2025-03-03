@@ -233,11 +233,18 @@ public class UserServlet extends HttpServlet {
     }
 
     private void addUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
-        Part filePart = req.getPart("image");
-        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+        Part imageFilePart = req.getPart("image");
+        String imageFileName = Paths.get(imageFilePart.getSubmittedFileName()).getFileName().toString();
 
-        if (fileName.isEmpty()) {
-            fileName = "default_avt.jpg";
+        Part bannerFilePart = req.getPart("banner");
+        String bannerFileName = Paths.get(bannerFilePart.getSubmittedFileName()).getFileName().toString();
+
+        if (imageFileName.isEmpty()) {
+            imageFileName = "default_avt.jpg";
+        }
+
+        if (bannerFileName.isEmpty()) {
+            bannerFileName = "default_banner.jpg";
         }
 
         String name = req.getParameter("name");
@@ -247,17 +254,27 @@ public class UserServlet extends HttpServlet {
         String dateOfBirth = req.getParameter("dateOfBirth");
         boolean gender = Boolean.parseBoolean(req.getParameter("gender"));
 
-        File uploadDir = new File("C:\\uploads\\avatars");
-        if (!uploadDir.exists()) uploadDir.mkdirs();
+        File uploadDirImg = new File("C:\\uploads\\avatars");
+        if (!uploadDirImg.exists()) uploadDirImg.mkdirs();
 
-        File file = new File(uploadDir, fileName);
+        File uploadDirBanner = new File("C:\\uploads\\banners");
+        if (!uploadDirBanner.exists()) uploadDirImg.mkdirs();
 
-        if (!file.exists()) {
-            String filePath = "C:\\uploads\\avatars" + File.separator + fileName;
-            filePart.write(filePath);
+        File fileImg = new File(uploadDirImg, imageFileName);
+        File fileBanner = new File(uploadDirBanner, bannerFileName);
+
+        if (!fileImg.exists()) {
+            String filePath = "C:\\uploads\\avatars" + File.separator + imageFileName;
+            imageFilePart.write(filePath);
         }
 
-        User user = new User(fileName, name, email, phone, password, Date.valueOf(dateOfBirth), gender);
+        if (!fileBanner.exists()) {
+            String filePath = "C:\\uploads\\banners" + File.separator + bannerFileName;
+            bannerFilePart.write(filePath);
+        }
+
+        User user = new User(imageFileName, name, email, phone, password, Date.valueOf(dateOfBirth), gender);
+        user.setBanner(bannerFileName);
         if (userDAO.insertUser(user)) {
             req.setAttribute("status", "success");
         } else {
@@ -269,24 +286,38 @@ public class UserServlet extends HttpServlet {
     private void updateUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
         String userId = req.getParameter("userId");
 
-        Part filePart = req.getPart("image");
+        Part imageFilePart = req.getPart("image");
 
-        String fileName = (filePart != null && filePart.getSubmittedFileName() != null && !filePart.getSubmittedFileName().isEmpty())
-                ? Paths.get(filePart.getSubmittedFileName()).getFileName().toString()
+        Part bannerFilePart = req.getPart("banner");
+
+        String imageFileName = (imageFilePart != null && imageFilePart.getSubmittedFileName() != null && !imageFilePart.getSubmittedFileName().isEmpty())
+                ? Paths.get(imageFilePart.getSubmittedFileName()).getFileName().toString()
                 : "default_avt.jpg";  // Gán ảnh mặc định nếu không có file
 
+        String bannerFileName = (bannerFilePart != null && bannerFilePart.getSubmittedFileName() != null && !bannerFilePart.getSubmittedFileName().isEmpty())
+                ? Paths.get(bannerFilePart.getSubmittedFileName()).getFileName().toString()
+                : "default_banner.jpg";
+
+        File uploadDirImg = new File("C:\\uploads\\avatars");
+        if (!uploadDirImg.exists()) uploadDirImg.mkdirs();
+
+        File uploadDirBanner = new File("C:\\uploads\\banners");
+        if (!uploadDirBanner.exists()) uploadDirImg.mkdirs();
 
 
-        File uploadDir = new File("C:\\uploads\\avatars");
-        if (!uploadDir.exists()) uploadDir.mkdirs();
+        File fileImg = new File(uploadDirImg, imageFileName);
+        String imageFilePath = "C:\\uploads\\avatars" + File.separator + imageFileName;
 
-        File file = new File(uploadDir, fileName);
+        File fileBanner = new File(uploadDirBanner, bannerFileName);
+        String bannerFilePath = "C:\\uploads\\banners" + File.separator + bannerFileName;
 
-        String filePath = "C:\\uploads\\avatars" + File.separator + fileName;
 
+        if (!fileImg.exists()) {
+            imageFilePart.write(imageFilePath);
+        }
 
-        if (!file.exists()) {
-            filePart.write(filePath);
+        if (!fileBanner.exists()) {
+            bannerFilePart.write(bannerFilePath);
         }
 
         String name = req.getParameter("name");
@@ -297,14 +328,15 @@ public class UserServlet extends HttpServlet {
 
         User user = userDAO.selectUserById(Integer.parseInt(userId));
 
-        if (name.equalsIgnoreCase(user.getName()) && email.equalsIgnoreCase(user.getEmail()) && phone.equals(user.getPhone()) && Date.valueOf(dateOfBirth).equals(user.getDateOfBirth()) && gender == user.isGender() && fileName.equalsIgnoreCase(user.getImage())) {
+        if (name.equalsIgnoreCase(user.getName()) && email.equalsIgnoreCase(user.getEmail()) && phone.equals(user.getPhone()) && Date.valueOf(dateOfBirth).equals(user.getDateOfBirth()) && gender == user.isGender() && imageFileName.equalsIgnoreCase(user.getImage()) && bannerFileName.equalsIgnoreCase(user.getBanner())) {
             req.setAttribute("status", "Không có sự thay đổi nào");
             req.setAttribute("user", user);
             req.getRequestDispatcher("admin/Edit.jsp").forward(req, resp);
             return;
         }
 
-        user.setImage(fileName);
+        user.setImage(imageFileName);
+        user.setBanner(bannerFileName);
         user.setName(name);
         user.setEmail(email);
         user.setPhone(phone);

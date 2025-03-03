@@ -20,7 +20,7 @@ public class UserDAO implements IUserDAO {
     private static final String insert_user = "INSERT INTO users (name, email, phone, password, dateOfBirth, gender, bio, image, createAt, updateAt) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
 
-    private static final String update_user = "UPDATE users SET image = ?, name = ?, email = ?, phone = ?, dateOfBirth = ?, gender = ?, updateAt = NOW(), status = ?, password = ? WHERE userId = ?";
+    private static final String update_user = "UPDATE users SET image = ?, name = ?, email = ?, phone = ?, dateOfBirth = ?, gender = ?, updateAt = NOW(), status = ?, password = ?, banner = ? WHERE userId = ?";
 
     private static final String select_user_by_id = "SELECT * FROM users WHERE userId = ?";
 
@@ -51,9 +51,9 @@ public class UserDAO implements IUserDAO {
         List<User> users = new ArrayList<>();
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(select_all_users);
-
+        User user;
         while (resultSet.next()) {
-            users.add(new User(
+            user = new User(
                     resultSet.getInt(1),
                     resultSet.getString(2),
                     resultSet.getString(3),
@@ -67,7 +67,9 @@ public class UserDAO implements IUserDAO {
                     resultSet.getTimestamp(11),
                     resultSet.getTimestamp(12),
                     resultSet.getBoolean(13)
-            ));
+            );
+            user.setBanner(resultSet.getString(14));
+            users.add(user);
         }
 
         return users;
@@ -96,7 +98,7 @@ public class UserDAO implements IUserDAO {
         ResultSet resultSet = preparedStatement.executeQuery();
 
         if (resultSet.next()) {
-            return new User(
+            User user = new User(
                     resultSet.getInt(1),
                     resultSet.getString(2),
                     resultSet.getString(3),
@@ -111,6 +113,8 @@ public class UserDAO implements IUserDAO {
                     resultSet.getTimestamp(12),
                     resultSet.getBoolean(13)
             );
+            user.setBanner(resultSet.getString(14));
+            return user;
         } else {
             return null;
         }
@@ -127,7 +131,8 @@ public class UserDAO implements IUserDAO {
         preparedStatement.setBoolean(6, user.isGender());
         preparedStatement.setBoolean(7, user.isStatus());
         preparedStatement.setString(8, user.getPassword());
-        preparedStatement.setInt(9, userId);
+        preparedStatement.setString(9, user.getBanner());
+        preparedStatement.setInt(10, userId);
 
         int rowsAffected = preparedStatement.executeUpdate();
         return rowsAffected > 0;
@@ -186,7 +191,8 @@ public class UserDAO implements IUserDAO {
                     resultSet.getTimestamp(11),
                     resultSet.getTimestamp(12),
                     resultSet.getBoolean(13));
-             user.setFriendStatus(resultSet.getInt(14));
+             user.setBanner(resultSet.getString(14));
+             user.setFriendStatus(resultSet.getInt(15));
             searchList.add(user);
         }
 
