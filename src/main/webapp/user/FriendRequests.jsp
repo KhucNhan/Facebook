@@ -88,12 +88,12 @@
                         <input style="display: none" value="${friend.userId}">
                         <div class="col-md-2 mb-4">
                             <div class="card text-center">
-                                <img src="${pageContext.request.contextPath}/uploads/avatars/${friend.image}"
+                                <img src="${pageContext.request.contextPath}/img/avatars/${friend.image}"
                                      class="card-img-top" alt="Avatar">
                                 <div class="card-body">
                                     <h6 class="card-title">${friend.name}</h6>
                                     <button  style="width: 100%; margin-bottom: 5px;" class="btn btn-primary btn-sm accept-btn"
-                                            onclick="acceptFriend(${friend.userId})" data-id="${friend.userId}">Xác nhận
+                                             onclick="acceptFriend(${friend.userId})" data-id="${friend.userId}">Xác nhận
                                     </button>
                                     <button style="width: 100%" class="btn btn-secondary btn-sm delete-btn"
                                             onclick="deleteFriend(${friend.userId})" data-id="${friend.userId}" >Xóa
