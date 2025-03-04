@@ -3,6 +3,7 @@ package com.example.facebook.controller;
 import com.example.facebook.model.Group;
 import com.example.facebook.model.User;
 import com.example.facebook.service.GroupDAO;
+import com.example.facebook.service.GroupMemberDAO;
 import com.example.facebook.service.UserDAO;
 
 import javax.servlet.ServletException;
@@ -18,6 +19,7 @@ import java.sql.SQLException;
 public class GroupServlet extends HttpServlet {
     UserDAO userDAO = new UserDAO();
     GroupDAO groupDAO = new GroupDAO();
+    GroupMemberDAO groupMemberDAO = new GroupMemberDAO();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
@@ -70,20 +72,23 @@ public class GroupServlet extends HttpServlet {
         String groupName = req.getParameter("groupName");
         String membersString = req.getParameter("members");
 
-
         if (groupName == null || membersString == null || groupName.isEmpty() || membersString.isEmpty()) {
             System.out.println("Thiếu thông tin nhóm hoặc thành viên.");
             return;
         }
 
-        String[] memberIds = membersString.split(",");
-        for (String member : memberIds) {
-            System.out.println("Member ID: " + member);
-        }
-
         Group group = new Group();
         group.setName(groupName);
         group.setCreateBy(user.getUserId());
-        groupDAO.insertNewGroup(group);
+        int groupId = groupDAO.insertNewGroup(group);
+
+        if (groupId != -1) {
+            groupMemberDAO.insertMember(groupId, user.getUserId(), "Creator");
+            String[] memberIds = membersString.split(",");
+            for (String member : memberIds) {
+                groupMemberDAO.insertMember(groupId, Integer.parseInt(member), "Member");
+            }
+
+        }
     }
 }
