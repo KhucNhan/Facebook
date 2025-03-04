@@ -133,16 +133,24 @@ public class LikeDAO implements ILike {
     }
 
     @Override
-    public void addLikeToComment(int commentId, int userId) {
+    public int addLikeToComment(int commentId, int userId) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(addLikeToComment);
+            PreparedStatement preparedStatement = connection.prepareStatement(addLikeToComment, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, commentId);
             preparedStatement.setInt(2, userId);
 
-            int resultSet = preparedStatement.executeUpdate();
+            int row = preparedStatement.executeUpdate();
+            if (row > 0) {
+                ResultSet resultSet = preparedStatement.getGeneratedKeys();
+                if (resultSet.next()) {
+                    return resultSet.getInt(1);
+                }
+            }
+
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return -1;
     }
 }

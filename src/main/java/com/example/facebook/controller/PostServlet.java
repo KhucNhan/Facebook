@@ -338,7 +338,13 @@ public class PostServlet extends HttpServlet {
             isLiked = false;
         } else {
 
-            likeDAO.addLikeToComment(commentID, userIdStr);
+            int commentUserID = likeDAO.addLikeToComment(commentID, userIdStr);
+
+            int userIdNotification = commentDAO.selectUserIdToComment(commentID);
+            int activitiId = activityDAO.newActivities(userIdStr, commentUserID, "like_comment");
+
+            notificationDAO.new_notification(userIdNotification, activitiId);
+
             isLiked = true;
         }
 

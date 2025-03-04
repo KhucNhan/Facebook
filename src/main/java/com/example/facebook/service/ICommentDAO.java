@@ -18,4 +18,6 @@ public interface ICommentDAO {
     int insertReplyComment(Comment comment, int parentId) throws SQLException;
 
     List<Comment> getReplies(int parentId) throws SQLException;
+
+    int selectUserIdToComment(int commentId);
 }
