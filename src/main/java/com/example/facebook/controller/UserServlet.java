@@ -233,19 +233,8 @@ public class UserServlet extends HttpServlet {
     }
 
     private void addUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
-        Part imageFilePart = req.getPart("image");
-        String imageFileName = Paths.get(imageFilePart.getSubmittedFileName()).getFileName().toString();
-
-        Part bannerFilePart = req.getPart("banner");
-        String bannerFileName = Paths.get(bannerFilePart.getSubmittedFileName()).getFileName().toString();
-
-        if (imageFileName.isEmpty()) {
-            imageFileName = "default_avt.jpg";
-        }
-
-        if (bannerFileName.isEmpty()) {
-            bannerFileName = "default_banner.jpg";
-        }
+        String imageFileName = "default_avt.jpg";
+        String bannerFileName = "default_banner.jpg";
 
         String name = req.getParameter("name");
         String email = req.getParameter("email");
@@ -253,25 +242,6 @@ public class UserServlet extends HttpServlet {
         String password = req.getParameter("password");
         String dateOfBirth = req.getParameter("dateOfBirth");
         boolean gender = Boolean.parseBoolean(req.getParameter("gender"));
-
-        File uploadDirImg = new File("C:\\Users\\ADMIN\\IdeaProjects\\Facebook\\src\\main\\webapp\\img\\avatars");
-        if (!uploadDirImg.exists()) uploadDirImg.mkdirs();
-
-        File uploadDirBanner = new File("C:\\Users\\ADMIN\\IdeaProjects\\Facebook\\src\\main\\webapp\\img\\banners");
-        if (!uploadDirBanner.exists()) uploadDirImg.mkdirs();
-
-        File fileImg = new File(uploadDirImg, imageFileName);
-        File fileBanner = new File(uploadDirBanner, bannerFileName);
-
-        if (!fileImg.exists()) {
-            String filePath = "C:\\Users\\ADMIN\\IdeaProjects\\Facebook\\src\\main\\webapp\\img\\avatars" + File.separator + imageFileName;
-            imageFilePart.write(filePath);
-        }
-
-        if (!fileBanner.exists()) {
-            String filePath = "C:\\Users\\ADMIN\\IdeaProjects\\Facebook\\src\\main\\webapp\\img\\banners" + File.separator + bannerFileName;
-            bannerFilePart.write(filePath);
-        }
 
         User user = new User(imageFileName, name, email, phone, password, Date.valueOf(dateOfBirth), gender);
         user.setBanner(bannerFileName);
