@@ -184,7 +184,8 @@
                          style="display: flex;margin-top: 15px;padding-top: 5px;border-top: 1px solid lightgray;">
                         <a style="margin-right: 15px;" href="javascript:void(0);"
                            class="like-btn ${isLiked ? 'liked' : ''}" data-post-id="${post.getPostId()}">
-                            <svg style="margin-top: -5px;margin-right: -5px" xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor"
+                            <svg style="margin-top: -5px;margin-right: -5px" xmlns="http://www.w3.org/2000/svg"
+                                 width="25" height="20" fill="currentColor"
                                  class="bi bi-hand-thumbs-up-fill" viewBox="0 0 16 16">
                                 <path d="M6.956 1.745C7.021.81 7.908.087 8.864.325l.261.066c.463.116.874.456 1.012.965.22.816.533 2.511.062 4.51a10 10 0 0 1 .443-.051c.713-.065 1.669-.072 2.516.21.518.173.994.681 1.2 1.273.184.532.16 1.162-.234 1.733q.086.18.138.363c.077.27.113.567.113.856s-.036.586-.113.856c-.039.135-.09.273-.16.404.169.387.107.819-.003 1.148a3.2 3.2 0 0 1-.488.901c.054.152.076.312.076.465 0 .305-.089.625-.253.912C13.1 15.522 12.437 16 11.5 16H8c-.605 0-1.07-.081-1.466-.218a4.8 4.8 0 0 1-.97-.484l-.048-.03c-.504-.307-.999-.609-2.068-.722C2.682 14.464 2 13.846 2 13V9c0-.85.685-1.432 1.357-1.615.849-.232 1.574-.787 2.132-1.41.56-.627.914-1.28 1.039-1.639.199-.575.356-1.539.428-2.59z"/>
 
@@ -194,12 +195,13 @@
                         </a>
                         <a onclick="showPostPopup('${post.getPostId()}')">
 
-                            <svg style="margin-top: -5px;margin-right: -3px" xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor"
+                            <svg style="margin-top: -5px;margin-right: -3px" xmlns="http://www.w3.org/2000/svg"
+                                 width="25" height="20" fill="currentColor"
                                  class="bi bi-chat-fill" viewBox="0 0 16 16">
                                 <path d="M8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6-.097 1.016-.417 2.13-.771 2.966-.079.186.074.394.273.362 2.256-.37 3.597-.938 4.18-1.234A9 9 0 0 0 8 15"/>
                             </svg>
                             Bình luận
-                            <span  id="total-comment-${post.postId}">${post.totalComments}</span>
+                            <span id="total-comment-${post.postId}">${post.totalComments}</span>
                         </a>
                     </div>
                     <div class="function">
@@ -215,11 +217,11 @@
             <div style="width: 170px" id="contactLabel">
                 <label>Người liên hệ</label>
             </div>
-            <div id="search-container" style="display: none;">
-                <input type="text" id="searchInput" placeholder="Tìm kiếm"
+            <div id="search-contact-container" style="display: none;">
+                <input type="text" id="searchContactInput" placeholder="Tìm kiếm"
                        style="padding: 5px; border-radius: 5px; border: 0px solid #e8e8e8;width: 180px;background: #ececec">
             </div>
-            <div class="searchBB" id="search-input">
+            <div class="searchBB" id="search-input-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor" class="bi bi-search"
                      viewBox="0 0 16 16" onclick="showSearchInput()">
                     <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
@@ -227,12 +229,12 @@
             </div>
 
             <div style="margin-bottom: 15px;font-size: 1em;margin-left: 10px">
-                <b>...</b>
+                <span>...</span>
             </div>
         </div>
         <div>
             <c:forEach items="${usersFriendShip}" var="user">
-                <a class="friends" onclick="loadMessages(${user.userId})">
+                <a class="friends" onclick="loadMessages(${user.userId}, 'user', '${user.name}', '${pageContext.request.contextPath}/uploads/avatars/${user.image}')">
                     <div class="left_bottom">
                         <div>
                             <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
@@ -244,7 +246,43 @@
                     </div>
                 </a>
             </c:forEach>
+        </div>
+        <hr>
+        <div class="rightMenu">
+            <div style="width: 170px" id="groupLabel">
+                <label>Nhóm</label>
+            </div>
+            <div id="search-container" style="display: none;">
+                <input type="text" id="searchGroupInput" placeholder="Tìm kiếm"
+                       style="padding: 5px; border-radius: 5px; border: 0px solid #e8e8e8;width: 180px;background: #ececec">
+            </div>
+            <button class="btn btn-primary" id="openCreateGroupModal">Tạo nhóm</button>
 
+            <div style="margin-bottom: 15px;font-size: 1em;margin-left: 10px">
+                <span>...</span>
+            </div>
+        </div>
+        <div>
+            <c:choose>
+                <c:when test="${groups.size() > 0}">
+                    <c:forEach items="${groups}" var="group">
+                        <a class="groups" onclick="loadMessages(${group.groupId}, 'group', '${group.name}', '${pageContext.request.contextPath}/uploads/group_avt/default_group_avt.jpg')">
+                            <div class="left_bottom">
+                                <div>
+                                    <img src="${pageContext.request.contextPath}/uploads/group_avt/default_group_avt.jpg"
+                                         alt="Group Icon" width="50" height="50" style="border-radius: 50%;">
+                                </div>
+                                <div style="margin-left: 20px;width: 100%">
+                                    <label>${group.name}</label>
+                                </div>
+                            </div>
+                        </a>
+                    </c:forEach>
+                </c:when>
+                <c:when test="${groups.size() == 0}">
+                    <p style="text-align: center">Không tham gia nhóm nào</p>
+                </c:when>
+            </c:choose>
         </div>
     </div>
 </div>
@@ -256,21 +294,108 @@
         <input type="hidden" id="receiverId">
         <div style="display: flex;padding: 0 10px 10px 10px ; justify-content: space-between">
             <button style="width: fit-content;background: none;padding: 0" id="emoji-btn">😀</button>
-            <input style="border-radius: 24px; padding-left: 10px; border: 1px solid grey; width: 70%;" type="text" id="chat-input" placeholder="Nhập tin nhắn...">
+            <input style="border-radius: 24px; padding-left: 10px; border: 1px solid grey; width: 70%;" type="text"
+                   id="chat-input" placeholder="Nhập tin nhắn...">
             <button style="width: fit-content; padding-block: 1px" class="btn btn-primary" id="send-btn">Gửi</button>
         </div>
-        <a style=" cursor: pointer;font-size: x-large;position: absolute; bottom: 255px; left: 275px; border-radius: 50%; width: 24px;height: 24px;" onclick="closeChat()">x</a>
+        <a style=" cursor: pointer;font-size: x-large;position: absolute; bottom: 255px; left: 275px; border-radius: 50%; width: 24px;height: 24px;"
+           onclick="closeChat()">x</a>
     </div>
 </div>
 <div id="message-menu" class="message-menu">
     <button onclick="deleteMessage()">Xóa tin nhắn</button>
 </div>
 <div id="emoji-picker" class="emoji-picker"></div>
+
+<div id="createGroupModal" class="modal">
+    <form class="modal-group-content" action="/groups?action=create" method="post">
+        <span class="close">&times;</span>
+        <h2>Tạo nhóm</h2>
+
+        <!-- Nhập tên nhóm -->
+        <label for="groupName">Tên nhóm:</label>
+        <input type="text" name="groupName" id="groupName" placeholder="Nhập tên nhóm">
+
+        <!-- Danh sách bạn bè -->
+        <h3>Thêm thành viên:</h3>
+        <div id="friendList">
+            <c:forEach var="friend" items="${usersFriendShip}">
+                <div class="friend-item">
+                    <span>${friend.name} (${friend.email})</span>
+                    <input type="checkbox" class="select-user" data-userid="${friend.userId}">
+                </div>
+            </c:forEach>
+        </div>
+
+        <!-- Nút tạo nhóm -->
+        <button type="submit" id="createGroupButton">Tạo nhóm</button>
+    </form>
+</div>
+
 </body>
 </html>
 
 
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const modal = document.getElementById("createGroupModal");
+        const openModalBtn = document.getElementById("openCreateGroupModal");
+        const closeModalBtn = document.querySelector(".close");
+        const createGroupBtn = document.getElementById("createGroupButton");
+
+        let selectedUsers = [];
+
+        // Mở modal
+        openModalBtn.addEventListener("click", function () {
+            modal.style.display = "block";
+        });
+
+        // Đóng modal
+        closeModalBtn.addEventListener("click", function () {
+            modal.style.display = "none";
+        });
+
+        // Chọn thành viên
+        document.querySelectorAll(".select-user").forEach(checkbox => {
+            checkbox.addEventListener("change", function () {
+                const userId = this.getAttribute("data-userid");
+                if (this.checked) {
+                    selectedUsers.push(userId);
+                } else {
+                    selectedUsers = selectedUsers.filter(id => id !== userId);
+                }
+            });
+        });
+
+        // Gửi AJAX request để tạo nhóm
+        createGroupBtn.addEventListener("click", function () {
+            event.preventDefault(); // Ngăn form submit mặc định
+
+            const form = document.querySelector(".modal-group-content"); // Lấy form
+            const groupName = document.getElementById("groupName").value;
+            const selectedUsers = Array.from(document.querySelectorAll('.select-user:checked'))
+                .map(checkbox => checkbox.getAttribute('data-userid'));
+
+            if (!groupName) {
+                alert("Vui lòng nhập tên nhóm.");
+                return;
+            }
+            if (selectedUsers.length === 0) {
+                alert("Vui lòng chọn ít nhất một thành viên.");
+                return;
+            }
+
+            const membersInput = document.createElement("input");
+            membersInput.type = "hidden";
+            membersInput.name = "members";
+            membersInput.value = selectedUsers.join(","); // Gửi danh sách ID cách nhau bằng dấu phẩy
+
+            form.appendChild(membersInput);
+            form.submit(); // Gửi form theo cách thủ công
+        });
+    });
+
+
     // setInterval(loadMessages, 2000);
 
     let selectedMessageId = null;
@@ -293,48 +418,83 @@
 
     function deleteMessage() {
         if (confirm('Gỡ tin nhắn?')) {
-            fetch("messages?action=delete&messageId=" + selectedMessageId, { method: "POST" })
-            .then(response => response.text())
-            .then(data => {
-                if (data === "success") {
-                    let messageElement = document.querySelector(`[oncontextmenu*='` + selectedMessageId + `'] .text`);
-                    console.log(messageElement)
-                    if (messageElement) {
-                        messageElement.innerText = "Tin nhắn đã bị gỡ";
+            let receiverId = document.getElementById("receiverId").value;
+            let isGroup = document.getElementById("receiverId").getAttribute("data-type") === "group";
+
+            let url = isGroup
+                ? `groupMessages?action=delete&messageId=` + selectedMessageId
+                : `messages?action=delete&messageId=` + selectedMessageId;
+
+            fetch(url, { method: "POST" })
+                .then(response => response.text())
+                .then(data => {
+                    if (data === "success") {
+                        let messageElement = document.querySelector(`[oncontextmenu*='` + selectedMessageId + `'] .text`);
+                        if (messageElement) {
+                            messageElement.innerText = "Tin nhắn đã bị gỡ";
+                        }
+                    } else {
+                        alert("Xóa tin nhắn thất bại!");
                     }
-                } else {
-                    alert("Xóa tin nhắn thất bại!");
-                }
-            });
+                })
+                .catch(error => console.error("Lỗi khi xóa tin nhắn:", error));
         }
     }
 
-    document.getElementById("send-btn").addEventListener("click", function () {
-        let message = document.getElementById("chat-input").value;
-        let receiverId = document.getElementById("receiverId").value;
 
-        fetch("messages?action=chat&receiverId=" + receiverId + "&content=" + message, {
+    document.getElementById("send-btn").addEventListener("click", function () {
+        let message = document.getElementById("chat-input").value.trim();
+        let receiverId = document.getElementById("receiverId").value;
+        let isGroup = document.getElementById("receiverId").getAttribute("data-type") === "group";
+
+        if (!message) return; // Không gửi tin nhắn rỗng
+
+        let url = isGroup
+            ? `groupMessages?action=chat&groupId=` + receiverId + `&content=` + encodeURIComponent(message)
+            : `messages?action=chat&receiverId=` + receiverId + `&content=` + encodeURIComponent(message);
+
+        fetch(url, {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        }).then(response => response.text()).then(data => {
-            let chatBox = document.getElementById("chat-messages");
-            chatBox.innerHTML += `<div class="message message-right"> <span class="text">` + message + `</span></div>`;
-            document.getElementById("chat-input").value = "";
-            chatBox.scrollTop = chatBox.scrollHeight;
-        });
+        })
+            .then(response => response.text())
+            .then(data => {
+                let chatBox = document.getElementById("chat-messages");
+                chatBox.innerHTML += `
+                <div class="message message-right">
+                    <span class="text">` + message + `</span>
+                </div>`;
+                document.getElementById("chat-input").value = "";
+                chatBox.scrollTop = chatBox.scrollHeight;
+            })
+            .catch(error => console.error("Lỗi khi gửi tin nhắn:", error));
     });
 
-    function loadMessages(receiverId) {
-        fetch(`messages?contactId=` + receiverId)
+
+    function loadMessages(id, type, name, image) {
+        let url = (type === 'group') ? `groupMessages?groupId=` + id : `messages?contactId=` + id;
+
+        fetch(url)
             .then(response => response.text())
             .then(messages => {
                 let chatBox = document.getElementById("chat-messages");
                 chatBox.innerHTML = messages;
-                document.getElementById("receiverId").value = receiverId;
+                document.getElementById("receiverId").value = id;
+                document.getElementById("receiverId").setAttribute("data-type", type);
+
+                // Cập nhật header với tên và ảnh
+                let chatHeader = document.getElementById("chat-header");
+                chatHeader.innerHTML = `
+                <img src="` + image + `" alt="Avatar" width="40" height="40" style="border-radius: 50%; margin-right: 10px;">
+                <span>` + name + `</span>
+            `;
+
                 document.getElementById('chat-modal').style.display = 'inherit';
                 chatBox.scrollTop = chatBox.scrollHeight;
             });
     }
+
+
 
     function closeChat() {
         document.getElementById("chat-modal").style.display = "none";
@@ -406,8 +566,8 @@
 
     function showSearchInput() {
         const contactLabel = document.getElementById('contactLabel');
-        const searchContainer = document.getElementById('search-container');
-        const search = document.getElementById('search-input')
+        const searchContainer = document.getElementById('search-contact-container');
+        const search = document.getElementById('search-input-icon')
 
         contactLabel.style.display = 'none';
         searchContainer.style.display = 'block';
@@ -416,7 +576,7 @@
     }
 
     function hideSearchInput(event) {
-        const searchContainer = document.getElementById('search-container');
+        const searchContainer = document.getElementById('search-contact-container');
         const contactLabel = document.getElementById('contactLabel');
 
         if (!searchContainer.contains(event.relatedTarget) && !contactLabel.contains(event.relatedTarget)) {
@@ -426,7 +586,7 @@
         }
     }
 
-    document.getElementById('search-container').addEventListener('mouseout', hideSearchInput);
+    document.getElementById('search-contact-container').addEventListener('mouseout', hideSearchInput);
     document.getElementById('contactLabel').addEventListener('mouseout', hideSearchInput);
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -506,6 +666,38 @@
 
 </script>
 <style>
+    #createGroupModal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 755px;
+        top: 0;
+        width: 100%;
+        height: 99%;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    #createGroupModal .modal-group-content {
+        background-color: white;
+        padding: 20px;
+        margin: 10% auto;
+        width: 50%;
+        border-radius: 10px;
+    }
+
+    #createGroupModal .close {
+        float: right;
+        cursor: pointer;
+        font-size: 20px;
+    }
+
+    #createGroupModal .friend-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px;
+    }
+
+
     .emoji-picker {
         display: none;
         position: absolute;
@@ -550,6 +742,7 @@
         height: fit-content;
         border-radius: 10px;
     }
+
     #chat-messages {
         height: 200px;
         overflow-y: auto;
@@ -631,6 +824,15 @@
         display: block;
     }
 
+    .groups:hover {
+        background: #ececec;
+    }
+
+    .groups {
+        color: black;
+        display: block;
+    }
+
     .left_bottom {
         align-items: center;
         display: flex;
@@ -679,6 +881,8 @@
         width: 20%;
         height: 100%;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+        scrollbar-width: none;
     }
 
     .leftIcon {
