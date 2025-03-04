@@ -88,9 +88,9 @@ public class GroupMessageServlet extends HttpServlet {
                 case "chat":
                     chat(user, req, resp);
                     break;
-//                case "delete":
-//                    deleteMessage(req, resp);
-//                    break;
+                case "delete":
+                    deleteMessage(req, resp);
+                    break;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -102,5 +102,13 @@ public class GroupMessageServlet extends HttpServlet {
         String content = req.getParameter("content");
 
         groupMessageDAO.insertMessage(groupId, user.getUserId(), content);
+    }
+
+    private void deleteMessage(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+        int messageId = Integer.parseInt(req.getParameter("messageId"));
+        boolean success = groupMessageDAO.deleteMessage(messageId);
+
+        resp.setContentType("text/plain");
+        resp.getWriter().write(success ? "success" : "fail");
     }
 }

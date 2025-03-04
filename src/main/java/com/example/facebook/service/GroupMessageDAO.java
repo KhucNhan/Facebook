@@ -13,7 +13,7 @@ public class GroupMessageDAO implements IGroupMessageDAO{
 
     private static final String insert_message = "INSERT INTO groupmessages (groupId, senderId, content, createAt) VALUES (?, ?, ?, NOW())";
     private static final String select_messages_by_group = "SELECT * FROM groupmessages WHERE groupId = ? ORDER BY createAt ASC";
-    private static final String delete_message = "DELETE FROM groupmessages WHERE groupMessageId = ?";
+    private static final String delete_message = "UPDATE groupmessages SET content = 'Tin nhắn đã bị gỡ' WHERE groupMessageId = ?";
 
     // Thêm tin nhắn vào nhóm
     @Override

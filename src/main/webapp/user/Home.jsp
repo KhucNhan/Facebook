@@ -416,21 +416,29 @@
 
     function deleteMessage() {
         if (confirm('Gỡ tin nhắn?')) {
-            fetch("messages?action=delete&messageId=" + selectedMessageId, {method: "POST"})
+            let receiverId = document.getElementById("receiverId").value;
+            let isGroup = document.getElementById("receiverId").getAttribute("data-type") === "group";
+
+            let url = isGroup
+                ? `groupMessages?action=delete&messageId=` + selectedMessageId
+                : `messages?action=delete&messageId=` + selectedMessageId;
+
+            fetch(url, { method: "POST" })
                 .then(response => response.text())
                 .then(data => {
                     if (data === "success") {
                         let messageElement = document.querySelector(`[oncontextmenu*='` + selectedMessageId + `'] .text`);
-                        console.log(messageElement)
                         if (messageElement) {
                             messageElement.innerText = "Tin nhắn đã bị gỡ";
                         }
                     } else {
                         alert("Xóa tin nhắn thất bại!");
                     }
-                });
+                })
+                .catch(error => console.error("Lỗi khi xóa tin nhắn:", error));
         }
     }
+
 
     document.getElementById("send-btn").addEventListener("click", function () {
         let message = document.getElementById("chat-input").value.trim();
