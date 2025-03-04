@@ -8,7 +8,7 @@
             </div>
             <div class="post_UI">
                 <div>
-                    <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}" style="width: 40px; height: 40px; border-radius: 50%" alt="Avt">
+                    <img src="${pageContext.request.contextPath}/img/avatars/${user.image}" style="width: 40px; height: 40px; border-radius: 50%" alt="Avt">
                 </div>
                 <div>
                     <div class="fw-bold">${user.name}</div>
