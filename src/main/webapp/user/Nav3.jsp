@@ -91,7 +91,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">
-                            <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
+                            <img src="${pageContext.request.contextPath}/img/avatars/${user.image}"
                                  alt="User Icon" width="37" height="37"
                                  style="border-radius: 50%;margin-top: -10px;margin-right: -20px;position: relative">
                         </a>
