@@ -6,7 +6,17 @@
     padding: 15px;
     font-family: Arial, sans-serif;
     z-index: 9999;
+    overflow-y: auto;
 }
+.notification-container::-webkit-scrollbar {
+    width: 10px; /* Điều chỉnh độ rộng của thanh cuộn */
+}
+.notification-container::-webkit-scrollbar-thumb {
+    padding: 5px;
+    background-color: #cccccc; /* Màu thanh cuộn */
+    border-radius: 5px; /* Bo tròn góc */
+}
+
 
 .notification-header {
     display: flex;
