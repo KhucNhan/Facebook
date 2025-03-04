@@ -199,7 +199,7 @@ public class FriendServlet extends HttpServlet {
         int friendID = friendShipDAO.addFriend(userID, userFriendID);
 
         if (friendID != -1) {
-            int activitiId = activityDAO.newActivities(userID, friendID);
+            int activitiId = activityDAO.newActivities(userID, friendID,"friendship_request");
 
             notificationDAO.new_notification(userFriendID, activitiId);
 

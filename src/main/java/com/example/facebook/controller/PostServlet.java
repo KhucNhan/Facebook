@@ -26,6 +26,8 @@ import java.util.stream.Collectors;
 @WebServlet(name = "PostServlet", value = "/posts")
 public class PostServlet extends HttpServlet {
     private static final String UPLOAD_DIR = "uploads";
+    ActivityDAO activityDAO = new ActivityDAO();
+    NotificationDAO notificationDAO = new NotificationDAO();
     PostDAO postDAO = new PostDAO();
     UserDAO userDAO = new UserDAO();
     LikeDAO likeDAO = new LikeDAO();
@@ -152,7 +154,7 @@ public class PostServlet extends HttpServlet {
     }
 
     private void renderComment(Comment comment, User user, PrintWriter out) throws SQLException {
-        boolean isReplyCommentLike = likeDAO.checkLikeComment( user.getUserId(), comment.getCommentId());
+        boolean isReplyCommentLike = likeDAO.checkLikeComment(user.getUserId(), comment.getCommentId());
         out.println("<li class='comment-item' id='comment-" + comment.getCommentId() + "' style=\"margin-block:10px;\">");
 
         // Ảnh đại diện và thông tin người bình luận
@@ -357,9 +359,12 @@ public class PostServlet extends HttpServlet {
         if (checkLike) {
             likeDAO.deleteLikePost(userIdStr, postId);
         } else {
-             int postIds = likeDAO.addLikeToPost(postId, userIdStr);
+            int postIds = likeDAO.addLikeToPost(postId, userIdStr);
 
+            int userIdNotification = postDAO.selectUserIdToPost(postIds);
+            int activitiId = activityDAO.newActivities(userIdStr, postIds, "like_post");
 
+            notificationDAO.new_notification(userIdNotification, activitiId);
         }
 
         int totalLikes = likeDAO.getTotalLikePost(postId);

@@ -17,4 +17,6 @@ public interface IPostDAO {
     boolean deletePost(int postID);
 
     List<Post> selectPostsByUserId(int userId) throws SQLException;
+
+    int selectUserIdToPost(int postId);
 }

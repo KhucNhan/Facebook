@@ -17,11 +17,11 @@ public class ActivityDAO implements IActivityDAO {
     private final static String getIdActivitiId = "select activityId from activities where targetId = ?";
 
     @Override
-    public int newActivities(int userID, int keyword) {
+    public int newActivities(int userID, int keyword, String type) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(newActivities, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, userID);
-            preparedStatement.setString(2, "friendship_request");
+            preparedStatement.setString(2, type);
             preparedStatement.setInt(3, keyword);
 
             int row = preparedStatement.executeUpdate();
