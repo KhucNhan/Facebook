@@ -199,20 +199,28 @@ public class FriendShipDAO implements IFriendShipDAO {
     }
 
     @Override
-    public boolean acceptFriend(int userId, int userIdFriend) {
+    public int acceptFriend(int userId, int userIdFriend) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(acceptFriend);
             preparedStatement.setInt(1, userId);
             preparedStatement.setInt(2, userIdFriend);
 
             int resultSet = preparedStatement.executeUpdate();
+            if (resultSet > 0) {
+                String selectQuery = "SELECT friendshipId FROM friendships WHERE receiverId = ? and senderId = ?";
+                PreparedStatement selectStmt = connection.prepareStatement(selectQuery);
+                selectStmt.setInt(1, userId);
+                selectStmt.setInt(2, userIdFriend);
 
-            return resultSet > 0;
+                ResultSet resultSets = selectStmt.executeQuery();
+                if (resultSets.next()) {
+                    return resultSets.getInt("friendshipId");
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
-
         }
+        return -1;
     }
 
     @Override
@@ -242,7 +250,7 @@ public class FriendShipDAO implements IFriendShipDAO {
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 friendId = resultSet.getInt("friendshipId");
             }
             return friendId;

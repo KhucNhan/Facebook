@@ -69,7 +69,7 @@ public class NotificationDAO implements INotification {
     }
 
     @Override
-    public boolean new_notification_add_friend(int userId, int activityId) {
+    public boolean new_notification(int userId, int activityId) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(insert_into_notification);
             preparedStatement.setInt(1,userId);

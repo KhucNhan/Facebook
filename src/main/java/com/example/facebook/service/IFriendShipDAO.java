@@ -9,7 +9,7 @@ public interface IFriendShipDAO {
     List<User> getAllFriendsAdded(int userId) throws SQLException;
     List<User> getAllFriendsRequest(int userId) throws SQLException;
 
-    boolean acceptFriend(int userId,int userIdFriend);
+    int acceptFriend(int userId,int userIdFriend);
     boolean deleteFriend(int userId,int userIdFriend);
     int deleteFriendID(int userId,int userIdFriend);
     boolean unFriend(int userId,int userIdFriend);

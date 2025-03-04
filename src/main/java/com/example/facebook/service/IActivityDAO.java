@@ -5,5 +5,8 @@ public interface IActivityDAO {
 
     boolean deleteActivities(int activityId);
 
+    boolean deleteActivity(int target);
+
+    int newAddSuccess(int userID,int keyword);
 
 }

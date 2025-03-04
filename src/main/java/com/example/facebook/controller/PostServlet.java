@@ -335,6 +335,7 @@ public class PostServlet extends HttpServlet {
             likeDAO.deleteLikeComment(userIdStr, commentID);
             isLiked = false;
         } else {
+
             likeDAO.addLikeToComment(commentID, userIdStr);
             isLiked = true;
         }
@@ -356,7 +357,9 @@ public class PostServlet extends HttpServlet {
         if (checkLike) {
             likeDAO.deleteLikePost(userIdStr, postId);
         } else {
-            likeDAO.addLikeToPost(postId, userIdStr);
+             int postIds = likeDAO.addLikeToPost(postId, userIdStr);
+
+
         }
 
         int totalLikes = likeDAO.getTotalLikePost(postId);

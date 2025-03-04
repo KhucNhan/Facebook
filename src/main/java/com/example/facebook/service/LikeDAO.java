@@ -3,10 +3,7 @@ package com.example.facebook.service;
 import com.example.facebook.ConnectDatabase;
 import com.example.facebook.model.PostEmotion;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class LikeDAO implements ILike {
     private ConnectDatabase connectDatabase = new ConnectDatabase();
@@ -60,17 +57,24 @@ public class LikeDAO implements ILike {
     }
 
     @Override
-    public void addLikeToPost(int postId, int userId) {
+    public int addLikeToPost(int postId, int userId) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(addLikeToPost);
+            PreparedStatement preparedStatement = connection.prepareStatement(addLikeToPost , Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, postId);
             preparedStatement.setInt(2, userId);
 
-            int resultSet = preparedStatement.executeUpdate();
+            int row = preparedStatement.executeUpdate();
+            if (row > 0) {
+                ResultSet resultSet = preparedStatement.getGeneratedKeys();
+                if (resultSet.next()) {
+                    return resultSet.getInt(1);
+                }
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return -1;
     }
 
     @Override
