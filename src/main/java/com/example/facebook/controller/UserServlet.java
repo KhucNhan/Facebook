@@ -254,22 +254,22 @@ public class UserServlet extends HttpServlet {
         String dateOfBirth = req.getParameter("dateOfBirth");
         boolean gender = Boolean.parseBoolean(req.getParameter("gender"));
 
-        File uploadDirImg = new File("C:\\uploads\\avatars");
+        File uploadDirImg = new File("C:\\Users\\ADMIN\\IdeaProjects\\Facebook\\src\\main\\webapp\\img\\avatars");
         if (!uploadDirImg.exists()) uploadDirImg.mkdirs();
 
-        File uploadDirBanner = new File("C:\\uploads\\banners");
+        File uploadDirBanner = new File("C:\\Users\\ADMIN\\IdeaProjects\\Facebook\\src\\main\\webapp\\img\\banners");
         if (!uploadDirBanner.exists()) uploadDirImg.mkdirs();
 
         File fileImg = new File(uploadDirImg, imageFileName);
         File fileBanner = new File(uploadDirBanner, bannerFileName);
 
         if (!fileImg.exists()) {
-            String filePath = "C:\\uploads\\avatars" + File.separator + imageFileName;
+            String filePath = "C:\\Users\\ADMIN\\IdeaProjects\\Facebook\\src\\main\\webapp\\img\\avatars" + File.separator + imageFileName;
             imageFilePart.write(filePath);
         }
 
         if (!fileBanner.exists()) {
-            String filePath = "C:\\uploads\\banners" + File.separator + bannerFileName;
+            String filePath = "C:\\Users\\ADMIN\\IdeaProjects\\Facebook\\src\\main\\webapp\\img\\banners" + File.separator + bannerFileName;
             bannerFilePart.write(filePath);
         }
 
@@ -298,18 +298,18 @@ public class UserServlet extends HttpServlet {
                 ? Paths.get(bannerFilePart.getSubmittedFileName()).getFileName().toString()
                 : "default_banner.jpg";
 
-        File uploadDirImg = new File("C:\\uploads\\avatars");
+        File uploadDirImg = new File("C:\\Users\\ADMIN\\IdeaProjects\\Facebook\\src\\main\\webapp\\img\\avatars");
         if (!uploadDirImg.exists()) uploadDirImg.mkdirs();
 
-        File uploadDirBanner = new File("C:\\uploads\\banners");
+        File uploadDirBanner = new File("C:\\Users\\ADMIN\\IdeaProjects\\Facebook\\src\\main\\webapp\\img\\banners");
         if (!uploadDirBanner.exists()) uploadDirImg.mkdirs();
 
 
         File fileImg = new File(uploadDirImg, imageFileName);
-        String imageFilePath = "C:\\uploads\\avatars" + File.separator + imageFileName;
+        String imageFilePath = "C:\\Users\\ADMIN\\IdeaProjects\\Facebook\\src\\main\\webapp\\img\\avatars" + File.separator + imageFileName;
 
         File fileBanner = new File(uploadDirBanner, bannerFileName);
-        String bannerFilePath = "C:\\uploads\\banners" + File.separator + bannerFileName;
+        String bannerFilePath = "C:\\Users\\ADMIN\\IdeaProjects\\Facebook\\src\\main\\webapp\\img\\banners" + File.separator + bannerFileName;
 
 
         if (!fileImg.exists()) {
