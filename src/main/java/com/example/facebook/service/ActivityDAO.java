@@ -9,6 +9,10 @@ public class ActivityDAO implements IActivityDAO {
     private Connection connection = connectDatabase.connection();
     private final static String newActivities = "INSERT INTO activities (userId, type, targetId) VALUES (?, ?, ?)";
 
+    private final static String deleteActiviti = " delete from activities where activityId = ?";
+
+    private final static String getIdActivitiId = "select activityId from activities where targetId = ?";
+
     @Override
     public int newActivities(int userID, int keyword) {
         try {
@@ -29,4 +33,22 @@ public class ActivityDAO implements IActivityDAO {
         }
         return -1;
     }
+
+    @Override
+    public boolean deleteActivities(int activityId) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(deleteActiviti);
+            preparedStatement.setInt(1, activityId);
+
+            int row = preparedStatement.executeUpdate();
+
+            if (row > 0) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

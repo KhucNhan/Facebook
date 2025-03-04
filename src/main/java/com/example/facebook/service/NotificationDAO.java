@@ -12,9 +12,11 @@ public class NotificationDAO implements INotification {
     private ConnectDatabase connectDatabase = new ConnectDatabase();
     private Connection connection = connectDatabase.connection();
 
-    private final static String getAllNotification = "select * from notifications where userId =?";
+    private final static String insert_into_notification = "INSERT INTO notifications (userId, activityId) VALUES (?, ?)";
 
-    private final static String getNotificationInformation = "select *from activities where activityId = ?";
+    private final static String getAllNotification = "select * from notifications where userId = ? order by notificationId desc ";
+
+    private final static String getNotificationInformation = "select *from activities where activityId = ? order by activityId desc ";
 
 
     @Override
@@ -66,5 +68,20 @@ public class NotificationDAO implements INotification {
         return activity;
     }
 
+    @Override
+    public boolean new_notification_add_friend(int userId, int activityId) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(insert_into_notification);
+            preparedStatement.setInt(1,userId);
+            preparedStatement.setInt(2,activityId);
 
+            int row = preparedStatement.executeUpdate();
+            if (row > 0){
+                return true;
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

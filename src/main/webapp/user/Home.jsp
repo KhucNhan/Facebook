@@ -9,6 +9,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <script src="${pageContext.request.contextPath}/js/AcceptFriend.js"></script>
+
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Notification.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Nav3.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Post.css">
