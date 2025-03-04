@@ -433,19 +433,33 @@
     }
 
     document.getElementById("send-btn").addEventListener("click", function () {
-        let message = document.getElementById("chat-input").value;
+        let message = document.getElementById("chat-input").value.trim();
         let receiverId = document.getElementById("receiverId").value;
+        let isGroup = document.getElementById("receiverId").getAttribute("data-type") === "group";
 
-        fetch("messages?action=chat&receiverId=" + receiverId + "&content=" + message, {
+        if (!message) return; // Không gửi tin nhắn rỗng
+
+        let url = isGroup
+            ? `groupMessages?action=chat&groupId=` + receiverId + `&content=` + encodeURIComponent(message)
+            : `messages?action=chat&receiverId=` + receiverId + `&content=` + encodeURIComponent(message);
+
+        fetch(url, {
             method: "POST",
-            headers: {"Content-Type": "application/x-www-form-urlencoded"},
-        }).then(response => response.text()).then(data => {
-            let chatBox = document.getElementById("chat-messages");
-            chatBox.innerHTML += `<div class="message message-right"> <span class="text">` + message + `</span></div>`;
-            document.getElementById("chat-input").value = "";
-            chatBox.scrollTop = chatBox.scrollHeight;
-        });
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        })
+            .then(response => response.text())
+            .then(data => {
+                let chatBox = document.getElementById("chat-messages");
+                chatBox.innerHTML += `
+                <div class="message message-right">
+                    <span class="text">` + message + `</span>
+                </div>`;
+                document.getElementById("chat-input").value = "";
+                chatBox.scrollTop = chatBox.scrollHeight;
+            })
+            .catch(error => console.error("Lỗi khi gửi tin nhắn:", error));
     });
+
 
     function loadMessages(id, type, name, image) {
         let url = (type === 'group') ? `groupMessages?groupId=` + id : `messages?contactId=` + id;
@@ -455,8 +469,8 @@
             .then(messages => {
                 let chatBox = document.getElementById("chat-messages");
                 chatBox.innerHTML = messages;
-                // document.getElementById("receiverId").value = id;
-                // document.getElementById("receiverId").setAttribute("data-type", type);
+                document.getElementById("receiverId").value = id;
+                document.getElementById("receiverId").setAttribute("data-type", type);
 
                 // Cập nhật header với tên và ảnh
                 let chatHeader = document.getElementById("chat-header");

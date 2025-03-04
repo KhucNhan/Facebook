@@ -70,4 +70,37 @@ public class GroupMessageServlet extends HttpServlet {
             }
         }
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
+
+        if (action == null) {
+            action = "";
+        }
+
+        try {
+            HttpSession session = req.getSession();
+            int userId = (Integer) session.getAttribute("userId");
+            User user = userDAO.selectUserById(userId);
+
+            switch (action) {
+                case "chat":
+                    chat(user, req, resp);
+                    break;
+//                case "delete":
+//                    deleteMessage(req, resp);
+//                    break;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void chat(User user, HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+        int groupId = Integer.parseInt(req.getParameter("groupId"));
+        String content = req.getParameter("content");
+
+        groupMessageDAO.insertMessage(groupId, user.getUserId(), content);
+    }
 }
