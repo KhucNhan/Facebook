@@ -64,10 +64,10 @@
 <div class="container-fluid" style="overflow-y: auto; height: 91vh">
     <div class="row" style="justify-content: center;">
         <div class="col-md-8">
-            <img style="width: 100%;" src="${pageContext.request.contextPath}/uploads/banners/${user.banner}">
+            <img style="width: 100%;" src="${pageContext.request.contextPath}/img/banners/${user.banner}">
             <div class="profile-container">
                 <div style="width: 15%;">
-                    <img src="${pageContext.request.contextPath}/uploads/banners/${user.image}" alt="Avatar" class="avatar">
+                    <img src="${pageContext.request.contextPath}/img/avatars/${user.image}" alt="Avatar" class="avatar">
                 </div>
                 <div style="width: 70%;">
                     <h2 class="profile-name">${user.name}</h2>
@@ -87,7 +87,7 @@
                     <div class="post-card" data-post-id="${post.getPostId()}">
                         <div class="introduce" style="display: flex; justify-content: space-between">
                             <div style="display: flex">
-                                <img src="${pageContext.request.contextPath}/uploads/avatars/${post.user.image}"
+                                <img src="${pageContext.request.contextPath}/img/avatars/${post.user.image}"
                                      style="height: 50px;width: 50px; border-radius: 50%">
                                 <div style="display: flex; flex-direction: column; margin-left: 10px">
                                     <div style="height: 20px;">
@@ -243,7 +243,7 @@
 
     function createMediaElement(media, className) {
         if (media.type === "picture") {
-            return `<img src="${pageContext.request.contextPath}/uploads/postMedias/` + media.url + `" class="media ` + className + `">`;
+            return `<img src="${pageContext.request.contextPath}/img/postMedias/` + media.url + `" class="media ` + className + `">`;
         } else if (media.type === "video") {
             return `<video src="` + media.url + `" class="media ` + className + `" controls></video>`;
         }
