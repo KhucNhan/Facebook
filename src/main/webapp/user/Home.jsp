@@ -182,7 +182,8 @@
                          style="display: flex;margin-top: 15px;padding-top: 5px;border-top: 1px solid lightgray;">
                         <a style="margin-right: 15px;" href="javascript:void(0);"
                            class="like-btn ${isLiked ? 'liked' : ''}" data-post-id="${post.getPostId()}">
-                            <svg style="margin-top: -5px;margin-right: -5px" xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor"
+                            <svg style="margin-top: -5px;margin-right: -5px" xmlns="http://www.w3.org/2000/svg"
+                                 width="25" height="20" fill="currentColor"
                                  class="bi bi-hand-thumbs-up-fill" viewBox="0 0 16 16">
                                 <path d="M6.956 1.745C7.021.81 7.908.087 8.864.325l.261.066c.463.116.874.456 1.012.965.22.816.533 2.511.062 4.51a10 10 0 0 1 .443-.051c.713-.065 1.669-.072 2.516.21.518.173.994.681 1.2 1.273.184.532.16 1.162-.234 1.733q.086.18.138.363c.077.27.113.567.113.856s-.036.586-.113.856c-.039.135-.09.273-.16.404.169.387.107.819-.003 1.148a3.2 3.2 0 0 1-.488.901c.054.152.076.312.076.465 0 .305-.089.625-.253.912C13.1 15.522 12.437 16 11.5 16H8c-.605 0-1.07-.081-1.466-.218a4.8 4.8 0 0 1-.97-.484l-.048-.03c-.504-.307-.999-.609-2.068-.722C2.682 14.464 2 13.846 2 13V9c0-.85.685-1.432 1.357-1.615.849-.232 1.574-.787 2.132-1.41.56-.627.914-1.28 1.039-1.639.199-.575.356-1.539.428-2.59z"/>
 
@@ -192,12 +193,13 @@
                         </a>
                         <a onclick="showPostPopup('${post.getPostId()}')">
 
-                            <svg style="margin-top: -5px;margin-right: -3px" xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor"
+                            <svg style="margin-top: -5px;margin-right: -3px" xmlns="http://www.w3.org/2000/svg"
+                                 width="25" height="20" fill="currentColor"
                                  class="bi bi-chat-fill" viewBox="0 0 16 16">
                                 <path d="M8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6-.097 1.016-.417 2.13-.771 2.966-.079.186.074.394.273.362 2.256-.37 3.597-.938 4.18-1.234A9 9 0 0 0 8 15"/>
                             </svg>
                             Bình luận
-                            <span  id="total-comment-${post.postId}">${post.totalComments}</span>
+                            <span id="total-comment-${post.postId}">${post.totalComments}</span>
                         </a>
                     </div>
                     <div class="function">
@@ -225,12 +227,12 @@
             </div>
 
             <div style="margin-bottom: 15px;font-size: 1em;margin-left: 10px">
-                <b>...</b>
+                <span>...</span>
             </div>
         </div>
         <div>
             <c:forEach items="${usersFriendShip}" var="user">
-                <a class="friends" onclick="loadMessages(${user.userId})">
+                <a class="friends" onclick="loadMessages(${user.userId}, 'user', '${user.name}', '${pageContext.request.contextPath}/uploads/avatars/${user.image}')">
                     <div class="left_bottom">
                         <div>
                             <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
@@ -255,16 +257,22 @@
             <button class="btn btn-primary" id="openCreateGroupModal">Tạo nhóm</button>
 
             <div style="margin-bottom: 15px;font-size: 1em;margin-left: 10px">
-                <b>...</b>
+                <span>...</span>
             </div>
         </div>
         <div>
             <c:choose>
                 <c:when test="${groups.size() > 0}">
                     <c:forEach items="${groups}" var="group">
-                        <a class="groups" onclick="loadGroupMessages(${group.groupId})">
-                            <div style="margin-left: 20px;width: 100%">
-                                <label>${group.name}</label>
+                        <a class="groups" onclick="loadMessages(${group.groupId}, 'group', '${group.name}', '${pageContext.request.contextPath}/uploads/group_avt/default_group_avt.jpg')">
+                            <div class="left_bottom">
+                                <div>
+                                    <img src="${pageContext.request.contextPath}/uploads/group_avt/default_group_avt.jpg"
+                                         alt="Group Icon" width="50" height="50" style="border-radius: 50%;">
+                                </div>
+                                <div style="margin-left: 20px;width: 100%">
+                                    <label>${group.name}</label>
+                                </div>
                             </div>
                         </a>
                     </c:forEach>
@@ -284,10 +292,12 @@
         <input type="hidden" id="receiverId">
         <div style="display: flex;padding: 0 10px 10px 10px ; justify-content: space-between">
             <button style="width: fit-content;background: none;padding: 0" id="emoji-btn">😀</button>
-            <input style="border-radius: 24px; padding-left: 10px; border: 1px solid grey; width: 70%;" type="text" id="chat-input" placeholder="Nhập tin nhắn...">
+            <input style="border-radius: 24px; padding-left: 10px; border: 1px solid grey; width: 70%;" type="text"
+                   id="chat-input" placeholder="Nhập tin nhắn...">
             <button style="width: fit-content; padding-block: 1px" class="btn btn-primary" id="send-btn">Gửi</button>
         </div>
-        <a style=" cursor: pointer;font-size: x-large;position: absolute; bottom: 255px; left: 275px; border-radius: 50%; width: 24px;height: 24px;" onclick="closeChat()">x</a>
+        <a style=" cursor: pointer;font-size: x-large;position: absolute; bottom: 255px; left: 275px; border-radius: 50%; width: 24px;height: 24px;"
+           onclick="closeChat()">x</a>
     </div>
 </div>
 <div id="message-menu" class="message-menu">
@@ -406,19 +416,19 @@
 
     function deleteMessage() {
         if (confirm('Gỡ tin nhắn?')) {
-            fetch("messages?action=delete&messageId=" + selectedMessageId, { method: "POST" })
-            .then(response => response.text())
-            .then(data => {
-                if (data === "success") {
-                    let messageElement = document.querySelector(`[oncontextmenu*='` + selectedMessageId + `'] .text`);
-                    console.log(messageElement)
-                    if (messageElement) {
-                        messageElement.innerText = "Tin nhắn đã bị gỡ";
+            fetch("messages?action=delete&messageId=" + selectedMessageId, {method: "POST"})
+                .then(response => response.text())
+                .then(data => {
+                    if (data === "success") {
+                        let messageElement = document.querySelector(`[oncontextmenu*='` + selectedMessageId + `'] .text`);
+                        console.log(messageElement)
+                        if (messageElement) {
+                            messageElement.innerText = "Tin nhắn đã bị gỡ";
+                        }
+                    } else {
+                        alert("Xóa tin nhắn thất bại!");
                     }
-                } else {
-                    alert("Xóa tin nhắn thất bại!");
-                }
-            });
+                });
         }
     }
 
@@ -428,7 +438,7 @@
 
         fetch("messages?action=chat&receiverId=" + receiverId + "&content=" + message, {
             method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            headers: {"Content-Type": "application/x-www-form-urlencoded"},
         }).then(response => response.text()).then(data => {
             let chatBox = document.getElementById("chat-messages");
             chatBox.innerHTML += `<div class="message message-right"> <span class="text">` + message + `</span></div>`;
@@ -437,17 +447,30 @@
         });
     });
 
-    function loadMessages(receiverId) {
-        fetch(`messages?contactId=` + receiverId)
+    function loadMessages(id, type, name, image) {
+        let url = (type === 'group') ? `groupMessages?groupId=` + id : `messages?contactId=` + id;
+
+        fetch(url)
             .then(response => response.text())
             .then(messages => {
                 let chatBox = document.getElementById("chat-messages");
                 chatBox.innerHTML = messages;
-                document.getElementById("receiverId").value = receiverId;
+                // document.getElementById("receiverId").value = id;
+                // document.getElementById("receiverId").setAttribute("data-type", type);
+
+                // Cập nhật header với tên và ảnh
+                let chatHeader = document.getElementById("chat-header");
+                chatHeader.innerHTML = `
+                <img src="` + image + `" alt="Avatar" width="40" height="40" style="border-radius: 50%; margin-right: 10px;">
+                <span>` + name + `</span>
+            `;
+
                 document.getElementById('chat-modal').style.display = 'inherit';
                 chatBox.scrollTop = chatBox.scrollHeight;
             });
     }
+
+
 
     function closeChat() {
         document.getElementById("chat-modal").style.display = "none";
@@ -627,7 +650,7 @@
         top: 0;
         width: 100%;
         height: 99%;
-        background-color: rgba(0,0,0,0.5);
+        background-color: rgba(0, 0, 0, 0.5);
     }
 
     #createGroupModal .modal-group-content {
@@ -643,6 +666,7 @@
         cursor: pointer;
         font-size: 20px;
     }
+
     #createGroupModal .friend-item {
         display: flex;
         justify-content: space-between;
@@ -694,6 +718,7 @@
         height: fit-content;
         border-radius: 10px;
     }
+
     #chat-messages {
         height: 200px;
         overflow-y: auto;
