@@ -10,5 +10,6 @@ public interface INotification {
 
     Activity getNotificationInformation(int activityID);
 
-    boolean new_notification_add_friend(int userId,int activityId);
+    boolean new_notification(int userId,int activityId);
+
 }

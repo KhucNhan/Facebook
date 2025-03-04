@@ -7,10 +7,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommentDAO implements ICommentDAO{
+public class CommentDAO implements ICommentDAO {
     ConnectDatabase connectDatabase = new ConnectDatabase();
     Connection connection = connectDatabase.connection();
     UserDAO userDAO = new UserDAO();
+
+    private static final String select_userId_to_comment = "SELECT comments.userId FROM comments where commentId =?";
 
     private static final String select_all_comments = "SELECT * FROM comments WHERE postId = ? and parentId is null ORDER BY createAt ASC";
     private static final String insert_comment = "insert into comments (postId, userId, content) values (?, ?, ?)";
@@ -20,6 +22,7 @@ public class CommentDAO implements ICommentDAO{
     private static final String insert_reply_comment = "INSERT INTO comments (parentId, userId, content, postId) VALUES (?, ?, ?, ?)";
 
     private static final String select_all_replies = "select * from comments where parentId = ?";
+
     @Override
     public List<Comment> selectAllComments(int postId) throws SQLException {
         List<Comment> comments = new ArrayList<>();
@@ -140,5 +143,22 @@ public class CommentDAO implements ICommentDAO{
         }
 
         return comments;
+    }
+
+    @Override
+    public int selectUserIdToComment(int commentId) {
+        try {
+            PreparedStatement preparedStatement =connection.prepareStatement(select_userId_to_comment);
+            preparedStatement.setInt(1,commentId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                return resultSet.getInt("userId");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 }

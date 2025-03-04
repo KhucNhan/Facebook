@@ -7,7 +7,7 @@ public interface ILike {
 
     boolean deleteLikePost(int userId, int postId);
 
-    void addLikeToPost(int postId,int userId);
+    int addLikeToPost(int postId,int userId);
 
     int getTotalLikePost(int postId);
 
@@ -15,7 +15,7 @@ public interface ILike {
     boolean checkLikeComment(int userId,int commentId);
 
     boolean deleteLikeComment(int userId, int commentId);
-    void addLikeToComment(int commentId,int userId);
+    int addLikeToComment(int commentId,int userId);
 
 
 }

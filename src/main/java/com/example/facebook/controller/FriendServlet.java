@@ -110,8 +110,11 @@ public class FriendServlet extends HttpServlet {
 
         try {
             switch (action) {
+                case "acceptFriendNotification":
+                    acceptFrined(req, resp);
+                    break;
                 case "deleteFriendNotification":
-                    deleteFriendNotification(req,resp);
+                    deleteFriendNotification(req, resp);
                 case "acceptFriend":
                     acceptFrinedUser(req, resp);
                     break;
@@ -145,7 +148,6 @@ public class FriendServlet extends HttpServlet {
 
         int userFriendID = Integer.parseInt(req.getParameter("friendId"));
 
-//        int targetId = Integer.parseInt(req.getParameter("targetId"));
         int activityId = Integer.parseInt(req.getParameter("activityId"));
 
 
@@ -177,7 +179,7 @@ public class FriendServlet extends HttpServlet {
 
         int userFriendID = Integer.parseInt(req.getParameter("friendId"));
 
-        int friendId = friendShipDAO.deleteFriendID(userFriendID,userID);
+        int friendId = friendShipDAO.deleteFriendID(userFriendID, userID);
 
         if (friendShipDAO.deleteFriend(userFriendID, userID)) {
             activityDAO.deleteActivities(friendId);
@@ -197,9 +199,9 @@ public class FriendServlet extends HttpServlet {
         int friendID = friendShipDAO.addFriend(userID, userFriendID);
 
         if (friendID != -1) {
-            int activitiId = activityDAO.newActivities(userID, friendID);
+            int activitiId = activityDAO.newActivities(userID, friendID,"friendship_request");
 
-            notificationDAO.new_notification_add_friend(userFriendID, activitiId);
+            notificationDAO.new_notification(userFriendID, activitiId);
 
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");
@@ -225,13 +227,38 @@ public class FriendServlet extends HttpServlet {
         int userID = (int) session.getAttribute("userId");
 
         int userFriendID = Integer.parseInt(req.getParameter("friendId"));
+        int friendId = friendShipDAO.acceptFriend(userID, userFriendID);
+
+        if (friendId > 0) {
+            activityDAO.deleteActivity(friendId);
+
+            int activitiId = activityDAO.newAddSuccess(userID, userFriendID);
+            notificationDAO.new_notification(userFriendID, activitiId);
+
+            resp.setContentType("application/json");
+            resp.setCharacterEncoding("UTF-8");
+            resp.getWriter().write("{\"success\": true}");
+
+        }
+    }
+
+    private void acceptFrined(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        HttpSession session = req.getSession();
+        int userID = (int) session.getAttribute("userId");
+
+        int userFriendID = Integer.parseInt(req.getParameter("friendId"));
 
         int activityId = Integer.parseInt(req.getParameter("activityId"));
 
+        int friendId = friendShipDAO.acceptFriend(userID, userFriendID);
 
-        if (friendShipDAO.acceptFriend(userID, userFriendID)) {
+
+        if (friendId > 0) {
 
             activityDAO.deleteActivities(activityId);
+
+            int activitiId = activityDAO.newAddSuccess(userID, userFriendID);
+            notificationDAO.new_notification(userFriendID, activitiId);
 
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");

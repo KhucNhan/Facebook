@@ -22,7 +22,7 @@ function acceptFriend(userID) {
 
 function acceptFriends(event, userID, activityId) {
 
-    fetch(`/friends?action=acceptFriend&friendId=${encodeURIComponent(userID)}&activityId=${encodeURIComponent(activityId)}`, {
+    fetch(`/friends?action=acceptFriendNotification&friendId=${encodeURIComponent(userID)}&activityId=${encodeURIComponent(activityId)}`, {
         method: "POST",
 
     })
@@ -187,3 +187,4 @@ function unFriend(userID) {
             }
         })
 }
+
