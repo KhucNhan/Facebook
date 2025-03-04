@@ -22,22 +22,21 @@ tasks.withType(JavaCompile) {
 }
 
 dependencies {
-  compileOnly('javax.servlet:javax.servlet-api:4.0.1')
+  compileOnly 'javax.servlet:javax.servlet-api:4.0.1' // API Servlet
 
+  implementation 'org.apache.tomcat:tomcat-servlet-api:9.0.75' // Thêm Servlet API của Tomcat
+  implementation 'org.apache.tomcat:tomcat-catalina:9.0.75' // Chứa DefaultServlet
 
   implementation 'org.apache.taglibs:taglibs-standard-spec:1.2.5'
   runtimeOnly 'org.apache.taglibs:taglibs-standard-impl:1.2.5'
 
-
-  testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
-  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+  testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+  testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
 
   implementation 'mysql:mysql-connector-java:8.0.33'
-
   implementation 'javax.servlet:jstl:1.2'
-
-
 }
+
 
 test {
 useJUnitPlatform()}
