@@ -18,7 +18,7 @@
 
     <div class="notification-content">
         <div class="notification-item">
-            <img src="${pageContext.request.contextPath}/uploads/avatars/${userNotification.image}"
+            <img src="${pageContext.request.contextPath}/img/avatars/${userNotification.image}"
                  alt="Avatar">
         </div>
 

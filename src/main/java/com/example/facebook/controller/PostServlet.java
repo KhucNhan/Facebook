@@ -384,13 +384,13 @@ public class PostServlet extends HttpServlet {
         String content = req.getParameter("content");
         String privacy = req.getParameter("privacy");
 
-        File uploadDir = new File("C:\\uploads\\postMedias");
+        File uploadDir = new File("C:\\Users\\ADMIN\\IdeaProjects\\Facebook\\src\\main\\webapp\\img\\postMedias");
         if (!uploadDir.exists()) uploadDir.mkdirs();
 
 
         for (Part filePart : fileParts) {
             String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-            String filePartss = "C:\\uploads\\postMedias" + File.separator + fileName;
+            String filePartss = "C:\\Users\\ADMIN\\IdeaProjects\\Facebook\\src\\main\\webapp\\img\\postMedias" + File.separator + fileName;
             filePart.write(filePartss);
 
             mediaDAO.insertPostMedia(postId, "picture", fileName);
@@ -415,7 +415,7 @@ public class PostServlet extends HttpServlet {
         String content = req.getParameter("content");
         String privacy = req.getParameter("privacy");
 
-        File uploadDir = new File("C:\\uploads\\postMedias");
+        File uploadDir = new File("C:\\Users\\ADMIN\\IdeaProjects\\Facebook\\src\\main\\webapp\\img\\postMedias");
         if (!uploadDir.exists()) uploadDir.mkdirs();
 
         HttpSession session = req.getSession();
@@ -426,7 +426,7 @@ public class PostServlet extends HttpServlet {
 
         for (Part filePart : fileParts) {
             String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-            String filePartss = "C:\\uploads\\postMedias" + File.separator + fileName;
+            String filePartss = "C:\\Users\\ADMIN\\IdeaProjects\\Facebook\\src\\main\\webapp\\img\\postMedias" + File.separator + fileName;
             filePart.write(filePartss);
 
             mediaDAO.insertPostMedia(postId, "picture", fileName);

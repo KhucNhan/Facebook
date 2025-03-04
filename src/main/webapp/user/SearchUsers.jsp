@@ -62,7 +62,7 @@
                              class="user-card d-flex align-items-center p-3 border-bottom">
                             <!-- Avatar -->
                             <div class="avatar">
-                                <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}" alt="Avatar"
+                                <img src="${pageContext.request.contextPath}/img/avatars/${user.image}" alt="Avatar"
                                      class="rounded-circle" width="50" height="50">
                             </div>
 

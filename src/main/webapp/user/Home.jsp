@@ -68,7 +68,7 @@
     <div class="left">
         <div class="leftIcon" style="justify-content: left" onclick="goToMyProfile()">
             <div>
-                <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
+                <img src="${pageContext.request.contextPath}/img/avatars/${user.image}"
                      alt="User Icon" width="50" height="50" style="border-radius: 50%;">
             </div>
             <div>
@@ -103,7 +103,7 @@
         <form action="">
             <div class="addPost">
                 <div>
-                    <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
+                    <img src="${pageContext.request.contextPath}/img/avatars/${user.image}"
                          alt="User Icon" width="60" height="60" style="border-radius: 50%">
                 </div>
                 <div class="addPostInput" style="width: 100%">
@@ -118,7 +118,7 @@
                 <div class="post-card" data-post-id="${post.getPostId()}">
                     <div class="introduce" style="display: flex; justify-content: space-between">
                         <div style="display: flex">
-                            <img src="${pageContext.request.contextPath}/uploads/avatars/${post.user.image}"
+                            <img src="${pageContext.request.contextPath}/img/avatars/${user.image}"
                                  style="height: 50px;width: 50px; border-radius: 50%">
                             <div style="display: flex; flex-direction: column; margin-left: 10px">
                                 <div style="height: 20px;">
@@ -234,10 +234,10 @@
         </div>
         <div>
             <c:forEach items="${usersFriendShip}" var="user">
-                <a class="friends" onclick="loadMessages(${user.userId}, 'user', '${user.name}', '${pageContext.request.contextPath}/uploads/avatars/${user.image}')">
+                <a class="friends" onclick="loadMessages(${user.userId}, 'user', '${user.name}', '${pageContext.request.contextPath}/img/avatars/${user.image}')">
                     <div class="left_bottom">
                         <div>
-                            <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
+                            <img src="${pageContext.request.contextPath}/img/avatars/${user.image}"
                                  alt="User Icon" width="50" height="50" style="border-radius: 50%;">
                         </div>
                         <div style="margin-left: 20px;width: 100%">
@@ -266,10 +266,10 @@
             <c:choose>
                 <c:when test="${groups.size() > 0}">
                     <c:forEach items="${groups}" var="group">
-                        <a class="groups" onclick="loadMessages(${group.groupId}, 'group', '${group.name}', '${pageContext.request.contextPath}/uploads/group_avt/default_group_avt.jpg')">
+                        <a class="groups" onclick="loadMessages(${group.groupId}, 'group', '${group.name}', '${pageContext.request.contextPath}/img/group_avatars/default_group_avt.jpg')">
                             <div class="left_bottom">
                                 <div>
-                                    <img src="${pageContext.request.contextPath}/uploads/group_avt/default_group_avt.jpg"
+                                    <img src="${pageContext.request.contextPath}/img/group_avatars/default_group_avt.jpg"
                                          alt="Group Icon" width="50" height="50" style="border-radius: 50%;">
                                 </div>
                                 <div style="margin-left: 20px;width: 100%">
@@ -636,7 +636,7 @@
 
     function createMediaElement(media, className) {
         if (media.type === "picture") {
-            return `<img src="${pageContext.request.contextPath}/uploads/postMedias/` + media.url + `" class="media ` + className + `">`;
+            return `<img src="${pageContext.request.contextPath}/img/postMedias/` + media.url + `" class="media ` + className + `">`;
         } else if (media.type === "video") {
             return `<video src="` + media.url + `" class="media ` + className + `" controls></video>`;
         }
