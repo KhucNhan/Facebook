@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<script src="/js/AcceptFriend.js"></script>
+<script src="${pageContext.request.contextPath}/js/AcceptFriend.js"></script>
 
 <div class="notification-header">
     <b>Thông báo</b>
@@ -25,9 +25,11 @@
         <c:choose>
             <c:when test="${activity.type == 'friendship_request'}">
                 <div class="notification-text"><b>${userNotification.name}</b> đã gửi cho bạn lời mời kết bạn</div>
-                <div class="notification-actions">
-                    <a class="accept-search" data-id="${userNotification.userId}" onclick="acceptFriendSearch(${userNotification.userId})">Chấp nhận</a>
-                    <a class="cancel-friend-search" data-id="${userNotification.userId}" onclick="cancelFriend(${userNotification.userId})">Xóa</a>
+                <div class="notification-actions" id="actions-${userNotification.userId}">
+                    <a class="btn btn-primary btn-sm accept-search" data-id="${userNotification.userId}"
+                       onclick="acceptFriends(event, ${userNotification.userId}, ${activity.activityId})">Chấp nhận</a>
+                    <a class="btn btn-primary btn-sm cancel-friend-search" data-id="${user.userId}"
+                       onclick="cancelFriends(event,${userNotification.userId} ,${activity.targetId}, ${activity.activityId})">Xóa</a>
                 </div>
             </c:when>
 

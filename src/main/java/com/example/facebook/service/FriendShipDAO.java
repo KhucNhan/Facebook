@@ -14,6 +14,7 @@ public class FriendShipDAO implements IFriendShipDAO {
     private final static String addFriend = "INSERT INTO friendships (senderId, receiverId, status) VALUES (?, ?, 'pending')";
     private final static String acceptFriend = "UPDATE friendships SET status = 'accepted' WHERE (receiverId = ? and senderId = ?);";
     private final static String deleteFriend = "DELETE FROM friendships WHERE receiverId = ? and senderId = ?";
+    private final static String deleteFriendID = "select friendshipId from friendships WHERE receiverId = ? and senderId = ?";
     private final static String unFriend = "DELETE FROM friendships WHERE ((receiverId = ? and senderId = ?) or (receiverId = ? and senderId = ?)) and status = 'accepted'";
 
     private final static String select_all_friends_of_user_by_userId = "SELECT * FROM users " +
@@ -227,6 +228,28 @@ public class FriendShipDAO implements IFriendShipDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+
+        }
+    }
+
+    @Override
+    public int deleteFriendID(int userId, int userIdFriend) {
+        int friendId = 0;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(deleteFriendID);
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, userIdFriend);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()){
+                friendId = resultSet.getInt("friendshipId");
+            }
+            return friendId;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
 
         }
     }

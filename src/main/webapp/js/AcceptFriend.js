@@ -20,6 +20,45 @@ function acceptFriend(userID) {
         })
 }
 
+function acceptFriends(event, userID, activityId) {
+
+    fetch(`/friends?action=acceptFriend&friendId=${encodeURIComponent(userID)}&activityId=${encodeURIComponent(activityId)}`, {
+        method: "POST",
+
+    })
+        .then(response => response.json())
+
+        .then(data => {
+            if (data.success) {
+                let actionsDiv = document.getElementById(`actions-${userID}`);
+
+                if (actionsDiv) {
+                    actionsDiv.innerHTML = '<span>Đã xác nhận yêu cầu</span>';
+                }
+            } else {
+                alert("Có lỗi xảy ra!")
+            }
+        })
+}
+
+
+function cancelFriends(event, userID,targetId,activity) {
+    fetch(`/friends?action=deleteFriendNotification&friendId=${encodeURIComponent(userID)}&targetId=${encodeURIComponent(targetId)}&activityId=${encodeURIComponent(activity)}`, {
+        method: "POST"
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+    let actionsDiv = document.getElementById(`actions-${userID}`);
+    if (actionsDiv) {
+        actionsDiv.innerHTML = '<span>Đã xóa yêu cầu</span>';
+    }
+            } else {
+                alert("Có lỗi xảy ra!")
+            }
+        })
+}
+
 
 function acceptFriendSearch(userID) {
     fetch(`/friends?action=acceptFriend&friendId=${encodeURIComponent(userID)}`, {
@@ -139,7 +178,7 @@ function unFriend(userID) {
                 let friend = document.querySelector(`.friend[data-id="${userID}"]`);
                 let unFriend = document.querySelector(`.unFiend[data-id="${userID}"]`);
 
-                friend.style.display= "none";
+                friend.style.display = "none";
                 unFriend.style.display = "block"
 
 
