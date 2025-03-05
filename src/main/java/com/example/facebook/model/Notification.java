@@ -44,7 +44,7 @@ public class Notification {
         this.activityId = activityId;
     }
 
-    public boolean isRead() {
+    public boolean getIsRead() {
         return isRead;
     }
 
