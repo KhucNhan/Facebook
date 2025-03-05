@@ -88,7 +88,7 @@
                         <input style="display: none" value="${friend.userId}">
                         <div class="col-md-2 mb-4">
                             <div class="card text-center">
-                                <img src="${pageContext.request.contextPath}/img/avatars/${friend.image}"
+                                <img src="${pageContext.request.contextPath}/uploads/avatars/${friend.image}"
                                      class="card-img-top" alt="Avatar">
                                 <div class="card-body">
                                     <h6 class="card-title">${friend.name}</h6>

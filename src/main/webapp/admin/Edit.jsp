@@ -174,7 +174,7 @@
             <div>
                 <label for="image">Ảnh bìa</label>
                 <input type="file" id="banner" name="banner" accept="image/*" onchange="previewBannerImage(event)" style="width: 90%;">
-                <img id="previewBanner" class="circular-img" alt="Xem ảnh" src="${pageContext.request.contextPath}/uploads/banners/${user.banner}">
+                <img id="previewBanner" class="circular-img" alt="Xem ảnh" src="${pageContext.request.contextPath}/img/banners/${user.banner}">
             </div>
         </div>
 

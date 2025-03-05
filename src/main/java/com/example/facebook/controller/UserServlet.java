@@ -6,6 +6,7 @@ import com.example.facebook.service.FriendShipDAO;
 import com.example.facebook.service.PostDAO;
 import com.example.facebook.service.UserDAO;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -57,6 +59,9 @@ public class UserServlet extends HttpServlet {
                     break;
                 case "myProfile":
                     showMyProfile(req, resp);
+                    break;
+                case "delete":
+                    deleteUser(req, resp);
                     break;
                 default:
                     showUserList(req, resp);
@@ -121,8 +126,8 @@ public class UserServlet extends HttpServlet {
                 case "changeStatus":
                     changeUserStatus(req, resp);
                     break;
-                case "delete":
-                    deleteUser(req, resp);
+                case "adminDeleteUser":
+                    adminDeleteUser(req ,resp);
                     break;
                 case "search":
                     searchUser(req, resp);
@@ -140,6 +145,13 @@ public class UserServlet extends HttpServlet {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void adminDeleteUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+        int userId = Integer.parseInt(req.getParameter("userId"));
+        User user = userDAO.selectUserById(userId);
+        user.setStatus("Banned");
+        userDAO.updateUser(user, userId);
     }
 
     private void userSearchUsers(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
@@ -214,9 +226,13 @@ public class UserServlet extends HttpServlet {
     private void changeUserStatus(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
         String userIdStr = req.getParameter("userId");
         User user = userDAO.selectUserById(Integer.parseInt(userIdStr));
-        user.setStatus(!user.isStatus());
+        if (user.getStatus().equalsIgnoreCase("Active")) {
+            user.setStatus("Blocked");
+        } else {
+            user.setStatus("Active");
+        }
         userDAO.updateUser(user, Integer.parseInt(userIdStr));
-        resp.getWriter().write(user.isStatus() ? "active" : "blocked");
+        resp.getWriter().write(user.getStatus().equalsIgnoreCase("Active") ? "active" : "blocked");
     }
 
     private void searchUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
@@ -227,9 +243,15 @@ public class UserServlet extends HttpServlet {
         req.getRequestDispatcher("/admin/Users.jsp").forward(req, resp);
     }
 
-    private void deleteUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
-        String userId = req.getParameter("userId");
-        userDAO.deleteUser(Integer.parseInt(userId));
+    private void deleteUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
+        HttpSession session = req.getSession();
+        int userId = (Integer) session.getAttribute("userId");
+        userDAO.deleteUser(userId);
+
+        session.removeAttribute("userId");
+
+        RequestDispatcher dispatchers = req.getRequestDispatcher("view/Login.jsp");
+        dispatchers.forward(req, resp);
     }
 
     private void addUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
@@ -257,39 +279,59 @@ public class UserServlet extends HttpServlet {
         String userId = req.getParameter("userId");
 
         Part imageFilePart = req.getPart("image");
-
         Part bannerFilePart = req.getPart("banner");
 
+        // Lấy tên file hoặc gán ảnh mặc định
         String imageFileName = (imageFilePart != null && imageFilePart.getSubmittedFileName() != null && !imageFilePart.getSubmittedFileName().isEmpty())
                 ? Paths.get(imageFilePart.getSubmittedFileName()).getFileName().toString()
-                : "default_avt.jpg";  // Gán ảnh mặc định nếu không có file
+                : "default_avt.jpg";
 
         String bannerFileName = (bannerFilePart != null && bannerFilePart.getSubmittedFileName() != null && !bannerFilePart.getSubmittedFileName().isEmpty())
                 ? Paths.get(bannerFilePart.getSubmittedFileName()).getFileName().toString()
                 : "default_banner.jpg";
 
-        File uploadDirImg = new File("C:\\Users\\ADMIN\\IdeaProjects\\Facebook\\src\\main\\webapp\\img\\avatars");
+        // Thư mục lưu ảnh trong webapp
+        File uploadDirImg = new File(System.getenv("imgFolderUrl") + "avatars");
+        File uploadDirBanner = new File(System.getenv("imgFolderUrl") + "banners");
+
         if (!uploadDirImg.exists()) uploadDirImg.mkdirs();
+        if (!uploadDirBanner.exists()) uploadDirBanner.mkdirs();
 
-        File uploadDirBanner = new File("C:\\Users\\ADMIN\\IdeaProjects\\Facebook\\src\\main\\webapp\\img\\banners");
-        if (!uploadDirBanner.exists()) uploadDirImg.mkdirs();
+        // Thư mục backup
+        File backupDirImg = new File("C:\\uploads\\avatars");
+        File backupDirBanner = new File("C:\\uploads\\banners");
 
+        if (!backupDirImg.exists()) backupDirImg.mkdirs();
+        if (!backupDirBanner.exists()) backupDirBanner.mkdirs();
 
+        // Đường dẫn lưu ảnh
         File fileImg = new File(uploadDirImg, imageFileName);
-        String imageFilePath = "C:\\Users\\ADMIN\\IdeaProjects\\Facebook\\src\\main\\webapp\\img\\avatars" + File.separator + imageFileName;
-
         File fileBanner = new File(uploadDirBanner, bannerFileName);
-        String bannerFilePath = "C:\\Users\\ADMIN\\IdeaProjects\\Facebook\\src\\main\\webapp\\img\\banners" + File.separator + bannerFileName;
 
-
-        if (!fileImg.exists()) {
-            imageFilePart.write(imageFilePath);
+        // Lưu file vào webapp nếu chưa tồn tại
+        if (!fileImg.exists() && imageFilePart != null) {
+            imageFilePart.write(fileImg.getAbsolutePath());
+        }
+        if (!fileBanner.exists() && bannerFilePart != null) {
+            bannerFilePart.write(fileBanner.getAbsolutePath());
         }
 
-        if (!fileBanner.exists()) {
-            bannerFilePart.write(bannerFilePath);
+        // Copy sang C:\\uploads nếu chưa có
+        File backupImgFile = new File(backupDirImg, imageFileName);
+        File backupBannerFile = new File(backupDirBanner, bannerFileName);
+
+        try {
+            if (!backupImgFile.exists() && fileImg.exists()) {
+                Files.copy(fileImg.toPath(), backupImgFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            }
+            if (!backupBannerFile.exists() && fileBanner.exists()) {
+                Files.copy(fileBanner.toPath(), backupBannerFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
+        // Lấy thông tin từ request
         String name = req.getParameter("name");
         String email = req.getParameter("email");
         String phone = req.getParameter("phone");
@@ -298,13 +340,19 @@ public class UserServlet extends HttpServlet {
 
         User user = userDAO.selectUserById(Integer.parseInt(userId));
 
-        if (name.equalsIgnoreCase(user.getName()) && email.equalsIgnoreCase(user.getEmail()) && phone.equals(user.getPhone()) && Date.valueOf(dateOfBirth).equals(user.getDateOfBirth()) && gender == user.isGender() && imageFileName.equalsIgnoreCase(user.getImage()) && bannerFileName.equalsIgnoreCase(user.getBanner())) {
+        // Kiểm tra nếu không có sự thay đổi
+        if (name.equalsIgnoreCase(user.getName()) && email.equalsIgnoreCase(user.getEmail()) &&
+                phone.equals(user.getPhone()) && Date.valueOf(dateOfBirth).equals(user.getDateOfBirth()) &&
+                gender == user.isGender() && imageFileName.equalsIgnoreCase(user.getImage()) &&
+                bannerFileName.equalsIgnoreCase(user.getBanner())) {
+
             req.setAttribute("status", "Không có sự thay đổi nào");
             req.setAttribute("user", user);
             req.getRequestDispatcher("admin/Edit.jsp").forward(req, resp);
             return;
         }
 
+        // Cập nhật thông tin user
         user.setImage(imageFileName);
         user.setBanner(bannerFileName);
         user.setName(name);
@@ -314,9 +362,12 @@ public class UserServlet extends HttpServlet {
         user.setGender(gender);
 
         boolean status = userDAO.updateUser(user, Integer.parseInt(userId));
+
         if (status) req.setAttribute("status", "success");
         req.setAttribute("user", user);
         req.getRequestDispatcher("admin/Edit.jsp").forward(req, resp);
     }
+
+
 
 }
