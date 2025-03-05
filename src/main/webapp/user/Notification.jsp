@@ -19,7 +19,7 @@
 <c:forEach var="userNotification" items="${usersNotification}" varStatus="status">
     <c:set var="notification" value="${notifications[status.index]}"/>
     <c:set var="activity" value="${activities[status.index]}"/>
-
+    <c:if test="${activity.type != 'message'}">
 
     <div class="notification-content ${notification.getIsRead() ? 'read' : 'unread'}" onclick="updateIsReadNotification(event, ${notification.getNotificationId()},${notification.getIsRead()})" data-id="${notification.getNotificationId()}" >
         <div class="notification-item">
