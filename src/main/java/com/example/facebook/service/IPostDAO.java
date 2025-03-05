@@ -19,4 +19,6 @@ public interface IPostDAO {
     List<Post> selectPostsByUserId(int userId) throws SQLException;
 
     int selectUserIdToPost(int postId);
+
+    int getUserPost(int postId);
 }

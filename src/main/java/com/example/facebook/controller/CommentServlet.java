@@ -3,9 +3,7 @@ package com.example.facebook.controller;
 import com.example.facebook.model.Comment;
 import com.example.facebook.model.Post;
 import com.example.facebook.model.User;
-import com.example.facebook.service.CommentDAO;
-import com.example.facebook.service.PostDAO;
-import com.example.facebook.service.UserDAO;
+import com.example.facebook.service.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,11 +15,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
+
 @WebServlet("/comments")
 public class CommentServlet extends HttpServlet {
     CommentDAO commentDAO = new CommentDAO();
     PostDAO postDAO = new PostDAO();
     UserDAO userDAO = new UserDAO();
+    ActivityDAO activityDAO = new ActivityDAO();
+    NotificationDAO notificationDAO = new NotificationDAO();
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
@@ -90,6 +92,12 @@ public class CommentServlet extends HttpServlet {
         int commentId = commentDAO.insertComment(newComment); // Lấy ID của comment mới
         newComment.setCommentId(commentId); // Gán ID
 
+        if (postId == Integer.parseInt(userId)) {
+        } else {
+            int userIdPost = postDAO.getUserPost(postId);
+            int activityId = activityDAO.newActivities(Integer.parseInt(userId),postId,"comment");
+            notificationDAO.new_notification(userIdPost,activityId);
+        }
         // Trả về JSON chứa thông tin bình luận mới
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8"); // Đảm bảo mã hóa UTF-8
