@@ -292,11 +292,14 @@
         <div id="chat-header">Chat</div>
         <div id="chat-messages"></div>
         <input type="hidden" id="receiverId">
-        <div style="display: flex;padding: 0 10px 10px 10px ; justify-content: space-between">
+        <div style="display: flex;padding: 0 10px 5px 10px ; justify-content: space-between; position: relative; bottom: 10px">
             <button style="width: fit-content;background: none;padding: 0" id="emoji-btn">😀</button>
-            <input style="border-radius: 24px; padding-left: 10px; border: 1px solid grey; width: 70%;" type="text"
+            <input style="border-radius: 24px; padding-left: 10px; border: 1px solid grey; width: 80%;" type="text"
                    id="chat-input" placeholder="Nhập tin nhắn...">
             <button style="width: fit-content; padding-block: 1px" class="btn btn-primary" id="send-btn">Gửi</button>
+        </div>
+
+
         </div>
         <a style=" cursor: pointer;font-size: x-large;position: absolute; bottom: 255px; left: 275px; border-radius: 50%; width: 24px;height: 24px;"
            onclick="closeChat()">x</a>
@@ -758,7 +761,7 @@
         padding: 10px;
         max-width: 60%;
         border-radius: 10px;
-        font-size: 14px;
+        font-size: 18px;
     }
 
     .message-right {
