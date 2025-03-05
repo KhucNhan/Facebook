@@ -68,7 +68,7 @@ public class GroupServlet extends HttpServlet {
         }
     }
 
-    private void createGroup(User user, HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+    private void createGroup(User user, HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
         String groupName = req.getParameter("groupName");
         String membersString = req.getParameter("members");
 
@@ -88,7 +88,9 @@ public class GroupServlet extends HttpServlet {
             for (String member : memberIds) {
                 groupMemberDAO.insertMember(groupId, Integer.parseInt(member), "Member");
             }
-
         }
+
+        HomeServlet homeServlet = new HomeServlet();
+        homeServlet.showHome(req, resp);
     }
 }

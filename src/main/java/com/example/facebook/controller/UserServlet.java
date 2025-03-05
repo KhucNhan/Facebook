@@ -6,6 +6,7 @@ import com.example.facebook.service.FriendShipDAO;
 import com.example.facebook.service.PostDAO;
 import com.example.facebook.service.UserDAO;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -57,6 +58,9 @@ public class UserServlet extends HttpServlet {
                     break;
                 case "myProfile":
                     showMyProfile(req, resp);
+                    break;
+                case "delete":
+                    deleteUser(req, resp);
                     break;
                 default:
                     showUserList(req, resp);
@@ -121,8 +125,8 @@ public class UserServlet extends HttpServlet {
                 case "changeStatus":
                     changeUserStatus(req, resp);
                     break;
-                case "delete":
-                    deleteUser(req, resp);
+                case "adminDeleteUser":
+                    adminDeleteUser(req ,resp);
                     break;
                 case "search":
                     searchUser(req, resp);
@@ -140,6 +144,13 @@ public class UserServlet extends HttpServlet {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void adminDeleteUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+        int userId = Integer.parseInt(req.getParameter("userId"));
+        User user = userDAO.selectUserById(userId);
+        user.setStatus("Banned");
+        userDAO.updateUser(user, userId);
     }
 
     private void userSearchUsers(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
@@ -214,9 +225,13 @@ public class UserServlet extends HttpServlet {
     private void changeUserStatus(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
         String userIdStr = req.getParameter("userId");
         User user = userDAO.selectUserById(Integer.parseInt(userIdStr));
-        user.setStatus(!user.isStatus());
+        if (user.getStatus().equalsIgnoreCase("Active")) {
+            user.setStatus("Blocked");
+        } else {
+            user.setStatus("Active");
+        }
         userDAO.updateUser(user, Integer.parseInt(userIdStr));
-        resp.getWriter().write(user.isStatus() ? "active" : "blocked");
+        resp.getWriter().write(user.getStatus().equalsIgnoreCase("Active") ? "active" : "blocked");
     }
 
     private void searchUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
@@ -227,9 +242,15 @@ public class UserServlet extends HttpServlet {
         req.getRequestDispatcher("/admin/Users.jsp").forward(req, resp);
     }
 
-    private void deleteUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
-        String userId = req.getParameter("userId");
-        userDAO.deleteUser(Integer.parseInt(userId));
+    private void deleteUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
+        HttpSession session = req.getSession();
+        int userId = (Integer) session.getAttribute("userId");
+        userDAO.deleteUser(userId);
+
+        session.removeAttribute("userId");
+
+        RequestDispatcher dispatchers = req.getRequestDispatcher("view/Login.jsp");
+        dispatchers.forward(req, resp);
     }
 
     private void addUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {

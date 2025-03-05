@@ -86,21 +86,25 @@
 </div>
 
 
+
 <script>
+
     const users = [
         <c:forEach var="user" items="${users}" varStatus="status">
         {
-            userId: ${user.userId},
+            userId: '${user.userId}',
             name: '${user.name}',
             email: '${user.email}',
             phone: '${user.phone}',
             gender: '${user.gender ? "Nam" : "Nữ"}',
             dateOfBirth: '${user.dateOfBirth}',
             image: '${user.image}',
-            status: '${user.status ? "Active" : "Blocked"}'
+            status: '${user.status}',
         }<c:if test="${!status.last}">, </c:if>
         </c:forEach>
     ];
+
+    console.log(users);
 
     const rowsPerPage = 5;
     let currentPage = 1;
@@ -123,11 +127,13 @@
                     '<td style="width: 10%;" class="text-center">' + user.phone + '</td>' +
                     '<td style="width: 10%;" class="text-center">' + user.gender + '</td>' +
                     '<td style="width: 10%;" class="text-center">' + user.dateOfBirth + '</td>' +
-                    '<td style="width: 10%;" class="text-center">' + (user.status ? 'Active' : 'Blocked') + '</td>' +
+                    '<td style="width: 10%;" class="text-center">' + (user.status === 'Active' ? 'Active' : user.status === 'Blocked' ? 'Blocked' : 'Banned') + '</td>' +
                     '<td style="width: 15%;" class="text-center">' +
-                    '<a class="btn btn-warning" style="margin-right: 5px;" href="/users?action=update&userId=' + user.userId + '">Edit</a>' +
-                    '<a style="min-width:83px;" class="btn btn-status ' + (user.status ? 'btn-danger' : 'btn-success') + '" data-userid="' + user.userId + '" data-status="' + user.status + '"">' +
-                    (user.status ? 'Block' : 'Activate') +
+                    '<a class="btn btn-warning ' + (user.status === 'Banned' ? 'disabled' : '') + '" style="margin-right: 5px;" href="/users?action=update&userId=' + user.userId + '">Edit</a>' +
+                    '<a style="min-width:83px;" class="btn btn-status ' +
+                    (user.status === 'Active' ? 'btn-danger' : user.status === 'Banned' ? 'btn-secondary disabled' : 'btn-success') +
+                    '" data-userid="' + user.userId + '" data-status="' + user.status + '">' +
+                    (user.status === 'Blocked' ? 'Activate' : user.status === 'Banned' ? 'Banned' : 'Block') +
                     '</a>' +
                     '</td>' +
                     '</tr>';
@@ -221,7 +227,6 @@
         const activeItem = document.querySelectorAll('.page-item')[currentPage];
         if (activeItem) activeItem.classList.add('active');
     }
-
 
     displayUsers(currentPage);
     setupPagination();
