@@ -21,6 +21,8 @@ public class PostDAO implements IPostDAO {
             "                   JOIN postemotions ON posts.postId = postemotions.postId \n" +
             "                   WHERE postemotions.emotionId = ?";
 
+    private static final String get_userId_to_post = "SELECT userId from posts where postId = ?";
+
     private static final String deletePost = "DELETE FROM posts WHERE (postId = ?)";
 
     private static final String updatePost = "UPDATE posts SET content = ?, privacy = ?,updateAt =NOW() WHERE (postId = ?)";
@@ -253,6 +255,23 @@ public class PostDAO implements IPostDAO {
     public int selectUserIdToPost(int postId) {
         try {
             PreparedStatement preparedStatement =connection.prepareStatement(select_userId_to_post);
+            preparedStatement.setInt(1,postId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                return resultSet.getInt("userId");
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    @Override
+    public int getUserPost(int postId) {
+        try {
+            PreparedStatement preparedStatement =connection.prepareStatement(get_userId_to_post);
             preparedStatement.setInt(1,postId);
 
             ResultSet resultSet = preparedStatement.executeQuery();

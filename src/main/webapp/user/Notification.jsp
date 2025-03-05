@@ -72,6 +72,12 @@
                      data-time="<fmt:formatDate value="${activity.createAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />">
                 </div>
             </c:when>
+            <c:when test="${activity.type == 'comment'}">
+                <div class="notification-text"><b>${userNotification.name}</b> đã bình luận bài viết của bạn</div>
+                <div class="notification-time"
+                     data-time="<fmt:formatDate value="${activity.createAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />">
+                </div>
+            </c:when>
         </c:choose>
     </div>
 </c:forEach>
