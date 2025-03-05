@@ -66,12 +66,17 @@ public class LoginSevlet extends HttpServlet {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                int status = resultSet.getInt("status");
+                String status = resultSet.getString("status");
                 String role = resultSet.getString("role");
                 int userId = resultSet.getInt("userId");
 
-                if (status == 0) {
+                if (status.equalsIgnoreCase("Blocked")) {
                     resp.getWriter().println("{\"success\": false, \"message\": \"Tài khoản của bạn đã bị khóa!\"}");
+                    return;
+                }
+
+                if (status.equalsIgnoreCase("Banned")) {
+                    resp.getWriter().println("{\"success\": false, \"message\": \"Tài khoản của bạn đã bị cấm!\"}");
                     return;
                 }
                 HttpSession session = req.getSession();

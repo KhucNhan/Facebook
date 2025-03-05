@@ -24,7 +24,7 @@ public class UserDAO implements IUserDAO {
 
     private static final String select_user_by_id = "SELECT * FROM users WHERE userId = ?";
 
-    private static final String delete_user_by_id = "DELETE FROM users WHERE userId = ?";
+    private static final String delete_user_by_id = "DELETE from users WHERE userId = ?";
 
     private static final String select_user_by_email = "SELECT * FROM users WHERE email LIKE ?";
 
@@ -66,7 +66,7 @@ public class UserDAO implements IUserDAO {
                     resultSet.getString(10),
                     resultSet.getTimestamp(11),
                     resultSet.getTimestamp(12),
-                    resultSet.getBoolean(13)
+                    resultSet.getString(13)
             );
             user.setBanner(resultSet.getString(14));
             users.add(user);
@@ -111,7 +111,7 @@ public class UserDAO implements IUserDAO {
                     resultSet.getString(10),
                     resultSet.getTimestamp(11),
                     resultSet.getTimestamp(12),
-                    resultSet.getBoolean(13)
+                    resultSet.getString(13)
             );
             user.setBanner(resultSet.getString(14));
             return user;
@@ -129,7 +129,7 @@ public class UserDAO implements IUserDAO {
         preparedStatement.setString(4, user.getPhone());
         preparedStatement.setDate(5, user.getDateOfBirth());
         preparedStatement.setBoolean(6, user.isGender());
-        preparedStatement.setBoolean(7, user.isStatus());
+        preparedStatement.setString(7, user.getStatus());
         preparedStatement.setString(8, user.getPassword());
         preparedStatement.setString(9, user.getBanner());
         preparedStatement.setInt(10, userId);
@@ -190,7 +190,7 @@ public class UserDAO implements IUserDAO {
                     resultSet.getString(10),
                     resultSet.getTimestamp(11),
                     resultSet.getTimestamp(12),
-                    resultSet.getBoolean(13));
+                    resultSet.getString(13));
              user.setBanner(resultSet.getString(14));
              user.setFriendStatus(resultSet.getInt(15));
             searchList.add(user);
@@ -220,7 +220,7 @@ public class UserDAO implements IUserDAO {
                     resultSet.getString(10),
                     resultSet.getTimestamp(11),
                     resultSet.getTimestamp(12),
-                    resultSet.getBoolean(13)
+                    resultSet.getString(13)
             ));
         }
 
@@ -250,7 +250,7 @@ public class UserDAO implements IUserDAO {
                     resultSet.getString(10),
                     resultSet.getTimestamp(11),
                     resultSet.getTimestamp(12),
-                    resultSet.getBoolean(13)
+                    resultSet.getString(13)
             ));
         }
 
@@ -278,7 +278,7 @@ public class UserDAO implements IUserDAO {
                     resultSet.getString(10),
                     resultSet.getTimestamp(11),
                     resultSet.getTimestamp(12),
-                    resultSet.getBoolean(13)
+                    resultSet.getString(13)
             ));
         }
 

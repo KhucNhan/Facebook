@@ -49,7 +49,7 @@ public class HomeServlet extends HttpServlet {
         }
     }
 
-    private void showHome(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
+    public void showHome(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
         HttpSession session = req.getSession();
         String userIdStr = session.getAttribute("userId").toString();
         User user = userDAO.selectUserById(Integer.parseInt(userIdStr));

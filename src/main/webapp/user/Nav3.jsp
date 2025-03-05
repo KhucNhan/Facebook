@@ -99,6 +99,7 @@
                             <li><a class="dropdown-item" href="/users?action=userUpdateInformation">Cập nhật thông tin
                                 cá nhân</a></li>
                             <li><a class="dropdown-item" href="/users?action=changePassword">Đổi mật khẩu</a></li>
+                            <li><a class="dropdown-item" href="/users?action=delete">Xóa tài khoản</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>

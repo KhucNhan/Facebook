@@ -18,13 +18,13 @@ public class User {
     private String role;
     private Timestamp createAt;
     private Timestamp updateAt;
-    private boolean status;
+    private String status;
 
     private int friendStatus;
     public User() {
     }
 
-    public User(int userId, String image, String name, String email, String phone, String password, Date dateOfBirth, boolean gender, String bio, String role, Timestamp createAt, Timestamp updateAt, boolean status) {
+    public User(int userId, String image, String name, String email, String phone, String password, Date dateOfBirth, boolean gender, String bio, String role, Timestamp createAt, Timestamp updateAt, String status) {
         this.userId = userId;
         this.image = image;
         this.name = name;
@@ -162,11 +162,11 @@ public class User {
         this.updateAt = updateAt;
     }
 
-    public boolean isStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

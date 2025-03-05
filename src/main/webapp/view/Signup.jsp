@@ -92,41 +92,50 @@
             "&name=" + encodeURIComponent(name) +
             "&password=" + encodeURIComponent(password) +
             "&rePassword=" + encodeURIComponent(rePassword), true);
+
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                if (xhr.responseText.trim() === "exists") {
-                    emailError.innerText = "Email hoặc số điện thoại đã tồn tại!";
-                } else {
-                    emailError.innerText = "";
+                let responseText = xhr.responseText.trim();
+                let errors = {
+                    email: [],
+                    name: [],
+                    password: []
+                };
+
+                if (responseText.includes("exists")) {
+                    errors.email.push("Email hoặc số điện thoại đã tồn tại!");
                 }
 
-                if (xhr.responseText.trim() === "emailRegex") {
-                    emailError.innerText = "Địa chỉ email không hợp lệ!";
-                } else {
-                    emailError.innerText = "";
+                if (responseText.includes("emailRegex")) {
+                    errors.email.push("Địa chỉ email không hợp lệ!");
                 }
 
-                if (xhr.responseText.trim() === "nameError") {
-                    nameError.innerText = "Tên không được chứa ký tự đặc biệt!";
-                } else {
-                    nameError.innerText = "";
+                if (responseText.includes("nameError")) {
+                    errors.name.push("Tên không được chứa ký tự đặc biệt!");
                 }
 
-                if (xhr.responseText.trim() === "passwordLengthError") {
-                    passwordError.innerText = "Mật khẩu phải có tối thiểu 6 ký tự!";
-                } else if (xhr.responseText.trim() === "passwordError") {
-                    passwordError.innerText = "Mật khẩu không đúng!";
-                } else {
-                    passwordError.innerText = "";
+                if (responseText.includes("passwordLengthError")) {
+                    errors.password.push("Mật khẩu phải có tối thiểu 6 ký tự!");
                 }
 
-                if (xhr.responseText.trim() === "pass") {
+                if (responseText.includes("passwordError")) {
+                    errors.password.push("Mật khẩu không đúng!");
+                }
+
+                // Hiển thị tất cả lỗi
+                emailError.innerHTML = errors.email.join("<br>");
+                nameError.innerHTML = errors.name.join("<br>");
+                passwordError.innerHTML = errors.password.join("<br>");
+
+                // Nếu không có lỗi, submit form
+                if (responseText === "pass") {
                     form.submit();
                 }
-
             }
         };
+
         xhr.send();
+
     });
 
 

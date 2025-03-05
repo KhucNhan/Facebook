@@ -383,8 +383,8 @@
                 alert("Vui lòng nhập tên nhóm.");
                 return;
             }
-            if (selectedUsers.length === 0) {
-                alert("Vui lòng chọn ít nhất một thành viên.");
+            if (selectedUsers.length < 1) {
+                alert("Vui lòng chọn ít nhất 2 thành viên.");
                 return;
             }
 
