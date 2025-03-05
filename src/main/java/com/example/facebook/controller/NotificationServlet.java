@@ -20,7 +20,6 @@ import java.util.List;
 @WebServlet("/notification")
 public class NotificationServlet extends HttpServlet {
     NotificationDAO notificationDAO = new NotificationDAO();
-    UserDAO userDAO = new UserDAO();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -29,6 +28,21 @@ public class NotificationServlet extends HttpServlet {
         resp.setContentType("text/html;charset=UTF-8");
 
         String action = req.getParameter("action");
+        switch (action){
+            case "updateIsRead":
+                updateIsReadNotification(req,resp);
+                break;
+        }
 
+    }
+
+    private void updateIsReadNotification(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        int notificationId = Integer.parseInt(req.getParameter("notificationID"));
+
+        notificationDAO.updateIsReadNotification(notificationId);
+
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+        resp.getWriter().write("{\"success\": true}");
     }
 }

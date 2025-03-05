@@ -12,4 +12,6 @@ public interface INotification {
 
     boolean new_notification(int userId,int activityId);
 
+    boolean updateIsReadNotification(int notificationId);
+
 }

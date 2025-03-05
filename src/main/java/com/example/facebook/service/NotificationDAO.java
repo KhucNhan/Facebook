@@ -18,6 +18,7 @@ public class NotificationDAO implements INotification {
 
     private final static String getNotificationInformation = "select *from activities where activityId = ? order by activityId desc ";
 
+    private final static String updateIsRead = "UPDATE notifications SET isRead = 1 WHERE (notificationId = ?)";
 
     @Override
     public List<Notification> getAllNotifictionAddFriend(int userId) {
@@ -74,6 +75,22 @@ public class NotificationDAO implements INotification {
             PreparedStatement preparedStatement = connection.prepareStatement(insert_into_notification);
             preparedStatement.setInt(1,userId);
             preparedStatement.setInt(2,activityId);
+
+            int row = preparedStatement.executeUpdate();
+            if (row > 0){
+                return true;
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateIsReadNotification(int notificationId) {
+        try {
+            PreparedStatement preparedStatement =connection.prepareStatement(updateIsRead);
+            preparedStatement.setInt(1,notificationId);
 
             int row = preparedStatement.executeUpdate();
             if (row > 0){

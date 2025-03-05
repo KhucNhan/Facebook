@@ -18,7 +18,6 @@ document.addEventListener("click", function (event) {
     }
 });
 
-// Hàm để cập nhật thời gian theo dạng "x phút trước"
 function updateTimeAgo() {
     const elements = document.querySelectorAll('.notification-time');
 
@@ -26,15 +25,13 @@ function updateTimeAgo() {
         const isoTime = el.getAttribute('data-time'); // Lấy thời gian từ thuộc tính data-time
         if (isoTime) {
             const timeAgo = timeSince(new Date(isoTime));
-            el.textContent = timeAgo; // Hiển thị thời gian đã xử lý
+            el.textContent = timeAgo;
             el.style.marginLeft = "60px";
             el.style.fontSize = "0.9em";
-            el.style.color="#0866ff"
         }
     });
 }
 
-// Hàm tính thời gian "x phút trước"
 function timeSince(date) {
     const seconds = Math.floor((new Date() - date) / 1000);
     let interval = Math.floor(seconds / 31536000);
@@ -51,10 +48,37 @@ function timeSince(date) {
     return "Vừa xong";
 }
 
-// Đợi DOM tải xong rồi mới cập nhật thời gian
 document.addEventListener("DOMContentLoaded", function () {
     console.log("DOM đã tải xong, bắt đầu cập nhật thời gian...");
-    setTimeout(updateTimeAgo, 500);  // Chạy ngay khi tải xong
-    setInterval(updateTimeAgo, 60000); // Cập nhật mỗi phút
+    setTimeout(updateTimeAgo, 500);
+    setInterval(updateTimeAgo, 60000);
 });
 
+
+function updateIsReadNotification(event, notificationID, statusNotification) {
+
+    if (!statusNotification) {
+
+        fetch(`/notification?action=updateIsRead&notificationID=${notificationID}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+
+                if (data.success) {
+                    let notificationElement = event.target.closest(".notification-content");
+
+                    notificationElement.classList.remove('unread');
+                    notificationElement.classList.add('read');
+
+                    let dotIcon = notificationElement.querySelector('.readAndUnRead');
+                    dotIcon.style.display = 'none';
+
+                    notificationElement.onclick = null;
+                }
+            })
+    }
+}

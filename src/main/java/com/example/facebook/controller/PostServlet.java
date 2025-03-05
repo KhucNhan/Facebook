@@ -368,9 +368,13 @@ public class PostServlet extends HttpServlet {
             int postIds = likeDAO.addLikeToPost(postId, userIdStr);
 
             int userIdNotification = postDAO.selectUserIdToPost(postIds);
-            int activitiId = activityDAO.newActivities(userIdStr, postIds, "like_post");
 
-            notificationDAO.new_notification(userIdNotification, activitiId);
+            if (userIdNotification == userIdStr) {
+
+            } else {
+                int activitiId = activityDAO.newActivities(userIdStr, postIds, "like_post");
+                notificationDAO.new_notification(userIdNotification, activitiId);
+            }
         }
 
         int totalLikes = likeDAO.getTotalLikePost(postId);
