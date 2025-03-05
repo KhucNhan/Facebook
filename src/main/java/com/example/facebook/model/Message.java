@@ -60,4 +60,15 @@ public class Message {
     public void setCreateAt(Timestamp createAt) {
         this.createAt = createAt;
     }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "messageId=" + messageId +
+                ", senderId=" + senderId +
+                ", receiverId=" + receiverId +
+                ", content='" + content + '\'' +
+                ", createAt=" + createAt +
+                '}';
+    }
 }

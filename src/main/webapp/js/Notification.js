@@ -76,7 +76,7 @@ function updateTimeAgoMess() {
         if (isoTime) {
             const timeAgo = timeSinceMess(new Date(isoTime));
             el.textContent = timeAgo;
-            el.style.marginTop="-22px"
+            el.style.marginTop="-36px"
             el.style.marginLeft = "240px";
             el.style.fontSize = "13px";
         }

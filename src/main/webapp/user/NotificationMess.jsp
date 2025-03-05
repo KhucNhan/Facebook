@@ -21,6 +21,7 @@
     <c:set var="notification" value="${notifications[status.index]}"/>
     <c:set var="activity" value="${activities[status.index]}"/>
 
+
     <c:if test="${activity.type == 'message'}">
         <div class="notificationMess-content ${notification.getIsRead() ? 'read' : 'unread'}"
              onclick="updateIsReadNotificationMess(event, ${notification.getNotificationId()},${notification.getIsRead()})"
@@ -40,10 +41,14 @@
             </div>
             <c:choose>
                 <c:when test="${activity.type == 'message'}">
-                    <div class="notificationMess-text ${notification.getIsRead() ? 'read' : 'unread'}"><b>${userNotification.name}</b></div>
-                    <span class="message-text">
-                        haha siudfhoisgdhoifgoisdgfiosdgofdsoifbgsdoigodsogoids
-                    </span>
+                    <div class="notificationMess-text ${notification.getIsRead() ? 'read' : 'unread'}">
+                        <b>${userNotification.name}</b></div>
+                    <c:if test="${messageNotifications[status.index].getSenderId() != activity.targetId}">
+                                <span class="message-text">
+                                   <p>${messageNotifications[status.index].getContent()}</p>
+                                </span>
+                    </c:if>
+
                     <div class="notificationMess-time"
                          data-time="<fmt:formatDate value="${activity.createAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />">
                     </div>

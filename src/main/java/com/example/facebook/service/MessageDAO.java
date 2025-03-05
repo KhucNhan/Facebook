@@ -14,6 +14,16 @@ public class MessageDAO implements IMessageDAO{
     private static final String select_all_message = "SELECT * FROM messages WHERE (senderId = ? AND receiverId = ?) OR (senderId = ? AND receiverId = ?) ORDER BY createAt";
     private static final String insert_new_message = "INSERT INTO messages (senderId, receiverId, content) VALUES (?, ?, ?)";
     private static final String delete_message = "UPDATE messages SET content = 'Tin nhắn đã bị gỡ' WHERE messageId = ?";
+
+    private static final String select_content_message = "SELECT m.*\n" +
+            "FROM messages m\n" +
+            "JOIN (\n" +
+            "    SELECT senderId, MAX(createAt) AS latestMessageTime\n" +
+            "    FROM messages\n" +
+            "    WHERE receiverId = ?\n" +
+            "    GROUP BY senderId\n" +
+            ") latestMsg ON m.senderId = latestMsg.senderId AND m.createAt = latestMsg.latestMessageTime\n" +
+            "WHERE m.receiverId = ? order by m.createAt DESC";
     @Override
     public List<Message> selectAllMessages(int currentUserId, int otherUserId) throws SQLException {
         List<Message> messages = new ArrayList<>();
@@ -62,5 +72,29 @@ public class MessageDAO implements IMessageDAO{
         preparedStatement.setInt(1, messageId);
         int row = preparedStatement.executeUpdate();
         return row > 0;
+    }
+
+    @Override
+    public List<Message> selectContentMessage(int receiverId) {
+        List<Message> messagesNotification = new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(select_content_message);
+            preparedStatement.setInt(1,receiverId);
+            preparedStatement.setInt(2,receiverId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) { // Duyệt từng dòng kết quả
+                int messageId = resultSet.getInt("messageId");
+                int senderId = resultSet.getInt("senderId");
+                String content = resultSet.getString("content");
+                Timestamp createAt = resultSet.getTimestamp("createAt");
+
+                Message message = new Message(messageId, senderId, receiverId, content, createAt);
+                messagesNotification.add(message);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return messagesNotification;
     }
 }
