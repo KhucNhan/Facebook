@@ -12,7 +12,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -426,35 +428,47 @@ public class PostServlet extends HttpServlet {
 
 
     private void newPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
-
-        Collection<Part> fileParts = req.getParts().stream().filter(part -> (part.getName().startsWith("fileA") || part.getName().startsWith("fileB")) && part.getSize() > 0).collect(Collectors.toList());
-
+        Collection<Part> fileParts = req.getParts().stream()
+                .filter(part -> (part.getName().startsWith("fileA") || part.getName().startsWith("fileB")) && part.getSize() > 0)
+                .collect(Collectors.toList());
 
         String content = req.getParameter("content");
         String privacy = req.getParameter("privacy");
 
-        File uploadDir = new File("C:\\Users\\ADMIN\\IdeaProjects\\Facebook\\src\\main\\webapp\\img\\postMedias");
-        if (!uploadDir.exists()) uploadDir.mkdirs();
+        // Thư mục lưu trong webapp
+        File webappDir = new File(System.getenv("imgFolderUrl") + "postMedias");
+        if (!webappDir.exists()) webappDir.mkdirs();
+
+        // Thư mục sao chép
+        File backupDir = new File("C:\\uploads\\postMedias");
+        if (!backupDir.exists()) backupDir.mkdirs();
 
         HttpSession session = req.getSession();
         String userIdStr = session.getAttribute("userId").toString();
 
         int postId = postDAO.insertPost(new Post(userDAO.selectUserById(Integer.parseInt(userIdStr)), content, privacy));
 
-
         for (Part filePart : fileParts) {
             String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-            String filePartss = "C:\\Users\\ADMIN\\IdeaProjects\\Facebook\\src\\main\\webapp\\img\\postMedias" + File.separator + fileName;
-            filePart.write(filePartss);
+
+            // Đường dẫn file trong webapp
+            File webappFile = new File(webappDir, fileName);
+            filePart.write(webappFile.getAbsolutePath()); // Lưu ảnh vào webapp/img/postMedias
+
+            // Đường dẫn file trong backup
+            File backupFile = new File(backupDir, fileName);
+
+            // Kiểm tra nếu file chưa tồn tại trong C:\\uploads\\postMedias, thì sao chép
+            if (!backupFile.exists()) {
+                Files.copy(webappFile.toPath(), backupFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            }
 
             mediaDAO.insertPostMedia(postId, "picture", fileName);
-
         }
-        HttpSession session1 = req.getSession();
-        session1.setAttribute("successMessage", "Đăng bài thành công!");
 
+        session.setAttribute("successMessage", "Đăng bài thành công!");
         resp.sendRedirect(req.getContextPath() + "/home");
-
     }
+
 
 }

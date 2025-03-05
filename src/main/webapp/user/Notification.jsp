@@ -23,7 +23,7 @@
 
     <div class="notification-content ${notification.getIsRead() ? 'read' : 'unread'}" onclick="updateIsReadNotification(event, ${notification.getNotificationId()},${notification.getIsRead()})" data-id="${notification.getNotificationId()}" >
         <div class="notification-item">
-            <img src="${pageContext.request.contextPath}/img/avatars/${userNotification.image}"
+            <img src="${pageContext.request.contextPath}/uploads/avatars/${userNotification.image}"
                  alt="Avatar">
             <c:if test="${!notification.getIsRead()}">
                 <div class="readAndUnRead">

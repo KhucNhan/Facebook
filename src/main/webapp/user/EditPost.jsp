@@ -44,7 +44,7 @@
                 </div>
                 <div class="post_UI">
                     <div>
-                        <img src="${pageContext.request.contextPath}/img/avatars/${user.image}"
+                        <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
                              style="width: 40px; height: 40px; border-radius: 50%" alt="Avt">
                     </div>
                     <div>
@@ -91,7 +91,7 @@
                         </button>
                     </div>
                     <c:forEach var="media" items="${editPost.mediaUrls}">
-                        <img src="${pageContext.request.contextPath}/img/postMedias/${media.url}"
+                        <img src="${pageContext.request.contextPath}/uploads/postMedias/${media.url}"
                              width="100" alt="Ảnh bài viết">
                     </c:forEach>
                 </div>
