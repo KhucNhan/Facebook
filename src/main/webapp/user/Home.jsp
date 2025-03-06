@@ -287,12 +287,12 @@
     </div>
 </div>
 
-<div id="chat-modal" class="modal">
-    <div class="modal-content">
-        <div id="chat-header">Chat</div>
+<div id="chat-modal" style="height: 325px" class="modal">
+    <div class="modal-content" style="height: 100%">
+        <div id="chat-header" style="height: 15%;padding: 5px"></div>
         <div id="chat-messages"></div>
         <input type="hidden" id="receiverId">
-        <div style="display: flex;padding: 0 10px 5px 10px ; justify-content: space-between; position: relative; bottom: 10px">
+        <div style="height: 15%;display: flex;padding: 5px 10px 5px 10px ; justify-content: space-between; position: relative;">
             <button style="width: fit-content;background: none;padding: 0" id="emoji-btn">😀</button>
             <input style="border-radius: 24px; padding-left: 10px; border: 1px solid grey; width: 80%;" type="text"
                    id="chat-input" placeholder="Nhập tin nhắn...">
@@ -301,7 +301,7 @@
 
 
         </div>
-        <a style=" cursor: pointer;font-size: x-large;position: absolute; bottom: 255px; left: 275px; border-radius: 50%; width: 24px;height: 24px;"
+        <a style=" cursor: pointer;font-size: x-large;position: absolute; bottom: 295px; left: 275px; border-radius: 50%; width: 24px;height: 24px;"
            onclick="closeChat()">x</a>
     </div>
 </div>
@@ -713,6 +713,7 @@
         box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
         border-radius: 5px;
         width: 200px;
+        z-index: 10005;
     }
 
     .emoji {
@@ -736,7 +737,8 @@
     .modal {
         display: none;
         position: fixed;
-        top: 64%;
+        top: 60%;
+        height: 325px;
         left: 87%;
         transform: translate(-50%, 0);
         width: 300px;
@@ -748,9 +750,9 @@
     }
 
     #chat-messages {
-        height: 200px;
+        height: 75%;
         overflow-y: auto;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
         scrollbar-width: none;
         padding-inline: 10px;
         border-block: 1px solid lightgray;
