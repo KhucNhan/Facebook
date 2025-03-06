@@ -66,9 +66,9 @@ public class UserDAO implements IUserDAO {
                     resultSet.getString(10),
                     resultSet.getTimestamp(11),
                     resultSet.getTimestamp(12),
-                    resultSet.getString(13)
+                    resultSet.getString(13),
+                    resultSet.getString(14)
             );
-            user.setBanner(resultSet.getString(14));
             users.add(user);
         }
 
@@ -111,9 +111,9 @@ public class UserDAO implements IUserDAO {
                     resultSet.getString(10),
                     resultSet.getTimestamp(11),
                     resultSet.getTimestamp(12),
-                    resultSet.getString(13)
+                    resultSet.getString(13),
+                    resultSet.getString(14)
             );
-            user.setBanner(resultSet.getString(14));
             return user;
         } else {
             return null;
@@ -190,8 +190,9 @@ public class UserDAO implements IUserDAO {
                     resultSet.getString(10),
                     resultSet.getTimestamp(11),
                     resultSet.getTimestamp(12),
-                    resultSet.getString(13));
-             user.setBanner(resultSet.getString(14));
+                    resultSet.getString(13),
+                     resultSet.getString(14)
+             );
              user.setFriendStatus(resultSet.getInt(15));
             searchList.add(user);
         }
@@ -220,7 +221,8 @@ public class UserDAO implements IUserDAO {
                     resultSet.getString(10),
                     resultSet.getTimestamp(11),
                     resultSet.getTimestamp(12),
-                    resultSet.getString(13)
+                    resultSet.getString(13),
+                    resultSet.getString(14)
             ));
         }
 
@@ -250,7 +252,8 @@ public class UserDAO implements IUserDAO {
                     resultSet.getString(10),
                     resultSet.getTimestamp(11),
                     resultSet.getTimestamp(12),
-                    resultSet.getString(13)
+                    resultSet.getString(13),
+                    resultSet.getString(14)
             ));
         }
 
@@ -278,7 +281,8 @@ public class UserDAO implements IUserDAO {
                     resultSet.getString(10),
                     resultSet.getTimestamp(11),
                     resultSet.getTimestamp(12),
-                    resultSet.getString(13)
+                    resultSet.getString(13),
+                    resultSet.getString(14)
             ));
         }
 
@@ -286,14 +290,32 @@ public class UserDAO implements IUserDAO {
     }
 
     @Override
-    public boolean isUserExists(String email, String phone) throws SQLException {
-        String query = "SELECT 1 FROM users WHERE email = ? OR phone = ? LIMIT 1";
+    public User isUserExists(String email, String phone) throws SQLException {
+        String query = "SELECT * FROM users WHERE email = ? OR phone = ? LIMIT 1";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, email);
             stmt.setString(2, phone);
-            try (ResultSet rs = stmt.executeQuery()) {
-                return rs.next();
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                if (resultSet.next()) {
+                    return new User(
+                            resultSet.getInt(1),
+                            resultSet.getString(2),
+                            resultSet.getString(3),
+                            resultSet.getString(4),
+                            resultSet.getString(5),
+                            resultSet.getString(6),
+                            resultSet.getDate(7),
+                            resultSet.getBoolean(8),
+                            resultSet.getString(9),
+                            resultSet.getString(10),
+                            resultSet.getTimestamp(11),
+                            resultSet.getTimestamp(12),
+                            resultSet.getString(13),
+                            resultSet.getString(14)
+                    );
+                }
             }
         }
+        return null;
     }
 }

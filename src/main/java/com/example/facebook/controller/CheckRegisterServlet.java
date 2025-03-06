@@ -40,7 +40,7 @@ public class CheckRegisterServlet extends HttpServlet {
                 response.getWriter().write("nameError");
             } else if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.(com|vn|org|net|edu|gov|info)$")) {
                 response.getWriter().write("emailRegex");
-            } else if (userDAO.isUserExists(email, phone)) {
+            } else if (userDAO.isUserExists(email, phone) != null) {
                 response.getWriter().write("exists");
             } else if (password.length() < 6) {
                 response.getWriter().write("passwordLengthError");
