@@ -141,10 +141,81 @@ public class UserServlet extends HttpServlet {
                 case "userSearchUsers":
                     userSearchUsers(req, resp);
                     break;
+                case "editProfile":
+                    editProfile(req, resp);
+                    break;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void editProfile(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException, SQLException {
+        HttpSession session = req.getSession();
+        int userId = (Integer) session.getAttribute("userId");
+        User user = userDAO.selectUserById(userId);
+
+        Part imageFilePart = req.getPart("image");
+        Part bannerFilePart = req.getPart("banner");
+
+        String bio = req.getParameter("bio");
+
+        // Lấy tên file hoặc gán ảnh mặc định
+        String imageFileName = (imageFilePart != null && imageFilePart.getSubmittedFileName() != null && !imageFilePart.getSubmittedFileName().isEmpty())
+                ? Paths.get(imageFilePart.getSubmittedFileName()).getFileName().toString()
+                : "default_avt.jpg";
+
+        String bannerFileName = (bannerFilePart != null && bannerFilePart.getSubmittedFileName() != null && !bannerFilePart.getSubmittedFileName().isEmpty())
+                ? Paths.get(bannerFilePart.getSubmittedFileName()).getFileName().toString()
+                : "default_banner.jpg";
+
+        // Thư mục lưu ảnh trong webapp
+        File uploadDirImg = new File(System.getenv("imgFolderUrl") + "avatars");
+        File uploadDirBanner = new File(System.getenv("imgFolderUrl") + "banners");
+
+        if (!uploadDirImg.exists()) uploadDirImg.mkdirs();
+        if (!uploadDirBanner.exists()) uploadDirBanner.mkdirs();
+
+        // Thư mục backup
+        File backupDirImg = new File("C:\\uploads\\avatars");
+        File backupDirBanner = new File("C:\\uploads\\banners");
+
+        if (!backupDirImg.exists()) backupDirImg.mkdirs();
+        if (!backupDirBanner.exists()) backupDirBanner.mkdirs();
+
+        // Đường dẫn lưu ảnh
+        File fileImg = new File(uploadDirImg, imageFileName);
+        File fileBanner = new File(uploadDirBanner, bannerFileName);
+
+        // Lưu file vào webapp nếu chưa tồn tại
+        if (!fileImg.exists() && imageFilePart != null) {
+            imageFilePart.write(fileImg.getAbsolutePath());
+        }
+        if (!fileBanner.exists() && bannerFilePart != null) {
+            bannerFilePart.write(fileBanner.getAbsolutePath());
+        }
+
+        // Copy sang C:\\uploads nếu chưa có
+        File backupImgFile = new File(backupDirImg, imageFileName);
+        File backupBannerFile = new File(backupDirBanner, bannerFileName);
+
+        try {
+            if (!backupImgFile.exists() && fileImg.exists()) {
+                Files.copy(fileImg.toPath(), backupImgFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            }
+            if (!backupBannerFile.exists() && fileBanner.exists()) {
+                Files.copy(fileBanner.toPath(), backupBannerFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        user.setBanner(bannerFileName);
+        user.setImage(imageFileName);
+        user.setBio(bio);
+        userDAO.updateUser(user, userId);
+        req.setAttribute("user", user);
+        req.getRequestDispatcher("user/Profile.jsp").forward(req, resp);
     }
 
     private void adminDeleteUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
@@ -267,10 +338,15 @@ public class UserServlet extends HttpServlet {
 
         User user = new User(imageFileName, name, email, phone, password, Date.valueOf(dateOfBirth), gender);
         user.setBanner(bannerFileName);
-        if (userDAO.insertUser(user)) {
-            req.setAttribute("status", "success");
+
+        if (userDAO.isUserExists(email, phone)) {
+            req.setAttribute("status", "Email hoặc sđt đã tồn tại");
         } else {
-            req.setAttribute("status", "error");
+            if (userDAO.insertUser(user)) {
+                req.setAttribute("status", "success");
+            } else {
+                req.setAttribute("status", "error");
+            }
         }
         req.getRequestDispatcher("admin/Add.jsp").forward(req, resp);
     }
@@ -347,6 +423,13 @@ public class UserServlet extends HttpServlet {
                 bannerFileName.equalsIgnoreCase(user.getBanner())) {
 
             req.setAttribute("status", "Không có sự thay đổi nào");
+            req.setAttribute("user", user);
+            req.getRequestDispatcher("admin/Edit.jsp").forward(req, resp);
+            return;
+        }
+
+        if (userDAO.isUserExists(email, phone)) {
+            req.setAttribute("status", "Email hoặc sđt đã tồn tại");
             req.setAttribute("user", user);
             req.getRequestDispatcher("admin/Edit.jsp").forward(req, resp);
             return;

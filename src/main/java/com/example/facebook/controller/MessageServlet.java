@@ -61,12 +61,20 @@ public class MessageServlet extends HttpServlet {
         for (Message msg : messages) {
             if (msg.getSenderId() == user.getUserId()) {
                 // Tin nhắn của người dùng hiện tại (bên phải)
-                out.println("<div class='message message-right' oncontextmenu='showMessageMenu(event, " + msg.getMessageId() + ")'>");
+                if (msg.getContent().equalsIgnoreCase("Tin nhắn đã bị gỡ")) {
+                    out.println("<div class='message removeMessage message-right' oncontextmenu='showMessageMenu(event, " + msg.getMessageId() + ")'>");
+                } else {
+                    out.println("<div class='message message-right' oncontextmenu='showMessageMenu(event, " + msg.getMessageId() + ")'>");
+                }
                 out.println("<span class='text'>" + msg.getContent() + "</span>");
                 out.println("</div>");
             } else {
                 // Tin nhắn của người khác (bên trái)
-                out.println("<div class='message message-left'>");
+                if (msg.getContent().equalsIgnoreCase("Tin nhắn đã bị gỡ")) {
+                    out.println("<div class='message removeMessage message-left'>");
+                } else {
+                    out.println("<div class='message message-left'>");
+                }
                 out.println("<span class='text'>" + msg.getContent() + "</span>");
                 out.println("</div>");
             }

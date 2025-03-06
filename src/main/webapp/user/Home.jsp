@@ -305,8 +305,8 @@
            onclick="closeChat()">x</a>
     </div>
 </div>
-<div id="message-menu" class="message-menu">
-    <button onclick="deleteMessage()">Xóa tin nhắn</button>
+<div style="border-radius: 5px" id="message-menu" class="message-menu">
+    <button style="width: fit-content;font-size: 12px;padding: 0;background-color: white" onclick="deleteMessage()">Xóa tin nhắn</button>
 </div>
 <div id="emoji-picker" class="emoji-picker"></div>
 
@@ -409,6 +409,11 @@
         selectedMessageId = messageId;
         let menu = document.getElementById("message-menu");
 
+        let messageElement = document.querySelector(`[oncontextmenu*='` + selectedMessageId + `'] .text`);
+        if(messageElement.innerText === "Tin nhắn đã bị gỡ") {
+            return;
+        }
+
         // Hiển thị menu tại vị trí chuột
         menu.style.display = "block";
         menu.style.left = event.pageX + "px";
@@ -435,6 +440,7 @@
                         let messageElement = document.querySelector(`[oncontextmenu*='` + selectedMessageId + `'] .text`);
                         if (messageElement) {
                             messageElement.innerText = "Tin nhắn đã bị gỡ";
+                            messageElement.classList.add("removeMessage");
                         }
                     } else {
                         alert("Xóa tin nhắn thất bại!");
@@ -670,6 +676,12 @@
 
 </script>
 <style>
+    .removeMessage {
+        font-style: italic;
+        background-color: lightgrey !important;
+        color: white !important;
+    }
+
     #createGroupModal {
         display: none;
         position: fixed;

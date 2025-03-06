@@ -58,16 +58,91 @@
         }
 
         .col-md-8 {
-            padding: 0;
+            padding-inline: 80px;
             width: 100%;
         }
 
         .banner_container {
             width: 100%;
-            max-height: 300px; /* Điều chỉnh chiều cao tối đa */
+            max-height: 70%; /* Điều chỉnh chiều cao tối đa */
             overflow: hidden;
         }
 
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 40%;
+            text-align: center;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .circular-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+            margin: 10px auto;
+        }
+
+        .banner-img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            display: block;
+            margin: 10px auto;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 8px;
+            resize: none;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -84,10 +159,10 @@
                 </div>
                 <div style="width: 70%;">
                     <h2 class="profile-name">${user.name}</h2>
-                    <p class="text-muted"></p>
+                    <p class="text-muted">${user.bio}</p>
                 </div>
                 <div class="profile-actions">
-                    <button class="btn btn-primary">Chỉnh sửa thông tin</button>
+                    <button onclick="openEditModal()" class="btn btn-primary">Chỉnh sửa thông tin</button>
                 </div>
             </div>
         </div>
@@ -180,16 +255,90 @@
                 </c:forEach>
             </c:if>
             <c:if test="${posts.size() == 0}">
-                <h1>Không có bài viết nào</h1>
+                <h1 style="text-align: center">Không có bài viết nào</h1>
             </c:if>
         </div>
     </div>
 </div>
 
+<!-- Modal chỉnh sửa thông tin -->
+<div id="editProfileModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeEditModal()">&times;</span>
+        <h2>Chỉnh sửa trang cá nhân</h2>
+
+        <form id="editProfileForm" action="/users?action=editProfile" method="post" enctype="multipart/form-data">
+            <!-- Ảnh đại diện -->
+            <div class="form-group">
+                <label for="image">Ảnh đại diện</label>
+                <input type="file" id="image" name="image" accept="image/*" onchange="previewImage(event)">
+                <img id="previewImg" class="circular-img" alt="Xem ảnh" src="${pageContext.request.contextPath}/uploads/avatars/${user.image}">
+            </div>
+
+            <!-- Ảnh bìa -->
+            <div class="form-group">
+                <label for="banner">Ảnh bìa</label>
+                <input type="file" id="banner" name="banner" accept="image/*" onchange="previewBannerImage(event)">
+                <img id="previewBanner" class="banner-img" alt="Xem ảnh" src="${pageContext.request.contextPath}/img/banners/${user.banner}">
+            </div>
+
+            <!-- Tiểu sử (bio) -->
+            <div class="form-group">
+                <label for="bio">Tiểu sử</label>
+                <textarea id="bio" name="bio" rows="4" placeholder="Nhập tiểu sử của bạn...">${user.bio}</textarea>
+            </div>
+
+            <!-- Nút lưu -->
+            <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+        </form>
+    </div>
+</div>
+
+
+
 </body>
 </html>
 
 <script>
+    // Mở modal
+    function openEditModal() {
+        document.getElementById("editProfileModal").style.display = "flex";
+    }
+
+    // Đóng modal
+    function closeEditModal() {
+        document.getElementById("editProfileModal").style.display = "none";
+    }
+
+    // Xem trước ảnh đại diện
+    function previewImage(event) {
+        const preview = document.getElementById("previewImg");
+        const file = event.target.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // Xem trước ảnh bìa
+    function previewBannerImage(event) {
+        const preview = document.getElementById("previewBanner");
+        const file = event.target.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+
     document.addEventListener("DOMContentLoaded", function () {
 
         document.querySelector(".delete-link").addEventListener("click", function (event) {

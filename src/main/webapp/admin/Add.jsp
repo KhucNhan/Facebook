@@ -170,7 +170,7 @@
     </c:if>
     <c:if test="${status != 'success'}">
         <div>
-            <p style="color: white">hehehe</p>
+            <p style="color: white">${status}</p>
         </div>
     </c:if>
     <form id="addUserForm" action="/users?action=add" method="post" class="signup-form" enctype="multipart/form-data">
