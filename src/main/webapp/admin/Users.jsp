@@ -85,7 +85,17 @@
     </div>
 </div>
 
-
+<div id="sidePanel" class="side-panel">
+    <button class="close-btn" onclick="togglePanel()">X</button>
+    <a class="nav-link" aria-current="page" href="/users">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+             class="bi bi-house"
+             viewBox="0 0 16 16">
+            <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
+        </svg>
+        Trang chủ
+    </a>
+</div>
 
 <script>
 
@@ -104,8 +114,6 @@
         </c:forEach>
     ];
 
-    console.log(users);
-
     const rowsPerPage = 5;
     let currentPage = 1;
 
@@ -118,9 +126,10 @@
         const paginatedUsers = users.slice(start, end);
 
         if (users.length !== 0) {
-            paginatedUsers.forEach(function (user) {
+            paginatedUsers.forEach(function (user, index) {
+                const rowNumber = start + index + 1;
                 const row = '<tr class="d-flex">' +
-                    '<td style="width: 5%;" class="text-center">' + user.userId + '</td>' +
+                    '<td style="width: 5%;" class="text-center">' + rowNumber + '</td>' +
                     '<td style="width: 10%;" class="text-center"><img style="width: 70%;" src="${pageContext.request.contextPath}/uploads/avatars/' + user.image + '" /></td>' +
                     '<td style="width: 10%;" class="text-center">' + user.name + '</td>' +
                     '<td style="width: 20%;" class="text-center">' + user.email + '</td>' +
@@ -155,6 +164,7 @@
 
         attachStatusButtonEvents();
     }
+
 
     function setupPagination() {
         const pagination = document.getElementById('pagination');
