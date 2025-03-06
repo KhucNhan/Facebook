@@ -339,7 +339,7 @@ public class UserServlet extends HttpServlet {
         User user = new User(imageFileName, name, email, phone, password, Date.valueOf(dateOfBirth), gender);
         user.setBanner(bannerFileName);
 
-        if (userDAO.isUserExists(email, phone)) {
+        if (userDAO.isUserExists(email, phone) != null) {
             req.setAttribute("status", "Email hoặc sđt đã tồn tại");
         } else {
             if (userDAO.insertUser(user)) {
@@ -428,7 +428,8 @@ public class UserServlet extends HttpServlet {
             return;
         }
 
-        if (userDAO.isUserExists(email, phone)) {
+        User user1 = userDAO.isUserExists(email, phone);
+        if (user1 != null && user1.getUserId() != Integer.parseInt(userId)) {
             req.setAttribute("status", "Email hoặc sđt đã tồn tại");
             req.setAttribute("user", user);
             req.getRequestDispatcher("admin/Edit.jsp").forward(req, resp);

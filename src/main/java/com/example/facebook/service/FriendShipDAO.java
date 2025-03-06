@@ -66,7 +66,8 @@ public class FriendShipDAO implements IFriendShipDAO {
                     resultSet.getString(10),
                     resultSet.getTimestamp(11),
                     resultSet.getTimestamp(12),
-                    resultSet.getString(13)
+                    resultSet.getString(13),
+                    resultSet.getString(14)
             ));
         }
 
@@ -97,7 +98,8 @@ public class FriendShipDAO implements IFriendShipDAO {
                     resultSet.getString(10),
                     resultSet.getTimestamp(11),
                     resultSet.getTimestamp(12),
-                    resultSet.getString(13)
+                    resultSet.getString(13),
+                    resultSet.getString(14)
             ));
         }
 
@@ -153,7 +155,8 @@ public class FriendShipDAO implements IFriendShipDAO {
                         resultSet.getString(10),
                         resultSet.getTimestamp(11),
                         resultSet.getTimestamp(12),
-                        resultSet.getString(13)
+                        resultSet.getString(13),
+                        resultSet.getString(14)
                 ));
             }
 
@@ -188,7 +191,8 @@ public class FriendShipDAO implements IFriendShipDAO {
                         resultSet.getString(10),
                         resultSet.getTimestamp(11),
                         resultSet.getTimestamp(12),
-                        resultSet.getString(13)
+                        resultSet.getString(13),
+                        resultSet.getString(14)
                 ));
             }
 
