@@ -57,6 +57,17 @@
             margin-right: auto;
         }
 
+        .col-md-8 {
+            padding: 0;
+            width: 100%;
+        }
+
+        .banner_container {
+            width: 100%;
+            max-height: 300px; /* Điều chỉnh chiều cao tối đa */
+            overflow: hidden;
+        }
+
     </style>
 </head>
 <body>
@@ -64,7 +75,9 @@
 <div class="container-fluid" style="overflow-y: auto; height: 91vh">
     <div class="row" style="justify-content: center;">
         <div class="col-md-8">
-            <img style="width: 100%;" src="${pageContext.request.contextPath}/img/banners/${user.banner}">
+            <div class="banner_container">
+                <img style="width: 100%; height: auto" src="${pageContext.request.contextPath}/img/banners/${user.banner}">
+            </div>
             <div class="profile-container">
                 <div style="width: 15%;">
                     <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}" alt="Avatar" class="avatar">
