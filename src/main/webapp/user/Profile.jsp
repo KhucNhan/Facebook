@@ -79,7 +79,7 @@
                 <img style="width: 100%; height: auto" src="${pageContext.request.contextPath}/img/banners/${user.banner}">
             </div>
             <div class="profile-container">
-                <div style="width: 15%;">
+                <div style="width: 10%;">
                     <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}" alt="Avatar" class="avatar">
                 </div>
                 <div style="width: 70%;">
