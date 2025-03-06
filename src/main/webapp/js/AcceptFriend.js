@@ -124,7 +124,7 @@ function addFriend(userID) {
 
                 if (actionDiv) {
                     actionDiv.innerHTML = `
-                    <a class="btn btn-warning btn-sm cancel-friend-search" data-id="${userID}" onclick="cancelFriend(${userID})">Hủy lời mời</a>
+                    <a class="btn btn-primary btn-sm cancel-friend-search" data-id="${userID}" onclick="cancelFriend(${userID})">Hủy lời mời</a>
                 `;
                 }
                 let statusText = userCard.querySelector('.text-muted');
@@ -153,7 +153,7 @@ function cancelFriend(userID) {
 
                 if (actionDiv) {
                     actionDiv.innerHTML = `
-                    <a class="btn btn-success btn-sm add-search" data-id="${userID}"  onclick="addFriend(${userID})">Thêm bạn bè</a>
+                    <a class="btn btn-primary btn-sm add-search" data-id="${userID}"  onclick="addFriend(${userID})">Thêm bạn bè</a>
                 `;
                 }
                 let statusText = userCard.querySelector('.text-muted');

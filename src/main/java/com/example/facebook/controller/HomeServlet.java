@@ -41,6 +41,9 @@ public class HomeServlet extends HttpServlet {
 
         try {
             switch (action) {
+                case "goToUsers":
+                    showUsers(req, resp);
+                    break;
                 default:
                     showHome(req, resp);
                     break;
@@ -50,15 +53,20 @@ public class HomeServlet extends HttpServlet {
         }
     }
 
+    private void showUsers(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
+        List<User> users = userDAO.selectAllUsers();
+        req.setAttribute("users", users);
+        req.getRequestDispatcher("/admin/Users.jsp").forward(req, resp);
+    }
+
     public void showHome(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
         HttpSession session = req.getSession();
         String userIdStr = session.getAttribute("userId").toString();
         User user = userDAO.selectUserById(Integer.parseInt(userIdStr));
 
         if (user.getRole().equalsIgnoreCase("admin")) {
-            List<User> users = userDAO.selectAllUsers();
-            req.setAttribute("users", users);
-            req.getRequestDispatcher("/admin/Users.jsp").forward(req, resp);
+            System.out.println("home");
+            resp.sendRedirect("/admin/Home.jsp");
         } else {
             List<User> usersFriendShip = friendShipDAO.getAllFriendsAdded(Integer.parseInt(userIdStr));
 
