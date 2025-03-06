@@ -74,7 +74,7 @@
                     </g>
                 </svg>
                 <div class="notificationMess-container" id="notificationMess"
-                     style="display: none; position: absolute; top: 40px; right: -60px;height: 40em">
+                     style="display: none; position: absolute; top: 40px; right: -115px;height: 40em">
                     <jsp:include page="NotificationMess.jsp"></jsp:include>
                 </div>
             </div>

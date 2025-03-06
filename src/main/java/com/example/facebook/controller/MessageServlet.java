@@ -2,7 +2,9 @@ package com.example.facebook.controller;
 
 import com.example.facebook.model.Message;
 import com.example.facebook.model.User;
+import com.example.facebook.service.ActivityDAO;
 import com.example.facebook.service.MessageDAO;
+import com.example.facebook.service.NotificationDAO;
 import com.example.facebook.service.UserDAO;
 
 import javax.servlet.ServletException;
@@ -18,8 +20,12 @@ import java.util.List;
 
 @WebServlet("/messages")
 public class MessageServlet extends HttpServlet {
+    NotificationDAO notificationDAO = new NotificationDAO();
+    ActivityDAO activityDAO = new ActivityDAO();
+
     UserDAO userDAO = new UserDAO();
     MessageDAO messageDAO = new MessageDAO();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
@@ -35,7 +41,7 @@ public class MessageServlet extends HttpServlet {
 
             switch (action) {
                 default:
-                    showMessage(user ,req, resp);
+                    showMessage(user, req, resp);
                     break;
             }
         } catch (SQLException e) {
@@ -105,6 +111,7 @@ public class MessageServlet extends HttpServlet {
         String content = req.getParameter("content");
 
         String receiverId = req.getParameter("receiverId");
+
         User receiver = userDAO.selectUserById(Integer.parseInt(receiverId));
 
         Message message = new Message();
@@ -112,6 +119,18 @@ public class MessageServlet extends HttpServlet {
         message.setSenderId(user.getUserId());
         message.setReceiverId(receiver.getUserId());
 
-        messageDAO.insertNewMessage(message);
+        int messageId = messageDAO.insertNewMessage(message);
+
+        int activitiId = notificationDAO.checkNotificationMessage(user.getUserId(), Integer.parseInt(receiverId));
+        if (activitiId > 0) {
+            activityDAO.deleteActivities(activitiId);
+
+            int activityId = activityDAO.newActivities(user.getUserId(), messageId, "message");
+            notificationDAO.new_notification(Integer.parseInt(receiverId), activityId);
+        } else {
+            int activityId = activityDAO.newActivities(user.getUserId(), messageId, "message");
+            notificationDAO.new_notification(Integer.parseInt(receiverId), activityId);
+        }
+
     }
 }

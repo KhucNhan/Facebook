@@ -18,6 +18,7 @@ import java.util.Map;
 
 @WebServlet(name = "HomeServlet", value = "/home")
 public class HomeServlet extends HttpServlet {
+    MessageDAO messageDAO = new MessageDAO();
     UserDAO userDAO = new UserDAO();
     NotificationDAO notificationDAO = new NotificationDAO();
 
@@ -84,6 +85,8 @@ public class HomeServlet extends HttpServlet {
             List<Notification> notifications = notificationDAO.getAllNotifictionAddFriend(Integer.parseInt(userIdStrs));
             List<Activity> activities = new ArrayList<>();
             List<User> users = new ArrayList<>();
+            List<Message> messageNotification = new ArrayList<>();
+
             for (Notification notification : notifications) {
                 Activity activity = notificationDAO.getNotificationInformation(notification.getActivityId());
                 activities.add(activity);
@@ -92,8 +95,10 @@ public class HomeServlet extends HttpServlet {
                 users.add(user_1);
             }
 
-            List<Group> groups = groupDAO.selectAllGroups(user.getUserId());
+            List<Message> messageNotifications = messageDAO.selectContentMessage(Integer.parseInt(userIdStrs));
 
+            List<Group> groups = groupDAO.selectAllGroups(user.getUserId());
+            req.setAttribute("messageNotifications",messageNotifications);
             req.setAttribute("groups", groups);
             req.setAttribute("likedPosts", likedPosts);
             req.setAttribute("likedComments", likedComments);

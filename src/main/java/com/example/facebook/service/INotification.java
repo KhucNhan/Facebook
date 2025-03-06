@@ -14,4 +14,6 @@ public interface INotification {
 
     boolean updateIsReadNotification(int notificationId);
 
+    int checkNotificationMessage(int senderId,int receiverId);
+
 }

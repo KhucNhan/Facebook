@@ -10,4 +10,6 @@ public interface IMessageDAO {
     int insertNewMessage(Message message) throws SQLException;
 
     boolean deleteMessage(int messageId) throws SQLException;
+
+    List<Message> selectContentMessage(int receiverId);
 }

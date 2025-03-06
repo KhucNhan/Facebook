@@ -20,6 +20,15 @@ public class NotificationDAO implements INotification {
 
     private final static String updateIsRead = "UPDATE notifications SET isRead = 1 WHERE (notificationId = ?)";
 
+    private final static String check_notification_message = "SELECT \n" +
+            "    COALESCE(\n" +
+            "        (SELECT a.activityId\n" +
+            "         FROM activities a\n" +
+            "         JOIN notifications n ON a.activityId = n.activityId\n" +
+            "         WHERE a.userId = ? AND a.type = 'message' and n.userId = ?\n" +
+            "         ORDER BY a.activityId DESC LIMIT 1),\n" +
+            "        -1\n" +
+            "    ) AS activityId";
     @Override
     public List<Notification> getAllNotifictionAddFriend(int userId) {
         List<Notification> allNotification = new ArrayList<>();
@@ -100,5 +109,22 @@ public class NotificationDAO implements INotification {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public int checkNotificationMessage(int senderId, int receiverId) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(check_notification_message);
+            preparedStatement.setInt(1,senderId);
+            preparedStatement.setInt(2,receiverId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                return resultSet.getInt(1);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return -1;
     }
 }

@@ -445,12 +445,13 @@
     }
 
 
+    //Gửi tin nhắn
     document.getElementById("send-btn").addEventListener("click", function () {
         let message = document.getElementById("chat-input").value.trim();
         let receiverId = document.getElementById("receiverId").value;
         let isGroup = document.getElementById("receiverId").getAttribute("data-type") === "group";
 
-        if (!message) return; // Không gửi tin nhắn rỗng
+        if (!message) return;
 
         let url = isGroup
             ? `groupMessages?action=chat&groupId=` + receiverId + `&content=` + encodeURIComponent(message)
