@@ -63,7 +63,7 @@ function updateTimeAgo() {
         if (isoTime) {
             const timeAgo = timeSince(new Date(isoTime));
             el.textContent = timeAgo;
-            el.style.marginLeft = "60px";
+            el.style.marginLeft = "70px";
             el.style.fontSize = "12px";
         }
     });
