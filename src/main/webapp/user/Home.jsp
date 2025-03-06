@@ -300,10 +300,10 @@
         </div>
 
 
-        </div>
-        <a style=" cursor: pointer;font-size: x-large;position: absolute; bottom: 295px; left: 275px; border-radius: 50%; width: 24px;height: 24px;"
-           onclick="closeChat()">x</a>
     </div>
+    <a style=" cursor: pointer;font-size: x-large;position: absolute; bottom: 295px; left: 275px; border-radius: 50%; width: 24px;height: 24px;"
+       onclick="closeChat()">x</a>
+</div>
 </div>
 <div style="border-radius: 5px" id="message-menu" class="message-menu">
     <button style="width: fit-content;font-size: 12px;padding: 0;background-color: white" onclick="deleteMessage()">Xóa tin nhắn</button>
@@ -383,7 +383,7 @@
                 alert("Vui lòng nhập tên nhóm.");
                 return;
             }
-            if (selectedUsers.length < 1) {
+            if (selectedUsers.length <= 1) {
                 alert("Vui lòng chọn ít nhất 2 thành viên.");
                 return;
             }
@@ -440,7 +440,8 @@
                         let messageElement = document.querySelector(`[oncontextmenu*='` + selectedMessageId + `'] .text`);
                         if (messageElement) {
                             messageElement.innerText = "Tin nhắn đã bị gỡ";
-                            messageElement.classList.add("removeMessage");
+                            let messageFatherElement = document.querySelector(`[oncontextmenu*='` + selectedMessageId + `']`);
+                            messageFatherElement.classList.add("removeMessage");
                         }
                     } else {
                         alert("Xóa tin nhắn thất bại!");
