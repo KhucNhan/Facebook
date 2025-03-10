@@ -18,4 +18,6 @@ public interface INotification {
     Post getAllPostId (int notification);
 
     int getAllComment(int notification);
+
+    User getAllUserId(int notification);
 }

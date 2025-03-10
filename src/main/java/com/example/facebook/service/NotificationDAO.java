@@ -34,6 +34,12 @@ public class NotificationDAO implements INotification {
             "JOIN notifications ON activities.activityId = notifications.activityId\n" +
             "WHERE notifications.notificationId = ?";
 
+    private final static String get_all_userid = "SELECT users.* \n" +
+            "FROM users\n" +
+            "JOIN activities ON users.userId = activities.userId  \n" +
+            "JOIN notifications ON activities.activityId = notifications.activityId\n" +
+            "WHERE notifications.notificationId = ?";
+
     private final static String check_notification_message = "SELECT \n" +
             "    COALESCE(\n" +
             "        (SELECT a.activityId\n" +
@@ -187,5 +193,40 @@ public class NotificationDAO implements INotification {
             e.printStackTrace();
         }
         return -1;
+    }
+
+    @Override
+    public User getAllUserId(int notification) {
+        User user = new User();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(get_all_userid);
+            preparedStatement.setInt(1, notification);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                user = new User(
+                        resultSet.getInt(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getString(5),
+                        resultSet.getString(6),
+                        resultSet.getDate(7),
+                        resultSet.getBoolean(8),
+                        resultSet.getString(9),
+                        resultSet.getString(10),
+                        resultSet.getTimestamp(11),
+                        resultSet.getTimestamp(12),
+                        resultSet.getString(13),
+                        resultSet.getString(14)
+                );
+            }
+            return user;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+
     }
 }

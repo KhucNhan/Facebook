@@ -45,10 +45,34 @@ public class NotificationServlet extends HttpServlet {
                 getPostIdToNotification(req, resp);
                 break;
             case "getCommentId":
-                getCommentIdToNotification(req,resp);
+                getCommentIdToNotification(req, resp);
+                break;
+            case "getAllUser":
+                getAllUserToNotification(req, resp);
                 break;
         }
 
+    }
+
+    private void getAllUserToNotification(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        int notificationId = Integer.parseInt(req.getParameter("notificationID"));
+
+        User user = notificationDAO.getAllUserId(notificationId);
+
+        int userId = user.getUserId();
+        String image = user.getImage();
+        String name = user.getName();
+
+        if (user != null) {
+            String result = userId + "," + image + "," + name;
+
+            resp.setContentType("text/plain");
+            resp.setCharacterEncoding("UTF-8");
+            resp.getWriter().write(result);
+        } else {
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            resp.getWriter().write("Error: User not found");
+        }
     }
 
     private void updateIsReadNotification(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException {

@@ -185,7 +185,7 @@ function closeAllPopups() {
     });
 }
 
-function checkStatus(event, notificationID, statusNotification, tagetId) {
+function checkStatus(event, notificationID, statusNotification) {
     if (!statusNotification) {
 
         fetch(`/notification?action=updateIsRead&notificationID=${notificationID}`, {
@@ -214,8 +214,35 @@ function checkStatus(event, notificationID, statusNotification, tagetId) {
 
 function updateIsReadNotificationMess(event, notificationID, statusNotification) {
 
-    if (!statusNotification) {
+    fetch(`/notification?action=getAllUser&notificationID=${notificationID}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type':  'application/x-www-form-urlencoded'
+        },
+    })
+        .then(response => response.text())
+        .then(data => {
+            let parts = data.split(",");
+            let userId = parts[0];
+            let userImage = parts[1];
+            let userName = parts[2];
 
+            loadMessages(userId,"message",userName, '/uploads/avatars/'+userImage);
+
+
+            let message = document.getElementById("notificationMess");
+            if (message) {
+                message.style.display = "none";
+            }
+
+            let iconMessage = document.getElementById("iconMessage");
+            if (iconMessage) {
+                iconMessage.style.fill = "silver";
+            }
+        })
+
+
+    if (!statusNotification) {
         fetch(`/notification?action=updateIsRead&notificationID=${notificationID}`, {
             method: 'POST',
             headers: {
@@ -233,6 +260,7 @@ function updateIsReadNotificationMess(event, notificationID, statusNotification)
 
                     let dotIcon = notificationElement.querySelector('.readAndUnRead');
                     dotIcon.style.display = 'none';
+
 
                     notificationElement.onclick = null;
                 }
