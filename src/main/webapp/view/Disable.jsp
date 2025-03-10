@@ -25,8 +25,8 @@
             <div class="d-flex" style="justify-content: space-between;align-self: center;">
                 <p style="font-size: 20px ;margin: 0; align-content: center;">Bạn có muốn kích hoạt lại tài khoản ?</p>
                 <span>
-                    <a class="btn btn-primary" href="">Kích hoạt</a>
-                    <a class="btn btn-secondary" href="">Quay lại đăng nhập</a>
+                    <a class="btn btn-primary" href="/users?action=activateAccount&userId=${user.userId}">Kích hoạt</a>
+                    <a class="btn btn-secondary" href="/view/Login.jsp">Quay lại đăng nhập</a>
                 </span>
             </div>
         </div>
