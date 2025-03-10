@@ -24,6 +24,7 @@ public class Comment {
         this.updateAt = updateAt;
     }
 
+
     public int getCommentId() {
         return commentId;
     }

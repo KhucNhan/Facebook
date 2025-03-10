@@ -94,16 +94,16 @@
 
 .notification-content.unread {
     cursor: pointer;
-    background-color: white;
+    background-color: #f0f0f0;
 
 }
 .notification-content.read:hover {
     cursor: pointer;
-    background-color: #f0f0f0;
+    background-color: #e1e1e1;
 }
 .notification-content.unread:hover {
     cursor: pointer;
-    background-color: #f0f0f0;
+    background-color: #e1e1e1;
 }
 
 .notification-content.unread .notification-time {
@@ -212,7 +212,7 @@
 .notificationMess-content.unread {
     height: 68px;
     cursor: pointer;
-    background-color: white;
+    background-color: #f0f0f0;
     padding: 0px;
 }
 

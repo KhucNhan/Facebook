@@ -32,7 +32,7 @@
                 <c:if test="${!notification.getIsRead()}">
                     <div class="readAndUnRead">
                         <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="#007bff"
-                             style="margin-bottom: -12px; margin-left: 200px;"
+                             style="margin-bottom: -10px; margin-left: 200px;"
                              class="bi bi-dot" viewBox="0 0 16 16">
                             <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
                         </svg>

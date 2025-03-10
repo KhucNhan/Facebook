@@ -66,7 +66,7 @@
 <jsp:include page="Nav3.jsp"></jsp:include>
 <div style="display: flex;height: 90%;">
     <div class="left">
-        <div class="leftIcon" style="justify-content: left" onclick="goToMyProfile()">
+        <div class="leftIcon" style="justify-content: left" onclick="goToMyProfile(${user.userId})">
             <div>
                 <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
                      alt="User Icon" width="50" height="50" style="border-radius: 50%;">
@@ -343,6 +343,17 @@
         const closeModalBtn = document.querySelector(".close");
         const createGroupBtn = document.getElementById("createGroupButton");
 
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get("postId");
+
+        if (postId) {
+            const targetPost = document.getElementById(`post-${postId}`);
+            if (targetPost) {
+                targetPost.scrollIntoView({ behavior: "smooth", block: "center" });
+                targetPost.style.border = "2px solid blue"; // Đánh dấu bài post
+            }
+        }
+
         let selectedUsers = [];
 
         // Mở modal
@@ -539,8 +550,8 @@
         document.getElementById("chat-modal").style.display = "none";
     }
 
-    function goToMyProfile() {
-        window.location.href = "/users?action=myProfile";
+    function goToMyProfile(userId) {
+        window.location.href = "/users?action=myProfile&userId="+ userId;
     }
 
     function goToFriends() {
