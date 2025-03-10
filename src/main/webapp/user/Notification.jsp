@@ -41,6 +41,10 @@
                         <img style="border: 0px;width: 30px;height: 30px;margin-left: -30px;margin-bottom: -30px;background: #ffffffff"
                              src="https://icon-library.com/images/person-icon-png/person-icon-png-11.jpg">
                     </c:when>
+                    <c:when test="${activity.type == 'accepted'}">
+                        <img style="border: 0px;width: 30px;height: 30px;margin-left: -30px;margin-bottom: -30px;background: #ffffffff"
+                             src="https://icon-library.com/images/person-icon-png/person-icon-png-11.jpg">
+                    </c:when>
                     <c:when test="${activity.type == 'comment'}">
                         <img style="border: 0px;width: 30px;height: 30px;margin-left: -30px;margin-bottom: -30px"
                              src="data:image/svg+xml;base64,PHN2ZyBzdHlsZT0iYm9yZGVyOiAwcHg7IHdpZHRoOiA2MHB4OyBoZWlnaHQ6IDYwcHg7IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMSAxMSI+PHBhdGggZD0iTTAgMGgxMXYxMUgweiIgZmlsbD0ibm9uZSIvPjxjaXJjbGUgY3g9IjUuNSIgY3k9IjUuNSIgcj0iNS41IiBmaWxsPSIjNTFjZTcwIi8+PHBhdGggZD0iTTMgM2g1Yy41IDAgLjUuNSAuNS41djNjMCAuNS0uNS41LS41LjVINC41bC0yIDJWNGMwLS41IC41LS41IC41LS41eiIgZmlsbD0id2hpdGUiLz48L3N2Zz4="/>

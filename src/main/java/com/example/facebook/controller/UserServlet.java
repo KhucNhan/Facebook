@@ -75,8 +75,16 @@ public class UserServlet extends HttpServlet {
     private void showMyProfile(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
         HttpSession session = req.getSession();
         String userIdStr = session.getAttribute("userId").toString();
-        User user = userDAO.selectUserById(Integer.parseInt(userIdStr));
-        req.setAttribute("user", user);
+
+        String userId = req.getParameter("userId");
+
+        User user = null;
+
+        if (userId.equals(userIdStr)) {
+            user = userDAO.selectUserById(Integer.parseInt(userIdStr));
+        } else {
+            user = userDAO.selectUserById(Integer.parseInt(userId));
+        }
 
         List<Post> myPosts = postDAO.selectPostsByUserId(user.getUserId());
         req.setAttribute("user", user);
@@ -127,7 +135,7 @@ public class UserServlet extends HttpServlet {
                     changeUserStatus(req, resp);
                     break;
                 case "adminDeleteUser":
-                    adminDeleteUser(req ,resp);
+                    adminDeleteUser(req, resp);
                     break;
                 case "search":
                     searchUser(req, resp);
@@ -268,13 +276,13 @@ public class UserServlet extends HttpServlet {
         String userIdStr = req.getParameter("userId");
         String name = req.getParameter("name");
         String email = req.getParameter("email");
-        String phone = req.getParameter( "phone");
+        String phone = req.getParameter("phone");
         String dateOfBirth = req.getParameter("dateOfBirth");
         boolean gender = Boolean.parseBoolean(req.getParameter("gender"));
 
         User user = userDAO.selectUserById(Integer.parseInt(userIdStr));
 
-        if(name.equalsIgnoreCase(user.getName()) && email.equalsIgnoreCase(user.getEmail()) && phone.equals(user.getPhone()) && Date.valueOf(dateOfBirth).equals(user.getDateOfBirth()) && gender == user.isGender()) {
+        if (name.equalsIgnoreCase(user.getName()) && email.equalsIgnoreCase(user.getEmail()) && phone.equals(user.getPhone()) && Date.valueOf(dateOfBirth).equals(user.getDateOfBirth()) && gender == user.isGender()) {
             req.setAttribute("status", "noChange");
             req.setAttribute("user", user);
             req.getRequestDispatcher("user/Edit.jsp").forward(req, resp);
@@ -451,7 +459,6 @@ public class UserServlet extends HttpServlet {
         req.setAttribute("user", user);
         req.getRequestDispatcher("admin/Edit.jsp").forward(req, resp);
     }
-
 
 
 }

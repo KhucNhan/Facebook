@@ -175,6 +175,32 @@ function updateIsReadNotification(event, notificationID, statusNotification, tag
                 }
                 checkStatus(event, notificationID, statusNotification, tagetId)
             })
+    } else if (type === "friendship_request") {
+        fetch(`/notification?action=getAllUser&notificationID=${notificationID}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+        })
+            .then(response => response.text())
+            .then(data => {
+                let parts = data.split(",");
+                let userId = parts[0];
+
+                goToMyProfile(userId);
+
+                let message = document.getElementById("notificationMess");
+                if (message) {
+                    message.style.display = "none";
+                }
+
+                let iconMessage = document.getElementById("iconMessage");
+                if (iconMessage) {
+                    iconMessage.style.fill = "silver";
+                }
+            })
+    } else if (type === 'accepted') {
+        checkStatus(event, notificationID, statusNotification)
     }
 }
 
@@ -217,7 +243,7 @@ function updateIsReadNotificationMess(event, notificationID, statusNotification)
     fetch(`/notification?action=getAllUser&notificationID=${notificationID}`, {
         method: 'POST',
         headers: {
-            'Content-Type':  'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded'
         },
     })
         .then(response => response.text())
@@ -227,7 +253,7 @@ function updateIsReadNotificationMess(event, notificationID, statusNotification)
             let userImage = parts[1];
             let userName = parts[2];
 
-            loadMessages(userId,"message",userName, '/uploads/avatars/'+userImage);
+            loadMessages(userId, "message", userName, '/uploads/avatars/' + userImage);
 
 
             let message = document.getElementById("notificationMess");

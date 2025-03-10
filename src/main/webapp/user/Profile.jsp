@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="cite" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="vi">
@@ -151,19 +152,35 @@
     <div class="row" style="justify-content: center;">
         <div class="col-md-8">
             <div class="banner_container">
-                <img style="width: 100%; height: auto" src="${pageContext.request.contextPath}/img/banners/${user.banner}">
+                <img style="width: 100%; height: auto"
+                     src="${pageContext.request.contextPath}/img/banners/${user.banner}">
             </div>
             <div class="profile-container">
                 <div style="width: 10%;">
-                    <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}" alt="Avatar" class="avatar">
+                    <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}" alt="Avatar"
+                         class="avatar">
                 </div>
                 <div style="width: 70%;">
                     <h2 class="profile-name">${user.name}</h2>
                     <p class="text-muted">${user.bio}</p>
                 </div>
-                <div class="profile-actions">
-                    <button onclick="openEditModal()" class="btn btn-primary">Chỉnh sửa thông tin</button>
-                </div>
+                <c:choose>
+                    <c:when test="${user.userId == sessionScope.userId}">
+                        <div class="profile-actions">
+                            <button onclick="openEditModal()" class="btn btn-primary">Chỉnh sửa thông tin</button>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="profile-actions" style="display: flex">
+                            <button class="btn btn-success btn btn-primary btn-sm accept-search" onclick="acceptFriendSearch(${user.userId})" style="background: #0866ff;width: 170px;color: white">Chấp
+                                nhận lời mời
+                            </button>
+                            <button class="btn btn-success btn btn-primary btn-sm cancel-friend-search" onclick="cancelFriend(${user.userId})" style="background: #cbcbcb;width: 170px;color: white">Xóa
+                                lời mời
+                            </button>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </div>
@@ -214,7 +231,8 @@
                                 </div>
                                 <div>
                                     <a href="" style="color: grey">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"
+                                             fill="currentColor"
                                              class="bi bi-x" viewBox="0 0 16 16">
                                             <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
                                         </svg>
@@ -272,14 +290,16 @@
             <div class="form-group">
                 <label for="image">Ảnh đại diện</label>
                 <input type="file" id="image" name="image" accept="image/*" onchange="previewImage(event)">
-                <img id="previewImg" class="circular-img" alt="Xem ảnh" src="${pageContext.request.contextPath}/uploads/avatars/${user.image}">
+                <img id="previewImg" class="circular-img" alt="Xem ảnh"
+                     src="${pageContext.request.contextPath}/uploads/avatars/${user.image}">
             </div>
 
             <!-- Ảnh bìa -->
             <div class="form-group">
                 <label for="banner">Ảnh bìa</label>
                 <input type="file" id="banner" name="banner" accept="image/*" onchange="previewBannerImage(event)">
-                <img id="previewBanner" class="banner-img" alt="Xem ảnh" src="${pageContext.request.contextPath}/img/banners/${user.banner}">
+                <img id="previewBanner" class="banner-img" alt="Xem ảnh"
+                     src="${pageContext.request.contextPath}/img/banners/${user.banner}">
             </div>
 
             <!-- Tiểu sử (bio) -->
@@ -293,7 +313,6 @@
         </form>
     </div>
 </div>
-
 
 
 </body>

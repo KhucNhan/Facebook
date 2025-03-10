@@ -66,7 +66,7 @@
 <jsp:include page="Nav3.jsp"></jsp:include>
 <div style="display: flex;height: 90%;">
     <div class="left">
-        <div class="leftIcon" style="justify-content: left" onclick="goToMyProfile()">
+        <div class="leftIcon" style="justify-content: left" onclick="goToMyProfile(${user.userId})">
             <div>
                 <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
                      alt="User Icon" width="50" height="50" style="border-radius: 50%;">
@@ -520,8 +520,8 @@
         document.getElementById("chat-modal").style.display = "none";
     }
 
-    function goToMyProfile() {
-        window.location.href = "/users?action=myProfile";
+    function goToMyProfile(userId) {
+        window.location.href = "/users?action=myProfile&userId="+ userId;
     }
 
     function goToFriends() {

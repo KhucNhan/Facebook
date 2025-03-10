@@ -69,6 +69,7 @@ public class NotificationServlet extends HttpServlet {
             resp.setContentType("text/plain");
             resp.setCharacterEncoding("UTF-8");
             resp.getWriter().write(result);
+
         } else {
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             resp.getWriter().write("Error: User not found");
