@@ -66,6 +66,9 @@ public class UserServlet extends HttpServlet {
                 case "disableAccount":
                     disableAccount(req, resp);
                     break;
+                case "activateAccount":
+                    activateAccount(req, resp);
+                    break;
                 default:
                     showUserList(req, resp);
                     break;
@@ -73,6 +76,14 @@ public class UserServlet extends HttpServlet {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void activateAccount(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
+        int userId = Integer.parseInt(req.getParameter("userId"));
+        User user = userDAO.selectUserById(userId);
+        user.setStatus("Active");
+        userDAO.updateUser(user, userId);
+        req.getRequestDispatcher("/view/Login.jsp").forward(req, resp);
     }
 
     private void showMyProfile(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
