@@ -90,6 +90,18 @@
     </nav>
 </div>
 <script>
+    let timeout;
+
+    document.getElementById('searchInput').addEventListener('input', function () {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            document.getElementById('searchForm').submit();
+        }, 2000);
+    });
+
+    document.getElementById('basic-addon1').addEventListener('click', function () {
+        document.getElementById('searchForm').submit();
+    });
 
     const users = [
         <c:forEach var="user" items="${users}" varStatus="status">

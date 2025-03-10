@@ -298,15 +298,12 @@
                    id="chat-input" placeholder="Nhập tin nhắn...">
             <button style="width: fit-content; padding-block: 1px" class="btn btn-primary" id="send-btn">Gửi</button>
         </div>
-
-
     </div>
     <a style=" cursor: pointer;font-size: x-large;position: absolute; bottom: 295px; left: 275px; border-radius: 50%; width: 24px;height: 24px;"
        onclick="closeChat()">x</a>
 </div>
-</div>
 <div style="border-radius: 5px" id="message-menu" class="message-menu">
-    <button style="width: fit-content;font-size: 12px;padding: 0;background-color: white" onclick="deleteMessage()">Xóa tin nhắn</button>
+    <button style="width: fit-content;font-size: 12px;padding: 0;background-color: white" onclick="deleteMessage()">Gỡ tin nhắn</button>
 </div>
 <div id="emoji-picker" class="emoji-picker"></div>
 
@@ -482,6 +479,8 @@
     });
 
 
+    let intervalId;
+
     function loadMessages(id, type, name, image) {
         let url = (type === 'group') ? `groupMessages?groupId=` + id : `messages?contactId=` + id;
 
@@ -489,6 +488,8 @@
             .then(response => response.text())
             .then(messages => {
                 let chatBox = document.getElementById("chat-messages");
+                let previousHeight = chatBox.scrollHeight; // Lưu vị trí cuộn trước khi cập nhật
+
                 chatBox.innerHTML = messages;
                 document.getElementById("receiverId").value = id;
                 document.getElementById("receiverId").setAttribute("data-type", type);
@@ -501,9 +502,36 @@
             `;
 
                 document.getElementById('chat-modal').style.display = 'inherit';
-                chatBox.scrollTop = chatBox.scrollHeight;
+
+                // Nếu có tin nhắn mới, cuộn xuống dưới
+                if (chatBox.scrollHeight > previousHeight) {
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }
             });
+
+        // Xóa interval cũ nếu có
+        if (intervalId) {
+            clearInterval(intervalId);
+        }
+
+        // Tạo interval mới để cập nhật tin nhắn mỗi giây
+        intervalId = setInterval(() => {
+            fetch(url)
+                .then(response => response.text())
+                .then(messages => {
+                    let chatBox = document.getElementById("chat-messages");
+                    let previousHeight = chatBox.scrollHeight;
+
+                    chatBox.innerHTML = messages;
+
+                    // Nếu có tin nhắn mới, cuộn xuống dưới
+                    if (chatBox.scrollHeight > previousHeight) {
+                        chatBox.scrollTop = chatBox.scrollHeight;
+                    }
+                });
+        }, 1000);
     }
+
 
 
 

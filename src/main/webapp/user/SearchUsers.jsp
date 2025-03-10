@@ -89,7 +89,7 @@
                                            onclick="acceptFriendSearch(${user.userId})">Chấp nhận</a>
                                     </c:when>
                                     <c:when test="${user.friendStatus == 3}">
-                                        <a class="btn btn-primary btn-sm cancel-friend-search" data-id="${user.userId}"
+                                        <a style="background-color: rgb(128,128,128); border: rgb(128,128,128)" class="btn btn-primary btn-sm cancel-friend-search" data-id="${user.userId}"
                                            onclick="cancelFriend(${user.userId})">Hủy lời mời</a>
                                     </c:when>
                                     <c:otherwise>
