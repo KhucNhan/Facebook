@@ -1,7 +1,6 @@
 package com.example.facebook.service;
 
-import com.example.facebook.model.Activity;
-import com.example.facebook.model.Notification;
+import com.example.facebook.model.*;
 
 import java.util.List;
 
@@ -16,4 +15,7 @@ public interface INotification {
 
     int checkNotificationMessage(int senderId,int receiverId);
 
+    Post getAllPostId (int notification);
+
+    int getAllComment(int notification);
 }

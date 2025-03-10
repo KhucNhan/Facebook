@@ -68,6 +68,7 @@ function updateTimeAgo() {
         }
     });
 }
+
 function updateTimeAgoMess() {
     const elements = document.querySelectorAll('.notificationMess-time');
 
@@ -76,7 +77,7 @@ function updateTimeAgoMess() {
         if (isoTime) {
             const timeAgo = timeSinceMess(new Date(isoTime));
             el.textContent = timeAgo;
-            el.style.marginTop="-36px"
+            el.style.marginTop = "-36px"
             el.style.marginLeft = "240px";
             el.style.fontSize = "13px";
         }
@@ -125,8 +126,66 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-function updateIsReadNotification(event, notificationID, statusNotification) {
+function updateIsReadNotification(event, notificationID, statusNotification, tagetId, type) {
+    const notificationIcon = document.getElementById("iconTB");
+    notificationIcon.style.fill = "silver";
 
+    closeAllPopups();
+
+    if (type === "comment") {
+        if (tagetId > 0) {
+            showPostPopup(tagetId);
+            let notification = document.getElementById("notification");
+            if (notification) {
+                notification.style.display = "none";
+            }
+            checkStatus(event, notificationID, statusNotification, tagetId)
+        }
+    } else if (type === "like_post") {
+        fetch(`/notification?action=getPostId&notificationID=${notificationID}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        })
+            .then(response => response.text())
+            .then(postId => {
+                showPostPopup(postId);
+
+                let notification = document.getElementById("notification");
+                if (notification) {
+                    notification.style.display = "none";
+                }
+                checkStatus(event, notificationID, statusNotification, tagetId)
+            })
+    } else if (type === "like_comment") {
+        fetch(`/notification?action=getCommentId&notificationID=${notificationID}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        })
+            .then(response => response.text())
+            .then(postId => {
+                showPostPopup(postId);
+
+                let notification = document.getElementById("notification");
+                if (notification) {
+                    notification.style.display = "none";
+                }
+                checkStatus(event, notificationID, statusNotification, tagetId)
+            })
+    }
+}
+
+function closeAllPopups() {
+    let popups = document.querySelectorAll(".popup"); // Lấy tất cả popup đang mở
+    popups.forEach(popup => {
+        popup.style.display = "none"; // Ẩn tất cả popup cũ
+    });
+}
+
+function checkStatus(event, notificationID, statusNotification, tagetId) {
     if (!statusNotification) {
 
         fetch(`/notification?action=updateIsRead&notificationID=${notificationID}`, {
@@ -137,10 +196,8 @@ function updateIsReadNotification(event, notificationID, statusNotification) {
         })
             .then(response => response.json())
             .then(data => {
-
                 if (data.success) {
                     let notificationElement = event.target.closest(".notification-content");
-
                     notificationElement.classList.remove('unread');
                     notificationElement.classList.add('read');
 
@@ -148,10 +205,13 @@ function updateIsReadNotification(event, notificationID, statusNotification) {
                     dotIcon.style.display = 'none';
 
                     notificationElement.onclick = null;
+
                 }
             })
     }
+
 }
+
 function updateIsReadNotificationMess(event, notificationID, statusNotification) {
 
     if (!statusNotification) {

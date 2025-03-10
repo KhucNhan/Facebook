@@ -298,8 +298,6 @@
                    id="chat-input" placeholder="Nhập tin nhắn...">
             <button style="width: fit-content; padding-block: 1px" class="btn btn-primary" id="send-btn">Gửi</button>
         </div>
-
-
     </div>
     <a style=" cursor: pointer;font-size: x-large;position: absolute; bottom: 295px; left: 275px; border-radius: 50%; width: 24px;height: 24px;"
        onclick="closeChat()">x</a>
@@ -345,6 +343,17 @@
         const openModalBtn = document.getElementById("openCreateGroupModal");
         const closeModalBtn = document.querySelector(".close");
         const createGroupBtn = document.getElementById("createGroupButton");
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get("postId");
+
+        if (postId) {
+            const targetPost = document.getElementById(`post-${postId}`);
+            if (targetPost) {
+                targetPost.scrollIntoView({ behavior: "smooth", block: "center" });
+                targetPost.style.border = "2px solid blue"; // Đánh dấu bài post
+            }
+        }
 
         let selectedUsers = [];
 

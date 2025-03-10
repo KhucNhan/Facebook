@@ -22,7 +22,7 @@
     <c:if test="${activity.type != 'message'}">
 
         <div class="notification-content ${notification.getIsRead() ? 'read' : 'unread'}"
-             onclick="updateIsReadNotification(event, ${notification.getNotificationId()},${notification.getIsRead()})"
+             onclick="updateIsReadNotification(event, ${notification.getNotificationId()},${notification.getIsRead()},${activity.targetId},'${activity.type}')"
              data-id="${notification.getNotificationId()}">
             <div class="notification-item">
                 <img src="${pageContext.request.contextPath}/uploads/avatars/${userNotification.image}"

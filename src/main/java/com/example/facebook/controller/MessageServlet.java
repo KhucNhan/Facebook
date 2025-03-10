@@ -49,7 +49,7 @@ public class MessageServlet extends HttpServlet {
         }
     }
 
-    private void showMessage(User user, HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+    public void showMessage(User user, HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
         String contactId = req.getParameter("contactId");
         User contact = userDAO.selectUserById(Integer.parseInt(contactId));
         List<Message> messages = messageDAO.selectAllMessages(user.getUserId(), contact.getUserId());
@@ -135,6 +135,8 @@ public class MessageServlet extends HttpServlet {
 
             int activityId = activityDAO.newActivities(user.getUserId(), messageId, "message");
             notificationDAO.new_notification(Integer.parseInt(receiverId), activityId);
+
+
         } else {
             int activityId = activityDAO.newActivities(user.getUserId(), messageId, "message");
             notificationDAO.new_notification(Integer.parseInt(receiverId), activityId);

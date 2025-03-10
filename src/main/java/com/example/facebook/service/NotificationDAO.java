@@ -1,12 +1,12 @@
 package com.example.facebook.service;
 
 import com.example.facebook.ConnectDatabase;
-import com.example.facebook.model.Activity;
-import com.example.facebook.model.Notification;
+import com.example.facebook.model.*;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 public class NotificationDAO implements INotification {
     private ConnectDatabase connectDatabase = new ConnectDatabase();
@@ -20,6 +20,20 @@ public class NotificationDAO implements INotification {
 
     private final static String updateIsRead = "UPDATE notifications SET isRead = 1 WHERE (notificationId = ?)";
 
+    private final static String get_all_postId = "SELECT posts.* \n" +
+            "FROM posts\n" +
+            "JOIN postemotions ON posts.postId = postemotions.postId\n" +
+            "JOIN activities ON postemotions.emotionId = activities.targetId\n" +
+            "JOIN notifications ON activities.activityId = notifications.activityId\n" +
+            "WHERE notifications.notificationId = ?";
+
+    private final static String get_all_comment = "SELECT postId \n" +
+            "FROM comments\n" +
+            "JOIN commentemotions ON comments.commentId = commentemotions.commentId\n" +
+            "JOIN activities ON commentemotions.emotionId = activities.targetId\n" +
+            "JOIN notifications ON activities.activityId = notifications.activityId\n" +
+            "WHERE notifications.notificationId = ?";
+
     private final static String check_notification_message = "SELECT \n" +
             "    COALESCE(\n" +
             "        (SELECT a.activityId\n" +
@@ -29,6 +43,7 @@ public class NotificationDAO implements INotification {
             "         ORDER BY a.activityId DESC LIMIT 1),\n" +
             "        -1\n" +
             "    ) AS activityId";
+
     @Override
     public List<Notification> getAllNotifictionAddFriend(int userId) {
         List<Notification> allNotification = new ArrayList<>();
@@ -82,14 +97,14 @@ public class NotificationDAO implements INotification {
     public boolean new_notification(int userId, int activityId) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(insert_into_notification);
-            preparedStatement.setInt(1,userId);
-            preparedStatement.setInt(2,activityId);
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, activityId);
 
             int row = preparedStatement.executeUpdate();
-            if (row > 0){
+            if (row > 0) {
                 return true;
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
@@ -98,14 +113,14 @@ public class NotificationDAO implements INotification {
     @Override
     public boolean updateIsReadNotification(int notificationId) {
         try {
-            PreparedStatement preparedStatement =connection.prepareStatement(updateIsRead);
-            preparedStatement.setInt(1,notificationId);
+            PreparedStatement preparedStatement = connection.prepareStatement(updateIsRead);
+            preparedStatement.setInt(1, notificationId);
 
             int row = preparedStatement.executeUpdate();
-            if (row > 0){
+            if (row > 0) {
                 return true;
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
@@ -115,14 +130,60 @@ public class NotificationDAO implements INotification {
     public int checkNotificationMessage(int senderId, int receiverId) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(check_notification_message);
-            preparedStatement.setInt(1,senderId);
-            preparedStatement.setInt(2,receiverId);
+            preparedStatement.setInt(1, senderId);
+            preparedStatement.setInt(2, receiverId);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 return resultSet.getInt(1);
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    @Override
+    public Post getAllPostId(int notification) {
+        Post post = new Post();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(get_all_postId);
+            preparedStatement.setInt(1, notification);
+
+            ResultSet result = preparedStatement.executeQuery();
+            if (result.next()) {
+                post = new Post(
+                        result.getInt(1),
+                        result.getInt(2),
+                        result.getString(3),
+                        result.getString(4),
+                        result.getTimestamp(5),
+                        result.getTimestamp(6)
+                );
+            }
+            return post;
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public int getAllComment(int notification) {
+        int commentId = -1;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(get_all_comment);
+            preparedStatement.setInt(1, notification);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                commentId = resultSet.getInt(1);
+            }
+            return commentId;
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return -1;
