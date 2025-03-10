@@ -162,7 +162,7 @@
                     <p class="text-muted">${user.bio}</p>
                 </div>
                 <div class="profile-actions">
-                    <button onclick="openEditModal()" class="btn btn-primary">Chỉnh sửa thông tin</button>
+                    <button onclick="openEditModal()" class="btn btn-primary">Chỉnh sửa trang cá nhân</button>
                 </div>
             </div>
         </div>
