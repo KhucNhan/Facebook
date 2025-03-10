@@ -63,6 +63,9 @@ public class UserServlet extends HttpServlet {
                 case "delete":
                     deleteUser(req, resp);
                     break;
+                case "disableAccount":
+                    disableAccount(req, resp);
+                    break;
                 default:
                     showUserList(req, resp);
                     break;
@@ -147,6 +150,22 @@ public class UserServlet extends HttpServlet {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void disableAccount(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
+        String userIdStr = req.getParameter("userId");
+        int userId = Integer.parseInt(userIdStr);
+        User user = userDAO.selectUserById(userId);
+        user.setStatus("Disabled");
+        if(userDAO.updateUser(user, userId)) {
+            HttpSession session = req.getSession();
+            session.removeAttribute("userId");
+
+            RequestDispatcher dispatchers = req.getRequestDispatcher("view/Login.jsp");
+            dispatchers.forward(req, resp);
+        } else {
+            System.out.println("disable failed");
         }
     }
 

@@ -97,25 +97,61 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                           aria-expanded="false">
+                           aria-expanded="false" id="userDropdown">
                             <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
                                  alt="User Icon" width="37" height="37"
                                  style="border-radius: 50%;margin-top: -10px;margin-right: -20px;position: relative">
                         </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/users?action=userUpdateInformation">Cập nhật thông tin
-                                cá nhân</a></li>
-                            <li><a class="dropdown-item" href="/users?action=changePassword">Đổi mật khẩu</a></li>
-                            <li><a class="dropdown-item" href="/users?action=delete">Xóa tài khoản</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" onclick="confirmLogout()">Đăng xuất</a></li>
+                        <ul class="dropdown-menu" id="dropdown-menu" data-bs-auto-close="outside">
+                            <div id="default-menu">
+                                <li><a class="dropdown-item" href="/users?action=userUpdateInformation">Cập nhật thông
+                                    tin cá nhân</a></li>
+                                <li><a class="dropdown-item" href="/users?action=changePassword">Đổi mật khẩu</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="showPrivacySettings(event)">Cài đặt quyền
+                                    riêng tư</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" onclick="confirmLogout()">Đăng xuất</a></li>
+                            </div>
+
+                            <div id="privacy-menu" style="display: none;">
+                                <li><a class="dropdown-item" href="#" onclick="restoreDefaultMenu(event)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             fill="black" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                              d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"></path>
+                                    </svg>
+                                    Quay lại
+                                </a></li>
+                                <li><a class="dropdown-item" href="/users?action=disableAccount&userId=${user.userId}">Vô hiệu hóa tài
+                                    khoản</a></li>
+                                <li><a class="dropdown-item" href="/users?action=deleteAccount">Xóa tài khoản</a></li>
+                            </div>
                         </ul>
                     </li>
                 </ul>
             </div>
         </div>
+
+        <script>
+            function showPrivacySettings(event) {
+                event.preventDefault(); // Ngăn trang load lại
+                event.stopPropagation(); // Ngăn Bootstrap đóng dropdown
+
+                document.getElementById("default-menu").style.display = "none";
+                document.getElementById("privacy-menu").style.display = "block";
+            }
+
+            function restoreDefaultMenu(event) {
+                event.preventDefault(); // Ngăn trang load lại
+                event.stopPropagation(); // Ngăn Bootstrap đóng dropdown
+
+                document.getElementById("privacy-menu").style.display = "none";
+                document.getElementById("default-menu").style.display = "block";
+            }
+        </script>
+
     </div>
 </div>
 

@@ -67,7 +67,7 @@ public class HomeServlet extends HttpServlet {
         if (user.getRole().equalsIgnoreCase("admin")) {
             System.out.println("home");
             resp.sendRedirect("/admin/Home.jsp");
-        } else {
+        } else if (user.getStatus().equalsIgnoreCase("active")){
             List<User> usersFriendShip = friendShipDAO.getAllFriendsAdded(Integer.parseInt(userIdStr));
 
             List<Post> posts = postDAO.selectAllPosts(Integer.parseInt(userIdStr));
@@ -87,8 +87,7 @@ public class HomeServlet extends HttpServlet {
                 }
             }
 
-            HttpSession session1 = req.getSession();
-            String userIdStrs = session1.getAttribute("userId").toString();
+            String userIdStrs = session.getAttribute("userId").toString();
 
             List<Notification> notifications = notificationDAO.getAllNotifictionAddFriend(Integer.parseInt(userIdStrs));
             List<Activity> activities = new ArrayList<>();
@@ -119,6 +118,9 @@ public class HomeServlet extends HttpServlet {
             req.setAttribute("activities", activities);
 
             req.getRequestDispatcher("/user/Home.jsp").forward(req, resp);
+        } else {
+            req.setAttribute("user", user);
+            req.getRequestDispatcher("/view/Disable.jsp").forward(req, resp);
         }
     }
 }

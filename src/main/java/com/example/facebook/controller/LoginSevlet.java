@@ -82,7 +82,11 @@ public class LoginSevlet extends HttpServlet {
                 HttpSession session = req.getSession();
                 session.setAttribute("userId", userId);
                 if (role.equalsIgnoreCase("User")) {
-                    resp.getWriter().println("{\"success\": true, \"message\": \"User\"}");
+                    if (status.equalsIgnoreCase("Disable")) {
+                        resp.getWriter().println("{\"success\": true, \"message\": \"UserDisable\"}");
+                    } else {
+                        resp.getWriter().println("{\"success\": true, \"message\": \"User\"}");
+                    }
                 } else {
                     resp.getWriter().println("{\"success\": true, \"message\": \"Admin\"}");
                 }
