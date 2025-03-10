@@ -99,8 +99,11 @@ function validateLogin() {
                 if (data.message === "Admin") {
                     console.log("Admin")
                     window.location.href = '/home';
-                } else {
+                } else if(data.message === "User") {
                     console.log("User")
+                    window.location.href = '/home';
+                } else {
+                    console.log("UserDisable");
                     window.location.href = '/home';
                 }
             } else {
