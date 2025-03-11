@@ -102,9 +102,15 @@ public class HomeServlet extends HttpServlet {
                 users.add(user_1);
             }
 
+            int count = notificationDAO.countNumberOfNotification(Integer.parseInt(userIdStrs));
+            int count_message = notificationDAO.countNumberOfNotificationMessage(Integer.parseInt(userIdStrs));
+
             List<Message> messageNotifications = messageDAO.selectContentMessage(Integer.parseInt(userIdStrs));
 
             List<Group> groups = groupDAO.selectAllGroups(user.getUserId());
+
+            req.setAttribute("count",count);
+            req.setAttribute("count_message",count_message);
             req.setAttribute("messageNotifications",messageNotifications);
             req.setAttribute("groups", groups);
             req.setAttribute("likedPosts", likedPosts);

@@ -20,4 +20,6 @@ public interface INotification {
     int getAllComment(int notification);
 
     User getAllUserId(int notification);
+
+    int countNumberOfNotification(int userId);
 }

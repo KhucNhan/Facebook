@@ -11,6 +11,18 @@ import java.util.TreeMap;
 public class NotificationDAO implements INotification {
     private ConnectDatabase connectDatabase = new ConnectDatabase();
     private Connection connection = connectDatabase.connection();
+    private final static String conut_number_of_notification = "SELECT COUNT(*) AS count\n" +
+            "FROM notifications\n" +
+            "JOIN activities ON activities.activityId = notifications.activityId\n" +
+            "WHERE notifications.userId = ? \n" +
+            "  AND notifications.isRead = 0 \n" +
+            "  AND activities.type IN ('comment', 'like_comment', 'like_post', 'friendship_request');\n";
+    private final static String conut_number_of_notification_message = "SELECT COUNT(*) AS count\n" +
+            "FROM notifications\n" +
+            "JOIN activities ON activities.activityId = notifications.activityId\n" +
+            "WHERE notifications.userId = ? \n" +
+            "  AND notifications.isRead = 0 \n" +
+            "  AND activities.type IN ('message');\n";
 
     private final static String insert_into_notification = "INSERT INTO notifications (userId, activityId) VALUES (?, ?)";
 
@@ -228,5 +240,38 @@ public class NotificationDAO implements INotification {
         }
         return null;
 
+    }
+
+    @Override
+    public int countNumberOfNotification(int userId) {
+        int row = -1;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(conut_number_of_notification);
+            preparedStatement.setInt(1, userId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return row = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public int countNumberOfNotificationMessage(int userId) {
+        int row = -1;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(conut_number_of_notification_message);
+            preparedStatement.setInt(1, userId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return row = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 }
