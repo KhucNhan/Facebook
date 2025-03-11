@@ -187,7 +187,7 @@ public class PostServlet extends HttpServlet {
             out.println("<li><a class='dropdown-item' onclick='deleteComment(" + comment.getCommentId() + ")'>Xóa</a></li>");
         } else {
             // Nếu không phải chủ sở hữu, chỉ hiển thị "Báo cáo"
-            out.println("<li><a class='dropdown-item' href='#' onclick='reportComment(" + comment.getCommentId() + ")'>Báo cáo</a></li>");
+            out.println("<li><a class='dropdown-item' onclick='reportComment(" + comment.getCommentId() + ")' onclick='reportComment(" + comment.getCommentId() + ")'>Báo cáo</a></li>");
         }
 
         out.println("</ul>");

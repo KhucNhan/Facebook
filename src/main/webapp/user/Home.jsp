@@ -157,10 +157,11 @@
                                                 </c:if>
                                                 <c:if test="${post.user.userId != user.userId}">
                                                     <li>
-                                                        <a class="dropdown-item"
-                                                           href="/posts?action=report&postId=${post.getPostId()}">Báo
-                                                            cáo bài viết
-                                                        </a>
+                                                        <form method="post" style="padding: 0;margin: 0;width: fit-content" action="/reports?action=report&postId=${post.postId}&userId=${user.userId}">
+                                                            <button style="border: none;height: fit-content;width: fit-content" class="dropdown-item">
+                                                                Báo cáo bài viết
+                                                            </button>
+                                                        </form>
                                                     </li>
                                                 </c:if>
                                             </ul>
@@ -234,7 +235,8 @@
         </div>
         <div>
             <c:forEach items="${usersFriendShip}" var="user">
-                <a class="friends" onclick="loadMessages(${user.userId}, 'user', '${user.name}', '${pageContext.request.contextPath}/uploads/avatars/${user.image}')">
+                <a class="friends"
+                   onclick="loadMessages(${user.userId}, 'user', '${user.name}', '${pageContext.request.contextPath}/uploads/avatars/${user.image}')">
                     <div class="left_bottom">
                         <div>
                             <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
@@ -266,7 +268,8 @@
             <c:choose>
                 <c:when test="${groups.size() > 0}">
                     <c:forEach items="${groups}" var="group">
-                        <a class="groups" onclick="loadMessages(${group.groupId}, 'group', '${group.name}', '${pageContext.request.contextPath}/img/group_avatars/default_group_avt.jpg')">
+                        <a class="groups"
+                           onclick="loadMessages(${group.groupId}, 'group', '${group.name}', '${pageContext.request.contextPath}/img/group_avatars/default_group_avt.jpg')">
                             <div class="left_bottom">
                                 <div>
                                     <img src="${pageContext.request.contextPath}/img/group_avatars/default_group_avt.jpg"
@@ -303,7 +306,9 @@
        onclick="closeChat()">x</a>
 </div>
 <div style="border-radius: 5px" id="message-menu" class="message-menu">
-    <button style="width: fit-content;font-size: 12px;padding: 0;background-color: white" onclick="deleteMessage()">Gỡ tin nhắn</button>
+    <button style="width: fit-content;font-size: 12px;padding: 0;background-color: white" onclick="deleteMessage()">Gỡ
+        tin nhắn
+    </button>
 </div>
 <div id="emoji-picker" class="emoji-picker"></div>
 
@@ -337,6 +342,7 @@
 
 
 <script>
+
     document.addEventListener("DOMContentLoaded", function () {
         const modal = document.getElementById("createGroupModal");
         const openModalBtn = document.getElementById("openCreateGroupModal");
@@ -418,7 +424,7 @@
         let menu = document.getElementById("message-menu");
 
         let messageElement = document.querySelector(`[oncontextmenu*='` + selectedMessageId + `'] .text`);
-        if(messageElement.innerText === "Tin nhắn đã bị gỡ") {
+        if (messageElement.innerText === "Tin nhắn đã bị gỡ") {
             return;
         }
 
@@ -441,7 +447,7 @@
                 ? `groupMessages?action=delete&messageId=` + selectedMessageId
                 : `messages?action=delete&messageId=` + selectedMessageId;
 
-            fetch(url, { method: "POST" })
+            fetch(url, {method: "POST"})
                 .then(response => response.text())
                 .then(data => {
                     if (data === "success") {
@@ -474,7 +480,7 @@
 
         fetch(url, {
             method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            headers: {"Content-Type": "application/x-www-form-urlencoded"},
         })
             .then(response => response.text())
             .then(data => {
@@ -542,8 +548,6 @@
                 });
         }, 1000);
     }
-
-
 
 
     function closeChat() {

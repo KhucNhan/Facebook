@@ -20,6 +20,12 @@ public class Report {
         this.createAt = createAt;
     }
 
+    public Report(int userId, int targetId, String type) {
+        this.userId = userId;
+        this.targetId = targetId;
+        this.type = type;
+    }
+
     public int getReportId() {
         return reportId;
     }
