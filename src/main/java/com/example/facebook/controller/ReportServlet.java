@@ -38,9 +38,20 @@ public class ReportServlet extends HttpServlet {
     }
 
     private void report(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
-        int postId = Integer.parseInt(req.getParameter("postId"));
         int userId = Integer.parseInt(req.getParameter("userId"));
-        Report report = new Report(userId, postId, "Post");
+        String type = req.getParameter("type");
+        Report report = new Report();
+
+        if (type.equalsIgnoreCase("comment")) {
+            String commentIdStr = req.getParameter("commentId");
+            int commentId = Integer.parseInt(commentIdStr);
+            report = new Report(userId, commentId, "Comment");
+        } else {
+            String postIdStr = req.getParameter("postId");
+            int postId = Integer.parseInt(postIdStr);
+            report = new Report(userId, postId, "Post");
+        }
+
         int rpId = reportDAO.insertReport(report);
         if (rpId != -1) {
             System.out.println("Success");

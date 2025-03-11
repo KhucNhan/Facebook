@@ -54,7 +54,13 @@ function submitComment(postId) {
                                     <li><a class='dropdown-item' href='#' onclick='editComment(${response.commentId})'>Sửa</a></li>
                                     <li><a class='dropdown-item' href='#' onclick='deleteComment(${response.commentId})'>Xóa</a></li>
                                 ` : `
-                                    <li><a class='dropdown-item' href='#' onclick='reportComment(${response.commentId})'>Báo cáo</a></li>
+                                    <li>
+                                        <form method="post" style="padding: 0;margin: 0;width: fit-content" action="/reports?action=report&comment=${response.commentId}&userId=${sessionStorage.userId}&type=Post">
+                                            <button style="border: none;height: fit-content;width: fit-content" class="dropdown-item">
+                                                                Báo cáo bình luận
+                                            </button>
+                                        </form>
+                                    </li>
                                 `}
                             </ul>
                         </div>
