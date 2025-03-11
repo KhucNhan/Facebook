@@ -157,7 +157,7 @@
                                                 </c:if>
                                                 <c:if test="${post.user.userId != user.userId}">
                                                     <li>
-                                                        <form method="post" style="padding: 0;margin: 0;width: fit-content" action="/reports?action=report&postId=${post.postId}&userId=${user.userId}">
+                                                        <form method="post" style="padding: 0;margin: 0;width: fit-content" action="/reports?action=report&postId=${post.postId}&userId=${user.userId}&type=Post">
                                                             <button style="border: none;height: fit-content;width: fit-content" class="dropdown-item">
                                                                 Báo cáo bài viết
                                                             </button>
