@@ -37,8 +37,8 @@ public class ReportServlet extends HttpServlet {
         }
     }
 
-    private void report(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
-        int userId = Integer.parseInt(req.getParameter("userId"));
+    private void report(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+        int userId = Integer.parseInt(req.getSession().getAttribute("userId").toString());
         String type = req.getParameter("type");
         Report report = new Report();
 
@@ -52,12 +52,8 @@ public class ReportServlet extends HttpServlet {
             report = new Report(userId, postId, "Post");
         }
 
-        int rpId = reportDAO.insertReport(report);
-        if (rpId != -1) {
-            System.out.println("Success");
-        } else {
-            System.out.println("Failed");
-        }
+        boolean success = reportDAO.insertReport(report) != -1;
+        resp.getWriter().write("{\"success\": " + success + "}");
     }
 
     private void commentReports(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {

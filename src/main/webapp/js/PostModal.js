@@ -274,7 +274,7 @@ function submitReply(commentId) {
                                     <li><a class='dropdown-item' href='#' onclick='editComment(${response.commentId})'>Sửa</a></li>
                                     <li><a class='dropdown-item' href='#' onclick='deleteComment(${response.commentId})'>Xóa</a></li>
                                 ` : `
-                                    <li><a class='dropdown-item' href='#' onclick='reportComment(${response.commentId})'>Báo cáo</a></li>
+                                    <li><a class='dropdown-item' href='#' onclick='reportComment(${response.commentId}, event)'>Báo cáo</a></li>
                                 `}
                             </ul>
                         </div>

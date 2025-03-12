@@ -157,11 +157,9 @@
                                                 </c:if>
                                                 <c:if test="${post.user.userId != user.userId}">
                                                     <li>
-                                                        <form method="post" style="padding: 0;margin: 0;width: fit-content" action="/reports?action=report&postId=${post.postId}&userId=${user.userId}&type=Post">
-                                                            <button style="border: none;height: fit-content;width: fit-content" class="dropdown-item">
+                                                            <button onclick="reportPost(${post.postId}, event)" style="border: none;height: fit-content;width: fit-content" class="dropdown-item">
                                                                 Báo cáo bài viết
                                                             </button>
-                                                        </form>
                                                     </li>
                                                 </c:if>
                                             </ul>
@@ -342,6 +340,51 @@
 
 
 <script>
+    function reportComment(commentId, event) {
+        fetch('/reports?action=report&type=Comment&commentId=' + encodeURIComponent(commentId), {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log("Báo cáo bình luận thành công!");
+                    let dropdownMenu = event.target.closest('ul.dropdown-menu');
+                    if (dropdownMenu) {
+                        dropdownMenu.classList.remove('show');
+                    }
+                } else {
+                    console.log("Báo cáo thất bại. Vui lòng thử lại sau.");
+                }
+            })
+            .catch(error => console.error('Lỗi:', error));
+    }
+
+
+    function reportPost(postId, event) {
+        fetch('/reports?action=report&type=Post&postId=' + encodeURIComponent(postId), {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log("Báo cáo bài viết thành công!");
+                    let dropdownMenu = event.target.closest('.dropdown-menu');
+                    if (dropdownMenu) {
+                        dropdownMenu.classList.remove('show'); // Ẩn dropdown
+                    }
+                } else {
+                    console.log("Báo cáo thất bại. Vui lòng thử lại sau.");
+                }
+            })
+            .catch(error => console.error('Lỗi:', error));
+    }
+
 
     document.addEventListener("DOMContentLoaded", function () {
         const modal = document.getElementById("createGroupModal");
