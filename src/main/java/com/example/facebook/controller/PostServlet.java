@@ -71,6 +71,7 @@ public class PostServlet extends HttpServlet {
         Post post = postDAO.selectPostById(Integer.parseInt(postId));
         List<PostMedia> mediaList = mediaDAO.selectAllPostMedia(Integer.parseInt(postId));
         List<Comment> comments = commentDAO.selectAllComments(post.getPostId());
+        String commentId = req.getParameter("commentId"); // Nhận commentId từ request
 
         HttpSession session = req.getSession();
         User user = userDAO.selectUserById(Integer.parseInt(session.getAttribute("userId").toString()));
@@ -131,27 +132,42 @@ public class PostServlet extends HttpServlet {
         out.println("</ul>"); // Đóng danh sách bình luận
 
 
-        // Khu vực nhập bình luận
+        // Gửi script xuống client
+        if (commentId != null) {
+            out.println("<script>");
+            out.println("setTimeout(() => {");
+            out.println("   let commentElement = document.getElementById('comment-" + commentId + "');");
+            out.println("   if (commentElement) {");
+            out.println("       commentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });");
+            out.println("   }");
+            out.println("}, 500);"); // Chờ modal load xong rồi cuộn
+            out.println("</script>");
+        }
+
+
+        if (user.getRole().equalsIgnoreCase("User")) {
+            // Khu vực nhập bình luận
 //        out.println("<div class='comment-input-section' style='display: flex; align-items: center; padding: 10px; border-top: 1px solid lightgray;'>");
-        out.println("<div class='comment-input-section' style='position: sticky; bottom: 0; background: white; display: flex; align-items: center; padding: 10px; border-top: 1px solid lightgray;'>");
+            out.println("<div class='comment-input-section' style='position: sticky; bottom: 0; background: white; display: flex; align-items: center; padding: 10px; border-top: 1px solid lightgray;'>");
 
 // Avatar của người dùng hiện tại
-        out.println("<img src='/uploads/avatars/" + user.getImage() + "' style='width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;'>");
+            out.println("<img src='/uploads/avatars/" + user.getImage() + "' style='width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;'>");
 
 // Ô nhập bình luận
-        out.println("<input id='comment-input-" + post.getPostId() + "' type='text' placeholder='Viết bình luận...' style='flex: 1; padding: 8px; border-radius: 20px; border: 1px solid #ddd;'>");
+            out.println("<input id='comment-input-" + post.getPostId() + "' type='text' placeholder='Viết bình luận...' style='flex: 1; padding: 8px; border-radius: 20px; border: 1px solid #ddd;'>");
 
 // Nút gửi bình luận
-        out.println("<button onclick='submitComment(" + post.getPostId() + ")' style='margin-left: 10px; background: blue; color: white; padding: 5px 15px; border: none; border-radius: 10px; cursor: pointer;width:fit-content;'>Gửi</button>");
+            out.println("<button onclick='submitComment(" + post.getPostId() + ")' style='margin-left: 10px; background: blue; color: white; padding: 5px 15px; border: none; border-radius: 10px; cursor: pointer;width:fit-content;'>Gửi</button>");
 
 
-        out.println("</div>");
+            out.println("</div>");
+        }
 
 
         out.println("</div>"); // Đóng khu vực bình luận
+        out.println("<script src='/js/LikeComment.js'></script>");
         out.println("</div></div>"); // Đóng post-modal và modal-overlay
 
-        out.println("<script src='/js/LikeComment.js'></script>");
 
     }
 
@@ -168,34 +184,40 @@ public class PostServlet extends HttpServlet {
         out.println("</div>");
 
         // Nội dung bình luận bên phải
-        out.println("<div class='comment-body' style='background: #f0f2f5; padding: 10px; border-radius: 10px; max-width: 85%; position: relative;'>");
+        String backgroundColor = "#f0f2f5";
+        if(comment.getContent().equalsIgnoreCase("Bình luận này đã bị xóa do vi phạm tiêu chuẩn cộng đồng.")) {
+            backgroundColor = "#ebebeb";
+        }
+        out.println("<div class='comment-body' style='background: " + backgroundColor + "; padding: 10px; border-radius: 10px; max-width: 85%; position: relative;'>");
 
         // Tên và thời gian + Dropdown
         out.println("<div class='comment-info' style='display: flex; align-items: center; gap: 8px; margin-bottom: 5px;'>");
         out.println("<strong class='comment-name' style='color: #050505;'>" + comment.getUser().getName() + "</strong>");
         out.println("<span class='comment-time' style='color: #65676b; font-size: 12px;'>" + comment.getCreateAt() + "</span>");
 
-        // Dropdown menu
-        out.println("<div class='nav-item dropdown ms-auto'>");
-        out.println("<a class='nav-link' href='#' role='button' data-bs-toggle='dropdown' data-bs-auto-close='outside' aria-expanded='false'>");
-        out.println("<i class='bi bi-three-dots'></i>"); // Icon 3 dấu chấm của Bootstrap
-        out.println("</a>");
-        out.println("<ul class='dropdown-menu'>");
+        if (user.getRole().equalsIgnoreCase("User")) {
+            // Dropdown menu
+            out.println("<div class='nav-item dropdown ms-auto'>");
+            out.println("<a class='nav-link' href='#' role='button' data-bs-toggle='dropdown' data-bs-auto-close='outside' aria-expanded='false'>");
+            out.println("<i class='bi bi-three-dots'></i>"); // Icon 3 dấu chấm của Bootstrap
+            out.println("</a>");
+            out.println("<ul class='dropdown-menu'>");
 
-        if (comment.getUser().getUserId() == user.getUserId()) {
-            out.println("<li><a class='dropdown-item' onclick='editComment(" + comment.getCommentId() + ")'>Sửa</a></li>");
-            out.println("<li><a class='dropdown-item' onclick='deleteComment(" + comment.getCommentId() + ")'>Xóa</a></li>");
-        } else {
-            // Nếu không phải chủ sở hữu, chỉ hiển thị "Báo cáo"
-            out.println("<li>" +
-                    "<button style=\"border: none;height: fit-content;width: fit-content\" class='dropdown-item' onclick='reportComment(" + comment.getCommentId() + ", event)'>" +
-                    "Báo cáo bình luận" +
-                    "</button>" +
-                    "</li>");
+            if (comment.getUser().getUserId() == user.getUserId()) {
+                out.println("<li><a class='dropdown-item' onclick='editComment(" + comment.getCommentId() + ")'>Sửa</a></li>");
+                out.println("<li><a class='dropdown-item' onclick='deleteComment(" + comment.getCommentId() + ")'>Xóa</a></li>");
+            } else {
+                // Nếu không phải chủ sở hữu, chỉ hiển thị "Báo cáo"
+                out.println("<li>" +
+                        "<button style=\"border: none;height: fit-content;width: fit-content\" class='dropdown-item' onclick='reportComment(" + comment.getCommentId() + ", event)'>" +
+                        "Báo cáo bình luận" +
+                        "</button>" +
+                        "</li>");
+            }
+
+            out.println("</ul>");
+            out.println("</div>"); // Đóng dropdown menu
         }
-
-        out.println("</ul>");
-        out.println("</div>"); // Đóng dropdown menu
 
         out.println("</div>"); // Đóng div comment-info
 
@@ -208,17 +230,19 @@ public class PostServlet extends HttpServlet {
         // Đóng div comment-item
         out.println("</div>");
 
-        // Nút thích và phản hồi
-        out.println("<div class='comment-actions' style=\"display: flex; justify-content: start; padding-left: 70px;\">");
+        if (user.getRole().equalsIgnoreCase("User")) {
+            // Nút thích và phản hồi
+            out.println("<div class='comment-actions' style=\"display: flex; justify-content: start; padding-left: 70px;\">");
 
-        if (isReplyCommentLike) {
-            out.println("<button class='like-button' data-comment-id='" + comment.getCommentId() + "' style=\"text-decoration: none; background-color: inherit; width: fit-content; margin-right: 20px; cursor: pointer;padding:0; color: blue; font-weight: bold;\" onclick='toggleLike(" + comment.getCommentId() + ")'>Thích</button>");
-        } else {
-            out.println("<button class='like-button' data-comment-id='" + comment.getCommentId() + "' style=\"text-decoration: none; background-color: inherit; width: fit-content; margin-right: 20px; cursor: pointer;padding:0; color: gray; font-weight: bold;\" onclick='toggleLike(" + comment.getCommentId() + ")'>Thích</button>");
+            if (isReplyCommentLike) {
+                out.println("<button class='like-button' data-comment-id='" + comment.getCommentId() + "' style=\"text-decoration: none; background-color: inherit; width: fit-content; margin-right: 20px; cursor: pointer;padding:0; color: blue; font-weight: bold;\" onclick='toggleLike(" + comment.getCommentId() + ")'>Thích</button>");
+            } else {
+                out.println("<button class='like-button' data-comment-id='" + comment.getCommentId() + "' style=\"text-decoration: none; background-color: inherit; width: fit-content; margin-right: 20px; cursor: pointer;padding:0; color: gray; font-weight: bold;\" onclick='toggleLike(" + comment.getCommentId() + ")'>Thích</button>");
+            }
+
+            out.println("<a class='reply-button' style=\"text-decoration: none;background-color: inherit; width: fit-content; cursor: pointer;color: gray;\" onclick='replyToComment(" + comment.getCommentId() + ")'>Phản hồi</a>");
+            out.println("</div>");
         }
-
-        out.println("<a class='reply-button' style=\"text-decoration: none;background-color: inherit; width: fit-content; cursor: pointer;color: gray;\" onclick='replyToComment(" + comment.getCommentId() + ")'>Phản hồi</a>");
-        out.println("</div>");
 
         List<Comment> replies = commentDAO.getReplies(comment.getCommentId());
         if (!replies.isEmpty()) {
@@ -324,10 +348,20 @@ public class PostServlet extends HttpServlet {
                 case "likeComment":
                     likeComment(req, resp);
                     break;
+                case "adminDeletePost":
+                    adminDeletePost(req, resp);
+                    break;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void adminDeletePost(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+        int postId = Integer.parseInt(req.getParameter("postId"));
+        Post post = postDAO.selectPostById(postId);
+        mediaDAO.deleteAllImagePostByID(postId);
+        System.out.println(postDAO.updatePost(postId, "Bài viết này đã vi phạm tiêu chuẩn cộng đồng.", post.getPrivacy()));
     }
 
     private void likeComment(HttpServletRequest req, HttpServletResponse resp) throws IOException {

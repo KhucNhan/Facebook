@@ -99,7 +99,7 @@
             </div>
         </div>
     </div>
-    <div class="center" style="overflow-y: auto; scrollbar-width: none">
+    <div class="center" style="overflow-y: auto;">
         <form action="">
             <div class="addPost">
                 <div>
@@ -115,7 +115,7 @@
 
         <div class="post-container">
             <c:forEach items="${posts}" var="post">
-                <div class="post-card" data-post-id="${post.getPostId()}">
+                <div class="post-card" style="<c:if test="${post.content == 'Bài viết này đã vi phạm tiêu chuẩn cộng đồng.' ? 'background-color: #ebebeb;' : ''}"/>" data-post-id="${post.getPostId()}">
                     <div class="introduce" style="display: flex; justify-content: space-between">
                         <div style="display: flex">
                             <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
@@ -129,45 +129,47 @@
                                 </div>
                             </div>
                         </div>
-                        <div style="display: flex;">
-                            <div>
+                        <c:if test="${post.content != 'Bài viết này đã vi phạm tiêu chuẩn cộng đồng.'}">
+                            <div style="display: flex;">
                                 <div>
-                                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                                        <li class="nav-item dropdown">
-                                            <a style="margin-top: -10px;font-size: 20px;width: 20px;overflow: hidden;"
-                                               class="nav-link dropdown-toggle" href="#" role="button"
-                                               data-bs-toggle="dropdown"
-                                               aria-expanded="false">
-                                                ...
-                                            </a>
-                                            <ul class="dropdown-menu">
-                                                <h1></h1>
+                                    <div>
+                                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                            <li class="nav-item dropdown">
+                                                <a style="margin-top: -10px;font-size: 20px;width: 20px;overflow: hidden;"
+                                                   class="nav-link dropdown-toggle" href="#" role="button"
+                                                   data-bs-toggle="dropdown"
+                                                   aria-expanded="false">
+                                                    ...
+                                                </a>
+                                                <ul class="dropdown-menu">
+                                                    <h1></h1>
 
-                                                <c:if test="${post.user.userId == user.userId}">
-                                                    <li><a class="dropdown-item"
-                                                           href="/posts?action=userEditPost&postId=${post.getPostId()}">Sửa
-                                                        bài viết</a></li>
-                                                </c:if>
-                                                <c:if test="${post.user.userId == user.userId}">
-                                                    <li>
-                                                        <a class="dropdown-item delete-link"
-                                                           href="/posts?action=deletePost&postId=${post.getPostId()}">Xóa
-                                                        </a>
-                                                    </li>
-                                                </c:if>
-                                                <c:if test="${post.user.userId != user.userId}">
-                                                    <li>
+                                                    <c:if test="${post.user.userId == user.userId}">
+                                                        <li><a class="dropdown-item"
+                                                               href="/posts?action=userEditPost&postId=${post.getPostId()}">Sửa
+                                                            bài viết</a></li>
+                                                    </c:if>
+                                                    <c:if test="${post.user.userId == user.userId}">
+                                                        <li>
+                                                            <a class="dropdown-item delete-link"
+                                                               href="/posts?action=deletePost&postId=${post.getPostId()}">Xóa
+                                                            </a>
+                                                        </li>
+                                                    </c:if>
+                                                    <c:if test="${post.user.userId != user.userId}">
+                                                        <li>
                                                             <button onclick="reportPost(${post.postId}, event)" style="border: none;height: fit-content;width: fit-content" class="dropdown-item">
                                                                 Báo cáo bài viết
                                                             </button>
-                                                    </li>
-                                                </c:if>
-                                            </ul>
-                                        </li>
-                                    </ul>
+                                                        </li>
+                                                    </c:if>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </c:if>
                     </div>
                     <div class="content" onclick="showPostPopup('${post.getPostId()}')">
                         <p>${post.content}</p>

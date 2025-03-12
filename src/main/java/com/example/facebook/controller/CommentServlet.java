@@ -50,10 +50,20 @@ public class CommentServlet extends HttpServlet {
                 case "reply":
                     addReplyComment(req, resp);
                     break;
+                case "adminDeleteComment":
+                    adminDeleteComment(req, resp);
+                    break;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void adminDeleteComment(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+        int commentId = Integer.parseInt(req.getParameter("commentId"));
+        Comment comment = commentDAO.selectCommentById(commentId);
+        comment.setContent("Bình luận này đã bị xóa do vi phạm tiêu chuẩn cộng đồng.");
+        commentDAO.updateComment(comment, commentId);
     }
 
     private void addReplyComment(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {

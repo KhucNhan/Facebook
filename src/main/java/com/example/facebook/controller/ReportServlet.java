@@ -1,7 +1,11 @@
 package com.example.facebook.controller;
 
+import com.example.facebook.model.Comment;
 import com.example.facebook.model.Report;
+import com.example.facebook.model.User;
+import com.example.facebook.service.CommentDAO;
 import com.example.facebook.service.ReportDAO;
+import com.example.facebook.service.UserDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,6 +19,8 @@ import java.util.List;
 @WebServlet("/reports")
 public class ReportServlet extends HttpServlet {
     ReportDAO reportDAO = new ReportDAO();
+    UserDAO userDAO = new UserDAO();
+    CommentDAO commentDAO = new CommentDAO();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
@@ -39,17 +45,19 @@ public class ReportServlet extends HttpServlet {
 
     private void report(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
         int userId = Integer.parseInt(req.getSession().getAttribute("userId").toString());
+        User user = userDAO.selectUserById(userId);
         String type = req.getParameter("type");
         Report report = new Report();
 
         if (type.equalsIgnoreCase("comment")) {
             String commentIdStr = req.getParameter("commentId");
             int commentId = Integer.parseInt(commentIdStr);
-            report = new Report(userId, commentId, "Comment");
+            Comment comment = commentDAO.selectCommentById(commentId);
+            report = new Report(user, commentId, comment.getPostId(), "Comment");
         } else {
             String postIdStr = req.getParameter("postId");
             int postId = Integer.parseInt(postIdStr);
-            report = new Report(userId, postId, "Post");
+            report = new Report(user, postId, 0, "Post");
         }
 
         boolean success = reportDAO.insertReport(report) != -1;
@@ -57,8 +65,9 @@ public class ReportServlet extends HttpServlet {
     }
 
     private void commentReports(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
-        List<Report> postReports = reportDAO.selectAllPostReports();
-        req.setAttribute("reports", postReports);
+        List<Report> commentReports = reportDAO.selectAllCommentReports();
+        req.setAttribute("reports", commentReports);
+        System.out.println(commentReports);
         req.getRequestDispatcher("admin/CommentReport.jsp").forward(req, resp);
     }
 
