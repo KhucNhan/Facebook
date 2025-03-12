@@ -1,5 +1,6 @@
 package com.example.facebook.service;
 
+import com.example.facebook.model.FriendShip;
 import com.example.facebook.model.User;
 
 import java.sql.SQLException;
@@ -18,4 +19,7 @@ public interface IFriendShipDAO {
     List<User> searchUsersFriends(String value, int userId) throws SQLException;
 
     int addFriend(int userId,int userIdFriend);
+
+    FriendShip getFriendShipStatus(int user1, int user2);
+
 }

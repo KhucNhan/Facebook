@@ -124,7 +124,7 @@ function addFriend(userID) {
 
                 if (actionDiv) {
                     actionDiv.innerHTML = `
-                    <a class="btn btn-primary btn-sm cancel-friend-search" data-id="${userID}" onclick="cancelFriend(${userID})">Hủy lời mời</a>
+                    <a class="btn btn-primary btn-sm cancel-friend-search" data-id="${userID}" onclick="cancelFriend(${userID})" style="background-color: rgb(128, 128, 128) !important;border: rgb(128, 128, 128)!important;">Hủy lời mời</a>
                 `;
                 }
                 let statusText = userCard.querySelector('.text-muted');

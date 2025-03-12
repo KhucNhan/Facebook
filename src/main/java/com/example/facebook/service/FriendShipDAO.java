@@ -1,10 +1,13 @@
 package com.example.facebook.service;
 
 import com.example.facebook.ConnectDatabase;
+import com.example.facebook.model.FriendShip;
 import com.example.facebook.model.User;
 
+import javax.xml.stream.events.DTD;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class FriendShipDAO implements IFriendShipDAO {
@@ -41,6 +44,11 @@ public class FriendShipDAO implements IFriendShipDAO {
             "WHERE f.receiverId = ? \n" +
             "AND f.status = 'pending' \n" +
             "AND u.name LIKE ?;\n";
+
+    private final  static String get_friendship_status = "SELECT * \n" +
+            "FROM friendships \n" +
+            "WHERE (senderId = ? AND receiverId = ?) \n" +
+            "   OR (senderId = ? AND receiverId = ?)";
 
 
     @Override
@@ -126,6 +134,33 @@ public class FriendShipDAO implements IFriendShipDAO {
             e.printStackTrace();
             return -1;
         }
+    }
+
+    @Override
+    public FriendShip getFriendShipStatus(int user1, int user2) {
+        FriendShip friendShip = new FriendShip();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(get_friendship_status);
+            preparedStatement.setInt(1,user1);
+            preparedStatement.setInt(2,user2);
+            preparedStatement.setInt(3,user2);
+            preparedStatement.setInt(4,user1);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                int friendId = resultSet.getInt(1);
+                int senderId = resultSet.getInt(2);
+                int receiverId = resultSet.getInt(3);
+                String status = resultSet.getString(4);
+                Timestamp createAt = resultSet.getTimestamp(5);
+                Timestamp updateAt = resultSet.getTimestamp(6);
+
+                friendShip = new FriendShip(friendId,senderId,receiverId,status,createAt,updateAt);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return friendShip;
     }
 
     @Override

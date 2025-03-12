@@ -165,19 +165,43 @@
                     <p class="text-muted">${user.bio}</p>
                 </div>
                 <c:choose>
-                    <c:when test="${user.userId == sessionScope.userId}">
+                    <c:when test="${friendShip.status == '' && user.userId == sessionScope.userId}">
                         <div class="profile-actions">
                             <button onclick="openEditModal()" class="btn btn-primary">Chỉnh sửa thông tin</button>
                         </div>
                     </c:when>
-                    <c:otherwise>
+                    <c:when test="${friendShip.status == 'accepted'}">
+                        <div class="profile-actions">
+                            <button class="btn btn-primary">Nhắn tin</button>
+                        </div>
+                    </c:when>
+                    <c:when test="${friendShip.status == 'pending' && user.userId == friendShip.userId_2}">
+                        <div class="profile-actions">
+                            <button class="btn btn-warning" style="background: rgb(128, 128, 128) ;color: white"  onclick="cancelFriend(${user.userId})">Hủy lời mời kết
+                                bạn
+                            </button>
+                        </div>
+                    </c:when>
+
+                    <c:when test="${friendShip.status == 'pending' && user.userId == friendShip.userId_1}">
                         <div class="profile-actions" style="display: flex">
-                            <button class="btn btn-success btn btn-primary btn-sm accept-search" onclick="acceptFriendSearch(${user.userId})" style="background: #0866ff;width: 170px;color: white">Chấp
+                            <button class="btn btn-success btn btn-primary btn-sm accept-search"
+                                    onclick="acceptFriendSearch(${user.userId})"
+                                    style="background: #0866ff;width: 170px;color: white">Chấp
                                 nhận lời mời
                             </button>
-                            <button class="btn btn-success btn btn-primary btn-sm cancel-friend-search" onclick="cancelFriend(${user.userId})" style="background: #cbcbcb;width: 170px;color: white">Xóa
+                            <button class="btn btn-success btn btn-primary btn-sm cancel-friend-search"
+                                    onclick="cancelFriend(${user.userId})"
+                                    style="background: #cbcbcb;width: 170px;color: white">Xóa
                                 lời mời
                             </button>
+                        </div>
+                    </c:when>
+
+
+                    <c:otherwise>
+                        <div class="profile-actions" data-id="${user.userId}">
+                            <button class="btn btn-primary"   onclick="addFriend(${user.userId})">Kết bạn</button>
                         </div>
                     </c:otherwise>
                 </c:choose>

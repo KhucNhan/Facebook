@@ -1,5 +1,6 @@
 package com.example.facebook.controller;
 
+import com.example.facebook.model.FriendShip;
 import com.example.facebook.model.Post;
 import com.example.facebook.model.User;
 import com.example.facebook.service.FriendShipDAO;
@@ -90,6 +91,7 @@ public class UserServlet extends HttpServlet {
         HttpSession session = req.getSession();
         String userIdStr = session.getAttribute("userId").toString();
 
+
         String userId = req.getParameter("userId");
 
         User user = null;
@@ -101,7 +103,11 @@ public class UserServlet extends HttpServlet {
         }
 
         List<Post> myPosts = postDAO.selectPostsByUserId(user.getUserId());
+
+        FriendShip friendShip = friendShipDAO.getFriendShipStatus(Integer.parseInt(userIdStr),Integer.parseInt(userId));
+
         req.setAttribute("user", user);
+        req.setAttribute("friendShip", friendShip);
         req.setAttribute("posts", myPosts);
         req.getRequestDispatcher("user/Profile.jsp").forward(req, resp);
     }

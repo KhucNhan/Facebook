@@ -61,13 +61,14 @@
                         <div style="box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);margin-block: 10px;"
                              class="user-card d-flex align-items-center p-3 border-bottom">
                             <!-- Avatar -->
-                            <div class="avatar">
-                                <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}" alt="Avatar"
+                            <div class="avatar" onclick="sendProfile(event, ${user.userId})">
+                                <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
+                                     alt="Avatar"
                                      class="rounded-circle" width="50" height="50">
                             </div>
 
                             <!-- Thông tin -->
-                            <div class="info flex-grow-1 ms-3">
+                            <div class="info flex-grow-1 ms-3" onclick="sendProfile(event, ${user.userId})">
                                 <strong class="d-block fs-5">${user.name}</strong>
                                 <span class="status-text text-muted">
                     <c:choose>
@@ -89,7 +90,9 @@
                                            onclick="acceptFriendSearch(${user.userId})">Chấp nhận</a>
                                     </c:when>
                                     <c:when test="${user.friendStatus == 3}">
-                                        <a style="background-color: rgb(128,128,128); border: rgb(128,128,128)" class="btn btn-primary btn-sm cancel-friend-search" data-id="${user.userId}"
+                                        <a style="background-color: rgb(128,128,128)!important; border: rgb(128,128,128)!important;"
+                                           class="btn btn-primary btn-sm cancel-friend-search"
+                                           data-id="${user.userId}"
                                            onclick="cancelFriend(${user.userId})">Hủy lời mời</a>
                                     </c:when>
                                     <c:otherwise>
@@ -112,3 +115,10 @@
 </div>
 </body>
 </html>
+<script>
+    function sendProfile(event,userId){
+        event.stopPropagation();
+        window.location.href = "users?action=myProfile&userId=" + userId;
+    }
+</script>
+
