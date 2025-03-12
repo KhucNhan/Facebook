@@ -71,7 +71,7 @@ public class LoginSevlet extends HttpServlet {
                 int userId = resultSet.getInt("userId");
 
                 if (status.equalsIgnoreCase("Blocked")) {
-                    resp.getWriter().println("{\"success\": false, \"message\": \"Tài khoản của bạn đã bị khóa!\"}");
+                    resp.getWriter().println("{\"success\": false, \"message\": \"Tài khoản của bạn đã bị khóa do vi phạm quy tắc tiêu chuẩn cộng đồng!\"}");
                     return;
                 }
 
