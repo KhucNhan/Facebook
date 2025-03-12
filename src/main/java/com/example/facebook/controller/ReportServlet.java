@@ -63,7 +63,7 @@ public class ReportServlet extends HttpServlet {
             String commentIdStr = req.getParameter("commentId");
             int commentId = Integer.parseInt(commentIdStr);
             Comment comment = commentDAO.selectCommentById(commentId);
-            report = new Report(user, commentId, comment.getPostId(), "Comment");
+            report = new Report(user, comment.getPostId(), commentId, "Comment");
         } else {
             String postIdStr = req.getParameter("postId");
             int postId = Integer.parseInt(postIdStr);

@@ -29,7 +29,7 @@
             <div class="row d-flex justify-content-center" style="margin: 0; padding-top:10px;">
                 <div style="display:flex; justify-content: space-between">
                     <a style="height: fit-content" href="/users?action=add" class="btn btn-primary">Thêm tài khoản</a>
-                    <form style="width: 70%" action="users?action=search" method="post">
+                    <form id="searchForm" style="width: 70%" action="users?action=search" method="post">
                         <div class="input-group mb-3" style="margin: 0">
                         <span class="input-group-text" id="basic-addon1">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
