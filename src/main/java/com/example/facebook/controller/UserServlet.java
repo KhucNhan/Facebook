@@ -4,6 +4,7 @@ import com.example.facebook.model.FriendShip;
 import com.example.facebook.model.Post;
 import com.example.facebook.model.User;
 import com.example.facebook.service.FriendShipDAO;
+import com.example.facebook.service.NotificationDAO;
 import com.example.facebook.service.PostDAO;
 import com.example.facebook.service.UserDAO;
 
@@ -30,6 +31,7 @@ import java.util.List;
         maxRequestSize = 1024 * 1024 * 50    // 50MB
 )
 public class UserServlet extends HttpServlet {
+    NotificationDAO notificationDAO = new NotificationDAO();
     UserDAO userDAO = new UserDAO();
     PostDAO postDAO = new PostDAO();
     FriendShipDAO friendShipDAO = new FriendShipDAO();
@@ -106,6 +108,12 @@ public class UserServlet extends HttpServlet {
 
         FriendShip friendShip = friendShipDAO.getFriendShipStatus(Integer.parseInt(userIdStr),Integer.parseInt(userId));
 
+        int count = notificationDAO.countNumberOfNotification(Integer.parseInt(userIdStr));
+        int count_message = notificationDAO.countNumberOfNotificationMessage(Integer.parseInt(userIdStr));
+
+        req.setAttribute("count",count);
+        req.setAttribute("count_message",count_message);
+
         req.setAttribute("user", user);
         req.setAttribute("friendShip", friendShip);
         req.setAttribute("posts", myPosts);
@@ -115,7 +123,10 @@ public class UserServlet extends HttpServlet {
     private void showUserUpdateInformation(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
         HttpSession session = req.getSession();
         String userIdStr = session.getAttribute("userId").toString();
+
         User user = userDAO.selectUserById(Integer.parseInt(userIdStr));
+
+
         req.setAttribute("user", user);
         req.getRequestDispatcher("user/Edit.jsp").forward(req, resp);
     }
@@ -275,6 +286,13 @@ public class UserServlet extends HttpServlet {
 
         String value = req.getParameter("value");
         List<User> searchList = userDAO.userSearchUsers(value, user.getUserId());
+
+        int count = notificationDAO.countNumberOfNotification(Integer.parseInt(session.getAttribute("userId").toString()));
+        int count_message = notificationDAO.countNumberOfNotificationMessage(Integer.parseInt(session.getAttribute("userId").toString()));
+
+        req.setAttribute("count",count);
+        req.setAttribute("count_message",count_message);
+
         req.setAttribute("searchList", searchList);
         req.setAttribute("user", user);
         req.setAttribute("searchValue", value);

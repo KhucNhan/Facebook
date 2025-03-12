@@ -58,7 +58,10 @@ public class MessageServlet extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         PrintWriter out = resp.getWriter();
 
+        Message lastMessage = messages.get(messages.size() - 1);
         for (Message msg : messages) {
+            Boolean status = notificationDAO.getIsReadMessageFromMessageId(msg.getMessageId());
+
             if (msg.getSenderId() == user.getUserId()) {
                 // Tin nhắn của người dùng hiện tại (bên phải)
                 if (msg.getContent().equalsIgnoreCase("Tin nhắn đã bị gỡ")) {
@@ -66,8 +69,13 @@ public class MessageServlet extends HttpServlet {
                 } else {
                     out.println("<div class='message message-right' oncontextmenu='showMessageMenu(event, " + msg.getMessageId() + ")'>");
                 }
+
                 out.println("<span class='text'>" + msg.getContent() + "</span>");
                 out.println("</div>");
+                if (msg.equals(lastMessage)) {
+                    out.println("<span class='message-status' style='color: gray; font-size: 12px; display: block; text-align: right; margin-right: 5px;'>"
+                            + (status ? "✔ Đã xem" : " Đã gửi") + "</span>");
+                }
             } else {
                 // Tin nhắn của người khác (bên trái)
                 if (msg.getContent().equalsIgnoreCase("Tin nhắn đã bị gỡ")) {
@@ -101,10 +109,22 @@ public class MessageServlet extends HttpServlet {
                 case "delete":
                     deleteMessage(req, resp);
                     break;
+                case "updateNotification":
+                    updateNotification(req,resp);
+                    break;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void updateNotification(HttpServletRequest req, HttpServletResponse resp) {
+        HttpSession session = req.getSession();
+        int userIdStr = (int) session.getAttribute("userId");
+
+        String receiverId = req.getParameter("receiverId");
+
+        notificationDAO.updateIsReadNotificationMessage(Integer.parseInt(receiverId),userIdStr);
     }
 
     private void deleteMessage(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
@@ -121,6 +141,7 @@ public class MessageServlet extends HttpServlet {
         String receiverId = req.getParameter("receiverId");
 
         User receiver = userDAO.selectUserById(Integer.parseInt(receiverId));
+
 
         Message message = new Message();
         message.setContent(content);
