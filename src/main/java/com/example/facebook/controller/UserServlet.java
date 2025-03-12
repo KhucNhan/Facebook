@@ -172,10 +172,21 @@ public class UserServlet extends HttpServlet {
                 case "editProfile":
                     editProfile(req, resp);
                     break;
+                case "ban":
+                    ban(req, resp);
+                    break;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void ban(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+        String userIdStr = req.getParameter("userId");
+        User user = userDAO.selectUserById(Integer.parseInt(userIdStr));
+        user.setStatus("Banned");
+        userDAO.updateUser(user, Integer.parseInt(userIdStr));
+        resp.getWriter().write("success");
     }
 
     private void disableAccount(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {

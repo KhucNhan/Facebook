@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/reports")
@@ -37,10 +38,19 @@ public class ReportServlet extends HttpServlet {
                 case "commentReports":
                     commentReports(req, resp);
                     break;
+                case "blockedUsers":
+                    blockedUsers(req, resp);
+                    break;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void blockedUsers(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
+        List<User> blockedUsers = userDAO.selectBlockedUsers();
+        req.setAttribute("users", blockedUsers);
+        req.getRequestDispatcher("admin/BlockedUser.jsp").forward(req, resp);
     }
 
     private void report(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
@@ -67,7 +77,6 @@ public class ReportServlet extends HttpServlet {
     private void commentReports(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
         List<Report> commentReports = reportDAO.selectAllCommentReports();
         req.setAttribute("reports", commentReports);
-        System.out.println(commentReports);
         req.getRequestDispatcher("admin/CommentReport.jsp").forward(req, resp);
     }
 
