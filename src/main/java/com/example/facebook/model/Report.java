@@ -4,26 +4,39 @@ import java.sql.Timestamp;
 
 public class Report {
     private int reportId;
-    private int userId;
-    private int targetId;
+    private User reporter;
+    private int postId;
+    private int commentId;
     private String type;
+    private User poster;
     private Timestamp createAt;
 
     public Report() {
     }
 
-    public Report(int reportId, int userId, int targetId, String type, Timestamp createAt) {
+    public Report(int reportId, User reporter, int postId, int commentId, String type, User poster, Timestamp createAt) {
         this.reportId = reportId;
-        this.userId = userId;
-        this.targetId = targetId;
+        this.reporter = reporter;
+        this.postId = postId;
+        this.commentId = commentId;
         this.type = type;
+        this.poster = poster;
         this.createAt = createAt;
     }
 
-    public Report(int userId, int targetId, String type) {
-        this.userId = userId;
-        this.targetId = targetId;
+    public Report(User reporter, int postId, int commentId, String type) {
+        this.reporter = reporter;
+        this.postId = postId;
+        this.commentId = commentId;
         this.type = type;
+    }
+
+    public int getCommentId() {
+        return commentId;
+    }
+
+    public void setCommentId(int commentId) {
+        this.commentId = commentId;
     }
 
     public int getReportId() {
@@ -34,20 +47,28 @@ public class Report {
         this.reportId = reportId;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getReporter() {
+        return reporter;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setReporter(User reporter) {
+        this.reporter = reporter;
     }
 
-    public int getTargetId() {
-        return targetId;
+    public User getPoster() {
+        return poster;
     }
 
-    public void setTargetId(int targetId) {
-        this.targetId = targetId;
+    public void setPoster(User poster) {
+        this.poster = poster;
+    }
+
+    public int getPostId() {
+        return postId;
+    }
+
+    public void setPostId(int postId) {
+        this.postId = postId;
     }
 
     public String getType() {
@@ -64,16 +85,5 @@ public class Report {
 
     public void setCreateAt(Timestamp createAt) {
         this.createAt = createAt;
-    }
-
-    @Override
-    public String toString() {
-        return "Reports{" +
-                "reportId=" + reportId +
-                ", userId=" + userId +
-                ", targetId=" + targetId +
-                ", type='" + type + '\'' +
-                ", createAt=" + createAt +
-                '}';
     }
 }
