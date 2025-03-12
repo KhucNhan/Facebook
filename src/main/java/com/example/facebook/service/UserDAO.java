@@ -16,7 +16,7 @@ public class UserDAO implements IUserDAO {
     private static UserDAO userDAO = new UserDAO();
 
 
-    private static final String select_all_users = "select * from users order by userId desc";
+    private static final String select_all_users = "select * from users where role='User' order by userId desc";
     private static final String insert_user = "INSERT INTO users (name, email, phone, password, dateOfBirth, gender, bio, image, createAt, updateAt) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
 
@@ -26,11 +26,11 @@ public class UserDAO implements IUserDAO {
 
     private static final String delete_user_by_id = "DELETE from users WHERE userId = ?";
 
-    private static final String select_user_by_email = "SELECT * FROM users WHERE email LIKE ?";
+    private static final String select_user_by_email = "SELECT * FROM users WHERE email LIKE ? and role='User'";
 
-    private static final String select_user_by_phone = "SELECT * FROM users WHERE phone LIKE ?";
+    private static final String select_user_by_phone = "SELECT * FROM users WHERE phone LIKE ? and role='User'";
 
-    private static final String select_user_by_name = "SELECT * FROM users WHERE name LIKE ?";
+    private static final String select_user_by_name = "SELECT * FROM users WHERE name LIKE ? and role='User'";
 
     private static final String select_user_by_name_sort_by_status = "SELECT u.* ,\n" +
             "       CASE \n" +
@@ -45,6 +45,8 @@ public class UserDAO implements IUserDAO {
             "    OR (f.receiverId = u.userId AND f.senderId = ?)\n" +
             "WHERE u.name LIKE ? AND u.userId != ?\n" +
             "ORDER BY friend_status, u.name;";
+
+    private static final String select_banned_users = "select * from users where status = 'Blocked' and role = 'User'";
 
     @Override
     public List<User> selectAllUsers() throws SQLException {
@@ -198,6 +200,34 @@ public class UserDAO implements IUserDAO {
         }
 
         return searchList;
+    }
+
+    @Override
+    public List<User> selectBlockedUsers() throws SQLException {
+        List<User> blockedUsers = new ArrayList<>();
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(select_banned_users);
+
+        while (resultSet.next()) {
+            blockedUsers.add(new User(
+                    resultSet.getInt(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getString(4),
+                    resultSet.getString(5),
+                    resultSet.getString(6),
+                    resultSet.getDate(7),
+                    resultSet.getBoolean(8),
+                    resultSet.getString(9),
+                    resultSet.getString(10),
+                    resultSet.getTimestamp(11),
+                    resultSet.getTimestamp(12),
+                    resultSet.getString(13),
+                    resultSet.getString(14)
+            ));
+        }
+
+        return blockedUsers;
     }
 
     @Override

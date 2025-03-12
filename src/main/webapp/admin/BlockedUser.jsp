@@ -28,7 +28,6 @@
             <%--       Center         --%>
             <div class="row d-flex justify-content-center" style="margin: 0; padding-top:10px;">
                 <div style="display:flex; justify-content: space-between">
-                    <a style="height: fit-content" href="/users?action=add" class="btn btn-primary">Thêm tài khoản</a>
                     <form style="width: 70%" action="users?action=search" method="post">
                         <div class="input-group mb-3" style="margin: 0">
                         <span class="input-group-text" id="basic-addon1">
@@ -153,7 +152,7 @@
                 const rowNumber = start + index + 1;
                 const row = '<tr class="d-flex">' +
                     '<td style="width: 5%;" class="text-center">' + rowNumber + '</td>' +
-                    '<td style="width: 10%;" class="text-center"><img style="width: 70%;height: 94.08px" src="${pageContext.request.contextPath}/uploads/avatars/' + user.image + '" /></td>' +
+                    '<td style="width: 10%;" class="text-center"><img style="width: 70%;" src="${pageContext.request.contextPath}/uploads/avatars/' + user.image + '" /></td>' +
                     '<td style="width: 10%;" class="text-center">' + user.name + '</td>' +
                     '<td style="width: 20%;" class="text-center">' + user.email + '</td>' +
                     '<td style="width: 10%;" class="text-center">' + user.phone + '</td>' +
@@ -161,14 +160,17 @@
                     '<td style="width: 10%;" class="text-center">' + user.dateOfBirth + '</td>' +
                     '<td style="width: 10%;" class="text-center">' + (user.status === 'Active' ? 'Active' : user.status === 'Blocked' ? 'Blocked' : 'Banned') + '</td>' +
                     '<td style="width: 15%;" class="text-center">' +
-                    '<a class="btn btn-warning ' + (user.status === 'Banned' ? 'disabled' : '') + '" style="margin-right: 5px;" href="/users?action=update&userId=' + user.userId + '">Edit</a>' +
-                    '<a style="min-width:83px;" class="btn btn-status ' +
-                    (user.status === 'Active' ? 'btn-danger' : user.status === 'Banned' ? 'btn-secondary disabled' : 'btn-success') +
-                    '" data-userid="' + user.userId + '" data-status="' + user.status + '">' +
-                    (user.status === 'Blocked' ? 'Activate' : user.status === 'Banned' ? 'Banned' : 'Block') +
-                    '</a>' +
+                    // Nút Activate (chỉ hiển thị nếu user đang bị Blocked)
+                    (user.status === 'Blocked' ?
+                        '<a class="btn btn-success btn-activate" data-userid="' + user.userId + '">Activate</a> '
+                        : '') +
+                    // Nút Banned (chỉ hiển thị nếu user chưa bị Banned)
+                    (user.status !== 'Banned' ?
+                        '<a style="width: 80px;" class="btn btn-danger btn-ban" data-userid="' + user.userId + '">Ban</a>'
+                        : '') +
                     '</td>' +
                     '</tr>';
+
                 tableBody.innerHTML += row;
             });
         } else {
@@ -265,32 +267,54 @@
     setupPagination();
 
     function attachStatusButtonEvents() {
-        document.querySelectorAll(".btn-status").forEach(button => {
+        document.querySelectorAll(".btn-activate").forEach(button => {
             button.addEventListener("click", function () {
                 let userId = this.getAttribute("data-userid");
 
                 fetch("/users?action=changeStatus&userId=" + userId, { method: "POST" })
                     .then(response => response.text())
-                    .then(newStatus => {
-                        if (newStatus === "active" || newStatus === "blocked") {
-                            let isActive = newStatus === "active";
-                            this.setAttribute("data-status", isActive);
-                            this.classList.toggle("btn-danger", isActive);
-                            this.classList.toggle("btn-success", !isActive);
-                            this.innerHTML = isActive ? "Block" : "Activate";
-                            let user = users.find(u => u.userId === userId);
-                            user.status = isActive ? "Activate" : "Block";
-
-                            let statusColumn = this.closest("tr").querySelectorAll("td")[7];
-                            statusColumn.innerHTML = isActive ? "Active" : "Blocked";
+                    .then(result => {
+                        if (result === "active") {
+                            let row = this.closest("tr");
+                            row.parentNode.removeChild(row);
+                            setupPagination();
                         } else {
-                            alert("Cập nhật trạng thái thất bại!");
+                            alert("Kích hoạt thất bại!");
+                        }
+                    })
+                    .catch(error => console.error("Lỗi:", error));
+            });
+        });
+
+        document.querySelectorAll(".btn-ban").forEach(button => {
+            button.addEventListener("click", function () {
+                let userId = this.getAttribute("data-userid");
+
+                fetch("/users?action=ban&userId=" + userId, { method: "POST" })
+                    .then(response => response.text())
+                    .then(result => {
+                        if (result === "success") {
+                            this.innerHTML = "Banned";
+                            this.classList.remove("btn-danger");
+                            this.classList.add("btn-secondary", "disabled");
+                            this.setAttribute("disabled", "disabled");
+
+                            // Tìm và xóa nút "Activate" trong cùng hàng
+                            let row = this.closest("tr");
+                            let activateButton = row.querySelector(".btn-activate");
+                            if (activateButton) {
+                                activateButton.parentNode.removeChild(activateButton);
+                            }
+                        } else {
+                            alert("Cấm người dùng thất bại!");
                         }
                     })
                     .catch(error => console.error("Lỗi:", error));
             });
         });
     }
+
+
 </script>
 </body>
 </html>
