@@ -76,7 +76,7 @@
                     </div>
                 </c:when>
                 <c:when test="${activity.type == 'accepted'}">
-                    <div class="notification-text"><b>${userNotification.name}</b> đã chấp nhận lời mời kết bạn của bạn
+                    <div class="notification-text" onclick="sendProfile(event,${userNotification.userId}, ${notification.getNotificationId()},${notification.getIsRead()})"><b>${userNotification.name}</b> đã chấp nhận lời mời kết bạn của bạn
                     </div>
                     <div class="notification-time"
                          data-time="<fmt:formatDate value="${activity.createAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" />">
@@ -108,3 +108,4 @@
         </div>
     </c:if>
 </c:forEach>
+

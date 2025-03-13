@@ -180,7 +180,8 @@
                     </c:when>
                     <c:when test="${friendShip.status == 'pending' && user.userId == friendShip.userId_2}">
                         <div class="profile-actions">
-                            <button class="btn btn-warning" style="background: rgb(128, 128, 128) ;color: white"  onclick="cancelFriendProfile(${user.userId})">Hủy lời mời kết
+                            <button class="btn btn-warning" style="background: rgb(128, 128, 128) ;color: white"  onclick="cancelFriendProfile(${user.userId})">
+                                Hủy lời mời kết
                                 bạn
                             </button>
                         </div>
@@ -189,12 +190,12 @@
                     <c:when test="${friendShip.status == 'pending' && user.userId == friendShip.userId_1}">
                         <div class="profile-actions" style="display: flex">
                             <button class="btn btn-success btn btn-primary btn-sm accept-search"
-                                    onclick="acceptFriendSearch(${user.userId})"
+                                    onclick="acceptFriendProfile(${user.userId})"
                                     style="background: #0866ff;width: 170px;color: white">Chấp
                                 nhận lời mời
                             </button>
                             <button class="btn btn-success btn btn-primary btn-sm cancel-friend-search"
-                                    onclick="cancelFriend(${user.userId})"
+                                    onclick="cancelFriendProfile(${user.userId})"
                                     style="background: #cbcbcb;width: 170px;color: white">Xóa
                                 lời mời
                             </button>
@@ -346,11 +347,45 @@
 </html>
 
 <script>
-    function addFriendProfile(userId){
-        console.log(userId);
+
+    function acceptFriendProfile(userID){
+        fetch(`/friends?action=acceptFriend&friendId=`+userID, {
+            method: "POST"
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert("Có lỗi xảy ra!")
+                }
+            })
+    }
+    function addFriendProfile(userID){
+        fetch(`/friends?action=addFriend&friendId=`+ userID, {
+            method: "POST"
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert("Có lỗi xảy ra!")
+                }
+            })
     }
     function cancelFriendProfile(userId){
-        console.log(userId);
+        fetch(`/friends?action=cancelFriend&friendId=`+userId, {
+            method: "POST"
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert("Có lỗi xảy ra!")
+                }
+            })
     }
     // Mở modal
     function openEditModal() {
