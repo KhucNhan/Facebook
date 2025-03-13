@@ -11,6 +11,8 @@ import java.util.TreeMap;
 public class NotificationDAO implements INotification {
     private ConnectDatabase connectDatabase = new ConnectDatabase();
     private Connection connection = connectDatabase.connection();
+    UserDAO userDAO = new UserDAO();
+
 
     private final static String update_is_read_notification_message = "UPDATE notifications\n" +
             "JOIN activities ON notifications.activityId = activities.activityId\n" +
@@ -28,6 +30,7 @@ public class NotificationDAO implements INotification {
             "join activities on  notifications.activityId = activities.activityId\n" +
             "join messages on activities.targetId = messages.messageId\n" +
             "where messageId = ?";
+
     private final static String conut_number_of_notification = "SELECT COUNT(*) AS count\n" +
             "FROM notifications\n" +
             "JOIN activities ON activities.activityId = notifications.activityId\n" +
@@ -117,7 +120,7 @@ public class NotificationDAO implements INotification {
             while (resultSet.next()) {
                 activity = new Activity();
                 activity.setActivityId(resultSet.getInt("activityId"));
-                activity.setUserId(resultSet.getInt("userId"));
+                activity.setUser(userDAO.selectUserById(resultSet.getInt("userId")));
                 activity.setType(resultSet.getString("type"));
                 activity.setTargetId(resultSet.getInt("targetId"));
                 activity.setCreateAt(resultSet.getTimestamp("createAt"));

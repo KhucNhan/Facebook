@@ -15,7 +15,7 @@
 .side-panel {
     position: fixed;
     top: 0;
-    left: -300px; /* Ban đầu ẩn bên ngoài */
+    left: -350px; /* Ban đầu ẩn bên ngoài */
     width: 350px;
     height: 100vh;
     background-color: #333;
@@ -31,6 +31,8 @@
 
 /* Nút đóng */
 .close-btn {
+    position: absolute;
+    left: 300px;
     background: inherit;
     color: white;
     border: none;

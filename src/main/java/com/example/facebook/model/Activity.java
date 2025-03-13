@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class Activity {
     private int activityId;
-    private int userId;
+    private User user;
     private String type;
     private int targetId;
     private Timestamp createAt;
@@ -12,9 +12,9 @@ public class Activity {
     public Activity() {
     }
 
-    public Activity(int activityId, int userId, String type, int targetId, Timestamp createAt) {
+    public Activity(int activityId, User user, String type, int targetId, Timestamp createAt) {
         this.activityId = activityId;
-        this.userId = userId;
+        this.user = user;
         this.type = type;
         this.targetId = targetId;
         this.createAt = createAt;
@@ -28,12 +28,12 @@ public class Activity {
         this.activityId = activityId;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getType() {
@@ -64,7 +64,7 @@ public class Activity {
     public String toString() {
         return "Activities{" +
                 "activityId=" + activityId +
-                ", userId=" + userId +
+                ", user=" + user +
                 ", type='" + type + '\'' +
                 ", targetId=" + targetId +
                 ", createAt=" + createAt +

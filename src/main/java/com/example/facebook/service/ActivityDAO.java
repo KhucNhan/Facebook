@@ -1,18 +1,23 @@
 package com.example.facebook.service;
 
 import com.example.facebook.ConnectDatabase;
+import com.example.facebook.model.Activity;
+import com.example.facebook.model.User;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ActivityDAO implements IActivityDAO {
     private ConnectDatabase connectDatabase = new ConnectDatabase();
     private Connection connection = connectDatabase.connection();
+    UserDAO userDAO = new UserDAO();
     private final static String newActivities = "INSERT INTO activities (userId, type, targetId) VALUES (?, ?, ?)";
 
     private final static String deleteActiviti = " delete from activities where activityId = ?";
     private final static String deleteActivity = " DELETE FROM activities WHERE targetId = ?";
 
-
+    private static final String select_all_activity = "select a.* from activities a join users u on a.userId = u.userId where u.role = 'User' and (a.type ='like_post' or a.type = 'like_comment' or a.type = 'post' or a.type = 'comment');";
 
     private final static String getIdActivitiId = "select activityId from activities where targetId = ?";
 
@@ -90,6 +95,25 @@ public class ActivityDAO implements IActivityDAO {
             e.printStackTrace();
         }
         return -1;
+    }
+
+    @Override
+    public List<Activity> selectAllActivity() throws SQLException {
+        List<Activity> activities = new ArrayList<>();
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(select_all_activity);
+
+        while (resultSet.next()) {
+            activities.add(new Activity(
+                    resultSet.getInt(1),
+                    userDAO.selectUserById(resultSet.getInt(2)),
+                    resultSet.getString(3),
+                    resultSet.getInt(4),
+                    resultSet.getTimestamp(5)
+            ));
+        }
+
+        return activities;
     }
 
 }

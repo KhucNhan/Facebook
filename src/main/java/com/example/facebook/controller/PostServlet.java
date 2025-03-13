@@ -371,6 +371,7 @@ public class PostServlet extends HttpServlet {
         int commentID = Integer.parseInt(req.getParameter("commentId"));
 
         boolean checkComment = likeDAO.checkLikeComment(userIdStr, commentID);
+
         boolean isLiked;
 
         if (checkComment) {
@@ -381,7 +382,7 @@ public class PostServlet extends HttpServlet {
             int commentUserID = likeDAO.addLikeToComment(commentID, userIdStr);
 
             int userIdNotification = commentDAO.selectUserIdToComment(commentID);
-            int activitiId = activityDAO.newActivities(userIdStr, commentUserID, "like_comment");
+            int activitiId = activityDAO.newActivities(userIdStr, commentID, "like_comment");
 
             notificationDAO.new_notification(userIdNotification, activitiId);
 
@@ -503,6 +504,8 @@ public class PostServlet extends HttpServlet {
 
             mediaDAO.insertPostMedia(postId, "picture", fileName);
         }
+
+        activityDAO.newActivities(Integer.parseInt(userIdStr),postId, "post");
 
         session.setAttribute("successMessage", "Đăng bài thành công!");
         resp.sendRedirect(req.getContextPath() + "/home");

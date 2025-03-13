@@ -105,6 +105,12 @@
             </svg>
             Quản lý người dùng vi phạm
         </a>
+        <a class="nav-link" aria-current="page" href="/activities">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-ban" viewBox="0 0 16 16">
+                <path d="M15 8a6.97 6.97 0 0 0-1.71-4.584l-9.874 9.875A7 7 0 0 0 15 8M2.71 12.584l9.874-9.875a7 7 0 0 0-9.874 9.874ZM16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0"/>
+            </svg>
+            Lịch sử hoạt động người dùng
+        </a>
     </nav>
 </div>
 <script>
@@ -175,7 +181,7 @@
             });
         } else {
             tableBody.innerHTML = '<tr class="d-flex">' +
-                '<td style="width: 100%; text-align: center">Không tìm thấy kết quả phù hợp.</td>' +
+                '<td style="width: 100%; text-align: center">Không có kết quả.</td>' +
                 '</tr>';
         }
 

@@ -2,8 +2,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: ADMIN
-  Date: 3/10/2025
-  Time: 11:23 AM
+  Date: 3/13/2025
+  Time: 8:17 AM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -11,17 +11,11 @@
 <head>
     <title>FaceEbook</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/AdminNav.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Post.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/PostModal.css">
     <script src="${pageContext.request.contextPath}/js/AdminNav.js"></script>
-    <script src="${pageContext.request.contextPath}/js/PostModal.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-
-
-
 <div class="container-fluid">
     <div class="row d-flex justify-content-center">
         <%--       Right        --%>
@@ -32,15 +26,15 @@
             <%--       Center         --%>
             <div class="row d-flex justify-content-center" style="margin: 0; padding-top:10px;">
                 <div style="display:flex; justify-content: space-between">
-                    <form style="width: 70%" action="reports?action=search&type=Post" method="post">
+                    <form style="width: 70%" action="users?action=search" method="post">
                         <div class="input-group mb-3" style="margin: 0">
-                            <span class="input-group-text" id="basic-addon1">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                                     class="bi bi-search" viewBox="0 0 16 16">
-                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                                </svg>
-                            </span>
-                            <input id="searchInput" type="text" value="${value == null ? '' : value}" name="value" class="form-control" placeholder="Tìm kiếm bài viết bị tố cáo bởi tên người tố cáo..." aria-label="Tìm kiếm người dùng..."
+                        <span class="input-group-text" id="basic-addon1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                 class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                            </svg>
+                        </span>
+                            <input id="searchInput" type="text" value="${value == null ? '' : value}" name="value" class="form-control" placeholder="Tìm kiếm người dùng..." aria-label="Tìm kiếm người dùng..."
                                    aria-describedby="basic-addon1">
                         </div>
                     </form>
@@ -50,13 +44,13 @@
                     <thead style="place-items: stretch; display: block; text-transform: uppercase; width: 100%;">
                     <tr>
                         <th style="width: 10%;" class="text-center">#</th>
-                        <th style="width: 20%" class="text-center">Người báo cáo</th>
-                        <th style="width: 20%" class="text-center">Thời gian báo cáo</th>
-                        <th style="width: 20%" class="text-center">Người đăng</th>
-                        <th style="width: 30%" class="text-center">Hành động</th>
+                        <th style="width: 30%" class="text-center">Tên người dùng</th>
+                        <th style="width: 20%" class="text-center">Hành vi</th>
+                        <th style="width: 20%" class="text-center">Đối tượng</th>
+                        <th style="width: 20%" class="text-center">Thời gian</th>
                     </tr>
                     </thead>
-                    <tbody id="reportTable">
+                    <tbody id="activityTable">
 
                     </tbody>
                 </table>
@@ -69,7 +63,6 @@
         </div>
     </div>
 </div>
-
 
 
 <div id="sidePanel" class="side-panel">
@@ -130,72 +123,72 @@
         document.getElementById('searchForm').submit();
     });
 
-    const reports = [];
-    <c:forEach var="report" items="${reports}">
-    reports.push({
-        reportId: "${report.reportId}",
-        reporter: "${report.reporter != null ? report.reporter.name : "Unknown"}",
-        postId: "${report.postId}",
-        poster: "${report.poster != null ? report.poster.name : "Unknown"}",
-        time: "${report.createAt}",
-        posterId: "${report.poster != null ? report.poster.userId : 0}",
-        posterStatus: '${report.poster.status}'
+    const activities = [];
+    <c:forEach var="activity" items="${activities}">
+    activities.push({
+        activityId: '${activity.activityId}',
+        user: '${activity.user.name}',
+        type: '${activity.type}',
+        targetId: ${activity.targetId},
+        time: '${activity.createAt}'
     });
     </c:forEach>
+
+    console.log(activities);
 
     const rowsPerPage = 5;
     let currentPage = 1;
 
-    function displayReports(page) {
-        const tableBody = document.getElementById('reportTable');
+    function displayActivities(page) {
+        const tableBody = document.getElementById('activityTable');
         tableBody.innerHTML = '';
 
         const start = (page - 1) * rowsPerPage;
         const end = start + rowsPerPage;
-        const paginatedReports = reports.slice(start, end);
+        const paginatedActivities = activities.slice(start, end);
 
-        if (reports.length !== 0) {
-            paginatedReports.forEach(function (report, index) {
+        if (activities.length !== 0) {
+            paginatedActivities.forEach(function (activity, index) {
                 const rowNumber = start + index + 1;
+                const activityType = activity.type === 'like_comment' ? 'Thích bình luận' :
+                    activity.type === 'like_post' ? 'Thích bài viết' :
+                        activity.type === 'comment' ? 'Bình luận' :
+                            activity.type === 'post' ? 'Đăng bài' : activity.type;
+
+                const targetInfo = (activity.type === 'like_comment' || activity.type === 'comment') ? 'Bình luận số ' + activity.targetId :
+                    (activity.type === 'like_post' || activity.type === 'post') ? 'Bài viết số ' + activity.targetId : '';
+
                 const row = '<tr class="d-flex" style="height: 106.336px">' +
-                    '<td style="width: 10%;align-content: center;" class="text-center">' + rowNumber + '</td>' +
-                    '<td style="width: 20%;align-content: center;" class="text-center">' + report.reporter + '</td>' +
-                    '<td style="width: 20%;align-content: center;" class="text-center">' + report.time + '</td>' +
-                    '<td style="width: 20%;align-content: center;" class="text-center">' + report.poster + '</td>' +
-                    '<td style="width: 30%;align-content: center;" class="text-center">' +
-                    '<button class="btn btn-info me-2" onclick="showPostPopup(' + report.postId + ')">Xem chi tiết</button>' +
-                    '<button id="removePostBtn" class="btn btn-warning me-2" onclick="removePost(' + report.postId + ')">Xóa bài viết</button>' +
-                    '<a style="min-width:92px;" class="btn btn-status ' +
-                    (report.posterStatus === 'Active' ? 'btn-danger' : report.posterStatus === 'Banned' ? 'btn-secondary disabled' : 'btn-success') +
-                    '" data-userid="' + report.posterId + '" data-status="' + report.posterStatus + '">' +
-                    (report.posterStatus === 'Blocked' ? 'Kích hoạt' : report.posterStatus === 'Banned' ? 'Đã cấm' : 'Chặn') +
-                    '</a>' +
-                    '</td>' +
+                    '<td style="width: 10%; align-content: center;" class="text-center">' + rowNumber + '</td>' +
+                    '<td style="width: 30%; align-content: center;" class="text-center">' + activity.user + '</td>' +
+                    '<td style="width: 20%; align-content: center;" class="text-center">' + activityType + '</td>' +
+                    '<td style="width: 20%; align-content: center;" class="text-center">' + targetInfo + '</td>' +
+                    '<td style="width: 20%; align-content: center;" class="text-center">' + activity.time + '</td>' +
                     '</tr>';
+
                 tableBody.innerHTML += row;
             });
+
         } else {
             tableBody.innerHTML = '<tr class="d-flex">' +
                 '<td style="width: 100%; text-align: center">Không có kết quả.</td>' +
                 '</tr>';
         }
 
-        const rowsToAdd = rowsPerPage - paginatedReports.length;
+        const rowsToAdd = rowsPerPage - paginatedActivities.length;
         for (let i = 0; i < rowsToAdd; i++) {
             const emptyRow = '<tr class="d-flex" style="height: 106.336px;">' +
                 '<td colspan="9" class="text-center"></td>' +
                 '</tr>';
             tableBody.innerHTML += emptyRow;
         }
-
-        attachStatusButtonEvents();
     }
 
 
     function setupPagination() {
         const pagination = document.getElementById('pagination');
         pagination.innerHTML = '';
-        const pageCount = Math.ceil(reports.length / rowsPerPage);
+        const pageCount = Math.ceil(activities.length / rowsPerPage);
 
         const prevLi = document.createElement('li');
         prevLi.classList.add('page-item');
@@ -208,11 +201,11 @@
         prevLi.addEventListener('click', function () {
             if (currentPage > 1) {
                 currentPage--;
-                displayReports(currentPage);
+                displayActivities(currentPage);
                 updateActivePage();
             }
         });
-        if (reports.length !== 0) {
+        if (activities.length !== 0) {
             pagination.appendChild(prevLi);
         }
         if (currentPage === 1) {
@@ -228,11 +221,11 @@
             li.innerHTML = `<a class="page-link" href="#">` + i + `</a>`;
             li.addEventListener('click', function () {
                 currentPage = i;
-                displayReports(currentPage);
+                displayActivities(currentPage);
                 setupPagination();
                 updateActivePage();
             });
-            if (reports.length !== 0) {
+            if (activities.length !== 0) {
                 pagination.appendChild(li);
             }
         }
@@ -248,11 +241,11 @@
         nextLi.addEventListener('click', function () {
             if (currentPage < pageCount) {
                 currentPage++;
-                displayReports(currentPage);
+                displayActivities(currentPage);
                 updateActivePage();
             }
         });
-        if (reports.length !== 0) {
+        if (activities.length !== 0) {
             pagination.appendChild(nextLi);
         }
     }
@@ -264,48 +257,9 @@
         if (activeItem) activeItem.classList.add('active');
     }
 
-    displayReports(currentPage);
+    displayActivities(currentPage);
     setupPagination();
-
-    function attachStatusButtonEvents() {
-        document.querySelectorAll(".btn-status").forEach(button => {
-            button.addEventListener("click", function () {
-                let userId = this.getAttribute("data-userid");
-
-                fetch("/users?action=changeStatus&userId=" + userId, { method: "POST" })
-                    .then(response => response.text())
-                    .then(newStatus => {
-                        console.log(userId);
-                        if (newStatus === "active" || newStatus === "blocked") {
-                            let isActive = newStatus === "active";
-                            this.setAttribute("data-status", isActive);
-                            this.classList.toggle("btn-danger", isActive);
-                            this.classList.toggle("btn-success", !isActive);
-                            this.innerHTML = isActive ? "Chặn" : "Kích hoạt";
-                        } else {
-                            alert("Cập nhật trạng thái thất bại!");
-                        }
-                    })
-                    .catch(error => console.error("Lỗi:", error));
-            });
-        });
-    }
-
-    function removePost(postId) {
-        if(!confirm("Bạn có chắc chắn muốn gỡ bài viết này ?")) {
-            return;
-        }
-
-        fetch(`/posts`, {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: `action=adminDeletePost&postId=` + postId
-        }).then(() => {
-            document.getElementById("removePostBtn").disabled = true;
-        }).catch(error => console.error("Error:", error));
-    }
-
 </script>
-
+    
 </body>
 </html>

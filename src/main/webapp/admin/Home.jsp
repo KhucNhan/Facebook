@@ -23,7 +23,7 @@
                 <img style="width: 100%;" src="https://file.hstatic.net/200000472237/article/cach-ban-hang-online-tren-facebook_9d8046e8e1fe4c58b65f102855925daf.png" alt="">
             </div>
             <div id="sidePanel" class="side-panel">
-                <button class="close-btn" onclick="togglePanel()">X</button>
+                <button style="position: absolute; left: 300px" class="close-btn" onclick="togglePanel()">X</button>
                 <nav class="nav flex-column">
                     <a class="nav-link" aria-current="page" href="/home">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
@@ -56,6 +56,12 @@
                             <path d="M15 8a6.97 6.97 0 0 0-1.71-4.584l-9.874 9.875A7 7 0 0 0 15 8M2.71 12.584l9.874-9.875a7 7 0 0 0-9.874 9.874ZM16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0"/>
                         </svg>
                         Quản lý người dùng vi phạm
+                    </a>
+                    <a class="nav-link" aria-current="page" href="/activities">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-ban" viewBox="0 0 16 16">
+                            <path d="M15 8a6.97 6.97 0 0 0-1.71-4.584l-9.874 9.875A7 7 0 0 0 15 8M2.71 12.584l9.874-9.875a7 7 0 0 0-9.874 9.874ZM16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0"/>
+                        </svg>
+                        Lịch sử hoạt động người dùng
                     </a>
                 </nav>
             </div>
