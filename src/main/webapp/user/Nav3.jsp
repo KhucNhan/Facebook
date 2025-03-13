@@ -131,7 +131,7 @@
                                 <li><a class="dropdown-item" href="/users?action=disableAccount&userId=${user.userId}">Vô
                                     hiệu hóa tài
                                     khoản</a></li>
-                                <li><a class="dropdown-item" href="/users?action=deleteAccount">Xóa tài khoản</a></li>
+                                <li><a class="dropdown-item" href="/users?action=delete">Xóa tài khoản</a></li>
                             </div>
                         </ul>
                     </li>
