@@ -253,6 +253,7 @@ public class FriendShipDAO implements IFriendShipDAO {
 
                 ResultSet resultSets = selectStmt.executeQuery();
                 if (resultSets.next()) {
+                    System.out.println(resultSets.getInt("friendshipId"));
                     return resultSets.getInt("friendshipId");
                 }
             }

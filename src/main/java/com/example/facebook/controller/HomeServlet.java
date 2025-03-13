@@ -98,7 +98,7 @@ public class HomeServlet extends HttpServlet {
                 Activity activity = notificationDAO.getNotificationInformation(notification.getActivityId());
                 activities.add(activity);
 
-                User user_1 = userDAO.selectUserById(activity.getUserId());
+                User user_1 = activity.getUser();
                 users.add(user_1);
             }
 
