@@ -1,10 +1,10 @@
 package com.example.facebook.controller;
 
 import com.example.facebook.model.User;
-import com.example.facebook.service.ActivityDAO;
-import com.example.facebook.service.FriendShipDAO;
-import com.example.facebook.service.NotificationDAO;
-import com.example.facebook.service.UserDAO;
+import com.example.facebook.service.dao.ActivityDAO;
+import com.example.facebook.service.dao.FriendShipDAO;
+import com.example.facebook.service.dao.NotificationDAO;
+import com.example.facebook.service.dao.UserDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/friends")

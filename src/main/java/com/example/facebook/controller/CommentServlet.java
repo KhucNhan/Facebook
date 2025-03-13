@@ -3,7 +3,7 @@ package com.example.facebook.controller;
 import com.example.facebook.model.Comment;
 import com.example.facebook.model.Post;
 import com.example.facebook.model.User;
-import com.example.facebook.service.*;
+import com.example.facebook.service.dao.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,9 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.List;
 
 @WebServlet("/comments")
 public class CommentServlet extends HttpServlet {

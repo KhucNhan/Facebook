@@ -2,10 +2,10 @@ package com.example.facebook.controller;
 
 import com.example.facebook.model.Message;
 import com.example.facebook.model.User;
-import com.example.facebook.service.ActivityDAO;
-import com.example.facebook.service.MessageDAO;
-import com.example.facebook.service.NotificationDAO;
-import com.example.facebook.service.UserDAO;
+import com.example.facebook.service.dao.ActivityDAO;
+import com.example.facebook.service.dao.MessageDAO;
+import com.example.facebook.service.dao.NotificationDAO;
+import com.example.facebook.service.dao.UserDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

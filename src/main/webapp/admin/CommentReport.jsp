@@ -166,11 +166,11 @@
                     '<td style="width: 20%;align-content: center;" class="text-center">' + report.poster + '</td>' +
                     '<td style="width: 30%;align-content: center;" class="text-center">' +
                     '<button class="btn btn-info me-2" onclick="showPostPopupScrollToComment(' + report.commentId + ',' + report.postId + ')">Xem chi tiết</button>' +
-                    '<button class="btn btn-warning me-2" onclick="removeComment(' + report.commentId + ')">Xóa bình luận</button>' +
+                    '<button style="width: 124px;" class="btn btn-warning me-2" onclick="removeComment(' + report.commentId + ')">Gỡ bình luận</button>' +
                     '<a id="removePostBtn" style="min-width:92px;" class="btn btn-status ' +
-                    (report.posterStatus === 'Active' ? 'btn-danger' : report.posterStatus === 'Banned' ? 'btn-secondary disabled' : 'btn-success') +
+                    (report.posterStatus === 'Active' ? 'btn-danger' : report.posterStatus === 'Banned' ? 'btn-secondary disabled' : 'btn-danger') +
                     '" data-userid="' + report.posterId + '" data-status="' + report.posterStatus + '">' +
-                    (report.posterStatus === 'Blocked' ? 'Kích hoạt' : report.posterStatus === 'Banned' ? 'Đã cấm' : 'Chặn') +
+                    (report.posterStatus === 'Blocked' ? 'Kích hoạt' : report.posterStatus === 'Banned' ? 'Đã cấm' : 'Chặn người đăng') +
                     '</a>' +
                     '</td>' +
                     '</tr>';

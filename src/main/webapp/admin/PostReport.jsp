@@ -164,11 +164,11 @@
                     '<td style="width: 20%;align-content: center;" class="text-center">' + report.poster + '</td>' +
                     '<td style="width: 30%;align-content: center;" class="text-center">' +
                     '<button class="btn btn-info me-2" onclick="showPostPopup(' + report.postId + ')">Xem chi tiết</button>' +
-                    '<button id="removePostBtn" class="btn btn-warning me-2" onclick="removePost(' + report.postId + ')">Xóa bài viết</button>' +
+                    '<button style="width: 124px;" id="removePostBtn" class="btn btn-warning me-2" onclick="removePost(' + report.postId + ')">Gỡ bài viết</button>' +
                     '<a style="min-width:92px;" class="btn btn-status ' +
                     (report.posterStatus === 'Active' ? 'btn-danger' : report.posterStatus === 'Banned' ? 'btn-secondary disabled' : 'btn-success') +
                     '" data-userid="' + report.posterId + '" data-status="' + report.posterStatus + '">' +
-                    (report.posterStatus === 'Blocked' ? 'Kích hoạt' : report.posterStatus === 'Banned' ? 'Đã cấm' : 'Chặn') +
+                    (report.posterStatus === 'Blocked' ? 'Kích hoạt' : report.posterStatus === 'Banned' ? 'Đã cấm' : 'Chặn người đăng') +
                     '</a>' +
                     '</td>' +
                     '</tr>';

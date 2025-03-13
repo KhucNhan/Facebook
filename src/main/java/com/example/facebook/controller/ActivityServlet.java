@@ -1,7 +1,7 @@
 package com.example.facebook.controller;
 
 import com.example.facebook.model.Activity;
-import com.example.facebook.service.ActivityDAO;
+import com.example.facebook.service.dao.ActivityDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
