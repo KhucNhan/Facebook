@@ -4,27 +4,98 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="/css/Nav3.css">
-    <link rel="stylesheet" href="/css/Post.css">
-    <link rel="stylesheet" href="/css/PostModal.css">
-    <script src="/js/PostModal.js"></script>
-    <script src="${pageContext.request.contextPath}/js/Notification.js"></script>
+    <script src="${pageContext.request.contextPath}/js/AcceptFriend.js"></script>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Notification.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Nav3.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Post.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/PostModal.css">
+    <script src="${pageContext.request.contextPath}/js/PostModal.js"></script>
+    <script src="${pageContext.request.contextPath}/js/Nav3.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous">
     </script>
-    <script src="/js/Nav3.js"></script>
-    <!-- Bootstrap CSS -->
+    <link href="${pageContext.request.contextPath}/css/LikePost.css">
+    <script src="${pageContext.request.contextPath}/js/LikePost.js"></script>
+    <!--     <link href="/css/LikePost.css"> -->
+    <!--     <script src="/js/LikePost.js"></script> -->
+    <script src="/js/LikeComment.js"></script>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="${pageContext.request.contextPath}/js/Notification.js"></script>
     <title></title>
     <style>
         body {
             background-color: #f0f2f5;
+        }
+
+        .message-menu {
+            position: absolute;
+            display: none;
+            background: white;
+            border: 1px solid #ccc;
+            padding: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 10005;
+        }
+
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 60%;
+            height: 325px;
+            left: 87%;
+            transform: translate(-50%, 0);
+            width: 300px;
+            background: white;
+            border: 1px solid #ccc;
+            box-shadow: 0px 0px 5px grey;
+            height: fit-content;
+            border-radius: 10px;
+        }
+
+        #chat-messages {
+            height: 75%;
+            overflow-y: auto;
+            margin-bottom: 5px;
+            scrollbar-width: none;
+            padding-inline: 10px;
+            border-block: 1px solid lightgray;
+        }
+
+        .message {
+            display: flex;
+            margin: 5px;
+            padding: 10px;
+            max-width: 60%;
+            border-radius: 10px;
+            font-size: 18px;
+        }
+
+        .message-right, .message-left {
+            max-width: 70%; /* Giới hạn độ rộng tối đa để tin nhắn không tràn màn hình */
+            overflow-wrap: anywhere; /* Đảm bảo chữ dài (như URL) cũng xuống dòng */
+            display: flex; /* Đảm bảo tin nhắn có độ rộng phù hợp */
+        }
+
+        .message-right {
+            background-color: #0084ff;
+            color: white;
+            justify-self: end;
+            width: fit-content;
+        }
+
+        .message-left {
+            background-color: #e4e6eb;
+            color: black;
+            justify-self: left;
+            width: fit-content;
         }
 
         .profile-container {
@@ -71,7 +142,7 @@
             overflow: hidden;
         }
 
-        .modal {
+        #editProfileModal {
             display: none;
             position: fixed;
             z-index: 1000;
@@ -84,7 +155,7 @@
             align-items: center;
         }
 
-        .modal-content {
+        #editProfileModal > .modal-content {
             background-color: white;
             padding: 20px;
             border-radius: 10px;
@@ -93,7 +164,7 @@
             position: relative;
         }
 
-        .close {
+        #editProfileModal .close {
             position: absolute;
             top: 10px;
             right: 15px;
@@ -101,7 +172,7 @@
             cursor: pointer;
         }
 
-        .form-group {
+        #editProfileForm > .form-group {
             margin-bottom: 15px;
             text-align: left;
         }
@@ -174,7 +245,7 @@
                     </c:when>
                     <c:when test="${friendShip.status == 'accepted'}">
                         <div class="profile-actions">
-                            <button class="btn btn-primary" data-id="${user.userId}" data-name="${user.name}" data-avatar="${user.image}" onclick="messagesFromButton(this)">Nhắn tin</button>
+                            <button class="btn btn-primary" onclick="loadMessages(${user.userId}, 'user', '${user.name}', '${pageContext.request.contextPath}/uploads/avatars/${user.image}')">Nhắn tin</button>
 
                         </div>
                     </c:when>
@@ -341,11 +412,193 @@
     </div>
 </div>
 
+<div id="chat-modal" style="height: 325px" class="modal">
+    <div class="modal-content" style="height: 100%">
+        <div id="chat-header" style="height: 15%;padding: 5px"></div>
+        <div id="chat-messages"></div>
+        <input type="hidden" id="receiverId">
+        <div style="height: 15%;display: flex;padding: 5px 10px 5px 10px ; justify-content: space-between; position: relative;">
+            <button style="border: none;width: fit-content;background: none;padding: 0" id="emoji-btn">😀</button>
+            <input style="border-radius: 24px; padding-left: 10px; border: 1px solid grey; width: 65%;" type="text"
+                   id="chat-input" placeholder="Nhập tin nhắn..." onfocus="updateNotificationStatus()">
+            <button style="width: fit-content; padding-block: 1px" class="btn btn-primary" id="send-btn">Gửi</button>
+        </div>
+    </div>
+    <a style=" cursor: pointer;font-size: x-large;position: absolute; bottom: 295px; left: 275px; border-radius: 50%; width: 24px;height: 24px;"
+       onclick="closeChat()">x</a>
+</div>
+
+<div style="border-radius: 5px" id="message-menu" class="message-menu">
+    <button style="width: fit-content;font-size: 12px;padding: 0;background-color: white" onclick="deleteMessage()">Gỡ
+        tin nhắn
+    </button>
+</div>
+<div id="emoji-picker" class="emoji-picker"></div>
+
 
 </body>
 </html>
 
 <script>
+    let selectedMessageId = null;
+
+    function showMessageMenu(event, messageId) {
+        event.preventDefault();
+
+        selectedMessageId = messageId;
+        let menu = document.getElementById("message-menu");
+
+        let messageElement = document.querySelector(`[oncontextmenu*='` + selectedMessageId + `'] .text`);
+        if (messageElement.innerText === "Tin nhắn đã bị gỡ") {
+            return;
+        }
+
+        // Hiển thị menu tại vị trí chuột
+        menu.style.display = "block";
+        menu.style.left = event.pageX + "px";
+        menu.style.top = event.pageY + "px";
+    }
+
+    document.addEventListener("click", function () {
+        document.getElementById("message-menu").style.display = "none";
+    });
+
+    function deleteMessage() {
+        if (confirm('Gỡ tin nhắn?')) {
+            let receiverId = document.getElementById("receiverId").value;
+            let isGroup = document.getElementById("receiverId").getAttribute("data-type") === "group";
+
+            let url = isGroup
+                ? `groupMessages?action=delete&messageId=` + selectedMessageId
+                : `messages?action=delete&messageId=` + selectedMessageId;
+
+            fetch(url, {method: "POST"})
+                .then(response => response.text())
+                .then(data => {
+                    if (data === "success") {
+                        let messageElement = document.querySelector(`[oncontextmenu*='` + selectedMessageId + `'] .text`);
+                        if (messageElement) {
+                            messageElement.innerText = "Tin nhắn đã bị gỡ";
+                            let messageFatherElement = document.querySelector(`[oncontextmenu*='` + selectedMessageId + `']`);
+                            messageFatherElement.classList.add("removeMessage");
+                        }
+                    } else {
+                        alert("Xóa tin nhắn thất bại!");
+                    }
+                })
+                .catch(error => console.error("Lỗi khi xóa tin nhắn:", error));
+        }
+    }
+
+
+    //Gửi tin nhắn
+    document.getElementById("send-btn").addEventListener("click", function () {
+        let message = document.getElementById("chat-input").value.trim();
+        let receiverId = document.getElementById("receiverId").value;
+        let isGroup = document.getElementById("receiverId").getAttribute("data-type") === "group";
+
+        if (!message) return;
+
+        let url = isGroup
+            ? `groupMessages?action=chat&groupId=` + receiverId + `&content=` + encodeURIComponent(message)
+            : `messages?action=chat&receiverId=` + receiverId + `&content=` + encodeURIComponent(message);
+
+        fetch(url, {
+            method: "POST",
+            headers: {"Content-Type": "application/x-www-form-urlencoded"},
+        })
+            .then(response => response.text())
+            .then(data => {
+                let chatBox = document.getElementById("chat-messages");
+                chatBox.innerHTML += `
+                <div class="message message-right">
+                    <span class="text">` + message + `</span>
+                </div>`;
+                document.getElementById("chat-input").value = "";
+                chatBox.scrollTop = chatBox.scrollHeight;
+            })
+            .catch(error => console.error("Lỗi khi gửi tin nhắn:", error));
+    });
+
+    document.getElementById("emoji-btn").addEventListener("click", function () {
+        let emojiPicker = document.getElementById("emoji-picker");
+        emojiPicker.style.display = emojiPicker.style.display === "block" ? "none" : "block";
+    });
+
+    // Danh sách emoji cơ bản
+    let emojiList = ["😀", "😂", "😍", "😎", "😢", "😡", "👍", "👎", "🔥", "💖"];
+    let emojiPicker = document.getElementById("emoji-picker");
+
+    // Thêm emoji vào bảng chọn
+    emojiList.forEach(emoji => {
+        let span = document.createElement("span");
+        span.innerText = emoji;
+        span.classList.add("emoji");
+        span.onclick = function () {
+            document.getElementById("chat-input").value += emoji;
+            emojiPicker.style.display = "none";
+        };
+        emojiPicker.appendChild(span);
+    });
+
+
+    let intervalId;
+
+    function loadMessages(id, type, name, image) {
+        let url = (type === 'group') ? `groupMessages?groupId=` + id : `messages?contactId=` + id;
+
+        fetch(url)
+            .then(response => response.text())
+            .then(messages => {
+                let chatBox = document.getElementById("chat-messages");
+                let previousHeight = chatBox.scrollHeight; // Lưu vị trí cuộn trước khi cập nhật
+
+                chatBox.innerHTML = messages;
+                document.getElementById("receiverId").value = id;
+                document.getElementById("receiverId").setAttribute("data-type", type);
+
+                // Cập nhật header với tên và ảnh
+                let chatHeader = document.getElementById("chat-header");
+                chatHeader.innerHTML = `
+                <img src="` + image + `" alt="Avatar" width="40" height="40" style="border-radius: 50%; margin-right: 10px;">
+                <span>` + name + `</span>
+            `;
+
+                document.getElementById('chat-modal').style.display = 'inherit';
+
+                // Nếu có tin nhắn mới, cuộn xuống dưới
+                if (chatBox.scrollHeight > previousHeight) {
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }
+            });
+
+        // Xóa interval cũ nếu có
+        if (intervalId) {
+            clearInterval(intervalId);
+        }
+
+        // Tạo interval mới để cập nhật tin nhắn mỗi giây
+        intervalId = setInterval(() => {
+            fetch(url)
+                .then(response => response.text())
+                .then(messages => {
+                    let chatBox = document.getElementById("chat-messages");
+                    let previousHeight = chatBox.scrollHeight;
+
+                    chatBox.innerHTML = messages;
+
+                    // Nếu có tin nhắn mới, cuộn xuống dưới
+                    if (chatBox.scrollHeight > previousHeight) {
+                        chatBox.scrollTop = chatBox.scrollHeight;
+                    }
+                });
+        }, 1000);
+    }
+
+
+    function closeChat() {
+        document.getElementById("chat-modal").style.display = "none";
+    }
 
     function acceptFriendProfile(userID){
         fetch(`/friends?action=acceptFriend&friendId=`+userID, {
