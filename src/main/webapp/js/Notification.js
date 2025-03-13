@@ -127,6 +127,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 function updateIsReadNotification(event, notificationID, statusNotification, tagetId, type) {
+    event.preventDefault();
+    event.stopPropagation();
+
     const notificationIcon = document.getElementById("iconTB");
     notificationIcon.style.fill = "silver";
 
@@ -187,6 +190,8 @@ function updateIsReadNotification(event, notificationID, statusNotification, tag
                 let parts = data.split(",");
                 let userId = parts[0];
 
+                checkStatus(event, notificationID, statusNotification)
+
                 goToMyProfile(userId);
 
                 let message = document.getElementById("notificationMess");
@@ -200,8 +205,14 @@ function updateIsReadNotification(event, notificationID, statusNotification, tag
                 }
             })
     } else if (type === 'accepted') {
-        checkStatus(event, notificationID, statusNotification)
+        checkStatus(event, notificationID, statusNotification);
     }
+}
+
+function sendProfile(event,userId,notificationId,notificationIsRead){
+    event.stopPropagation();
+    checkStatus(event,notificationId,notificationIsRead);
+    window.location.href = "users?action=myProfile&userId=" + userId;
 }
 
 function closeAllPopups() {
@@ -213,7 +224,6 @@ function closeAllPopups() {
 
 function checkStatus(event, notificationID, statusNotification) {
     if (!statusNotification) {
-
         fetch(`/notification?action=updateIsRead&notificationID=${notificationID}`, {
             method: 'POST',
             headers: {
@@ -293,3 +303,5 @@ function updateIsReadNotificationMess(event, notificationID, statusNotification)
             })
     }
 }
+
+

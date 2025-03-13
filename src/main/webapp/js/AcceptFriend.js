@@ -21,7 +21,8 @@ function acceptFriend(userID) {
 }
 
 function acceptFriends(event, userID, activityId) {
-
+    event.preventDefault();
+    event.stopPropagation();
     fetch(`/friends?action=acceptFriendNotification&friendId=${encodeURIComponent(userID)}&activityId=${encodeURIComponent(activityId)}`, {
         method: "POST",
 
@@ -43,6 +44,9 @@ function acceptFriends(event, userID, activityId) {
 
 
 function cancelFriends(event, userID,targetId,activity) {
+    event.preventDefault();
+    event.stopPropagation();
+
     fetch(`/friends?action=deleteFriendNotification&friendId=${encodeURIComponent(userID)}&targetId=${encodeURIComponent(targetId)}&activityId=${encodeURIComponent(activity)}`, {
         method: "POST"
     })

@@ -298,7 +298,7 @@
         <div style="height: 15%;display: flex;padding: 5px 10px 5px 10px ; justify-content: space-between; position: relative;">
             <button style="width: fit-content;background: none;padding: 0" id="emoji-btn">😀</button>
             <input style="border-radius: 24px; padding-left: 10px; border: 1px solid grey; width: 80%;" type="text"
-                   id="chat-input" placeholder="Nhập tin nhắn...">
+                   id="chat-input" placeholder="Nhập tin nhắn..." onfocus="updateNotificationStatus()">
             <button style="width: fit-content; padding-block: 1px" class="btn btn-primary" id="send-btn">Gửi</button>
         </div>
     </div>
@@ -762,6 +762,22 @@
         };
         emojiPicker.appendChild(span);
     });
+
+
+    function updateNotificationStatus() {
+        let receiverId = document.getElementById("receiverId").value;
+        fetch('/messages?action=updateNotification', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `receiverId=` + receiverId
+        })
+            .then(response => response.text())
+            .then(data => console.log(data))
+            .catch(error => console.error('Lỗi:', error));
+    }
+
 
 </script>
 <style>

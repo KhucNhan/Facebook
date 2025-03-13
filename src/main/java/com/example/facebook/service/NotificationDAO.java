@@ -12,12 +12,31 @@ public class NotificationDAO implements INotification {
     private ConnectDatabase connectDatabase = new ConnectDatabase();
     private Connection connection = connectDatabase.connection();
     UserDAO userDAO = new UserDAO();
+
+
+    private final static String update_is_read_notification_message = "UPDATE notifications\n" +
+            "JOIN activities ON notifications.activityId = activities.activityId\n" +
+            "JOIN messages ON activities.targetId = messages.messageId\n" +
+            "SET notifications.isRead = 1\n" +
+            "WHERE messages.messageId = (\n" +
+            "    SELECT messageId \n" +
+            "    FROM messages \n" +
+            "    WHERE senderId = ? AND receiverId = ? \n" +
+            "    ORDER BY createAt DESC \n" +
+            "    LIMIT 1\n" +
+            ");";
+
+    private final static String get_isRead_from_messageId = "select isRead from notifications\n" +
+            "join activities on  notifications.activityId = activities.activityId\n" +
+            "join messages on activities.targetId = messages.messageId\n" +
+            "where messageId = ?";
+
     private final static String conut_number_of_notification = "SELECT COUNT(*) AS count\n" +
             "FROM notifications\n" +
             "JOIN activities ON activities.activityId = notifications.activityId\n" +
             "WHERE notifications.userId = ? \n" +
             "  AND notifications.isRead = 0 \n" +
-            "  AND activities.type IN ('comment', 'like_comment', 'like_post', 'friendship_request');\n";
+            "  AND activities.type IN ('comment', 'like_comment', 'like_post', 'friendship_request','accepted');\n";
     private final static String conut_number_of_notification_message = "SELECT COUNT(*) AS count\n" +
             "FROM notifications\n" +
             "JOIN activities ON activities.activityId = notifications.activityId\n" +
@@ -146,6 +165,21 @@ public class NotificationDAO implements INotification {
     }
 
     @Override
+    public boolean updateIsReadNotificationMessage(int senderId, int receiverId) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(update_is_read_notification_message);
+            preparedStatement.setInt(1, senderId);
+            preparedStatement.setInt(2, receiverId);
+
+            int row = preparedStatement.executeUpdate();
+            return row > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
     public int checkNotificationMessage(int senderId, int receiverId) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(check_notification_message);
@@ -258,6 +292,22 @@ public class NotificationDAO implements INotification {
             e.printStackTrace();
         }
         return -1;
+    }
+
+    @Override
+    public Boolean getIsReadMessageFromMessageId(int messageId) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(get_isRead_from_messageId);
+            preparedStatement.setInt(1, messageId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getBoolean(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public int countNumberOfNotificationMessage(int userId) {

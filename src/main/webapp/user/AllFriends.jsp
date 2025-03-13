@@ -87,10 +87,10 @@
                     <c:forEach var="friend" items="${friends}" varStatus="status">
                         <div class="col-md-2 mb-4">
                             <div class="card text-center">
-                                <img src="${pageContext.request.contextPath}/uploads/avatars/${friend.image}"
+                                <img style="cursor: pointer;"  onclick="sendProfile(event, ${friend.userId})" src="${pageContext.request.contextPath}/uploads/avatars/${friend.image}"
                                      class="card-img-top" alt="Avatar">
                                 <div class="card-body">
-                                    <h6 class="card-title">${friend.name}</h6>
+                                    <h6 style="cursor: pointer;"  onclick="sendProfile(event, ${friend.userId})" class="card-title">${friend.name}</h6>
                                     <button style="width: 100%;" class="btn btn-primary btn-sm friend" onclick="unFriend(${friend.userId})" data-id="${friend.userId}">Hủy kết bạn</button>
                                     <button class="unFiend" data-id="${friend.userId}"  style="display: none; width: 100%;
                                             pointer-events: none; opacity: 0.5; background-color: #ccc;height: 30px;border-radius: 5px;
@@ -113,3 +113,9 @@
 </div>
 </body>
 </html>
+<script>
+    function sendProfile(event,userId){
+        event.stopPropagation();
+        window.location.href = "users?action=myProfile&userId=" + userId;
+    }
+</script>
