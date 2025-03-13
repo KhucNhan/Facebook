@@ -58,6 +58,11 @@ public class MessageServlet extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         PrintWriter out = resp.getWriter();
 
+        if (messages.isEmpty()) {
+            out.println("<p class='no-messages' style='text-align: center; color: gray;'>Không có tin nhắn nào.</p>");
+            return; // Kết thúc luôn, không cần xử lý tiếp
+        }
+
         Message lastMessage = messages.get(messages.size() - 1);
         for (Message msg : messages) {
             Boolean status = notificationDAO.getIsReadMessageFromMessageId(msg.getMessageId());
