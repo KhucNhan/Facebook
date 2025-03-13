@@ -187,7 +187,8 @@
         </div>
 
         <div class="form-group">
-            <input type="number" name="phone" placeholder="Số điện thoại" value="${user.phone}" required>
+            <input type="text" name="phone" placeholder="Số điện thoại" value="${user.phone}" required pattern="[0-9]{10}" maxlength="10"
+                   title="Số điện thoại phải có đúng 10 chữ số">
         </div>
 
         <div class="form-group">
