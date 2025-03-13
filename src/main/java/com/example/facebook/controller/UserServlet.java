@@ -98,7 +98,7 @@ public class UserServlet extends HttpServlet {
 
         User user = null;
 
-        if (userId.equals(userIdStr)) {
+        if (userId.equalsIgnoreCase(userIdStr)) {
             user = userDAO.selectUserById(Integer.parseInt(userIdStr));
         } else {
             user = userDAO.selectUserById(Integer.parseInt(userId));
