@@ -2,9 +2,9 @@ package com.example.facebook.controller;
 
 import com.example.facebook.model.Group;
 import com.example.facebook.model.User;
-import com.example.facebook.service.GroupDAO;
-import com.example.facebook.service.GroupMemberDAO;
-import com.example.facebook.service.UserDAO;
+import com.example.facebook.service.dao.GroupDAO;
+import com.example.facebook.service.dao.GroupMemberDAO;
+import com.example.facebook.service.dao.UserDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

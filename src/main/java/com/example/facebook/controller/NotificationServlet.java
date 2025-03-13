@@ -1,23 +1,15 @@
 package com.example.facebook.controller;
 
-import com.example.facebook.model.Activity;
-import com.example.facebook.model.Notification;
 import com.example.facebook.model.Post;
 import com.example.facebook.model.User;
-import com.example.facebook.service.ActivityDAO;
-import com.example.facebook.service.NotificationDAO;
-import com.example.facebook.service.UserDAO;
+import com.example.facebook.service.dao.ActivityDAO;
+import com.example.facebook.service.dao.NotificationDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import static java.lang.System.in;
-import static java.lang.System.out;
 
 @WebServlet("/notification")
 public class NotificationServlet extends HttpServlet {

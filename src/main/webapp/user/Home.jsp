@@ -118,7 +118,7 @@
                 <div class="post-card" style="<c:if test="${post.content == 'Bài viết này đã vi phạm tiêu chuẩn cộng đồng.' ? 'background-color: #ebebeb;' : ''}"/>" data-post-id="${post.getPostId()}">
                     <div class="introduce" style="display: flex; justify-content: space-between">
                         <div style="display: flex">
-                            <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
+                            <img src="${pageContext.request.contextPath}/uploads/avatars/${post.user.image}"
                                  style="height: 50px;width: 50px; border-radius: 50%">
                             <div style="display: flex; flex-direction: column; margin-left: 10px">
                                 <div style="height: 20px;">
@@ -297,7 +297,7 @@
         <input type="hidden" id="receiverId">
         <div style="height: 15%;display: flex;padding: 5px 10px 5px 10px ; justify-content: space-between; position: relative;">
             <button style="width: fit-content;background: none;padding: 0" id="emoji-btn">😀</button>
-            <input style="border-radius: 24px; padding-left: 10px; border: 1px solid grey; width: 80%;" type="text"
+            <input style="border-radius: 24px; padding-left: 10px; border: 1px solid grey; width: 65%;" type="text"
                    id="chat-input" placeholder="Nhập tin nhắn..." onfocus="updateNotificationStatus()">
             <button style="width: fit-content; padding-block: 1px" class="btn btn-primary" id="send-btn">Gửi</button>
         </div>

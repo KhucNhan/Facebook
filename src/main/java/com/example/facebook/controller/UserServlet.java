@@ -3,10 +3,10 @@ package com.example.facebook.controller;
 import com.example.facebook.model.FriendShip;
 import com.example.facebook.model.Post;
 import com.example.facebook.model.User;
-import com.example.facebook.service.FriendShipDAO;
-import com.example.facebook.service.NotificationDAO;
-import com.example.facebook.service.PostDAO;
-import com.example.facebook.service.UserDAO;
+import com.example.facebook.service.dao.FriendShipDAO;
+import com.example.facebook.service.dao.NotificationDAO;
+import com.example.facebook.service.dao.PostDAO;
+import com.example.facebook.service.dao.UserDAO;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,13 +15,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "UserServlet", value = "/users")
@@ -86,7 +84,7 @@ public class UserServlet extends HttpServlet {
         User user = userDAO.selectUserById(userId);
         user.setStatus("Active");
         userDAO.updateUser(user, userId);
-        req.getRequestDispatcher("/view/Login.jsp").forward(req, resp);
+        req.getRequestDispatcher("/authenticate/Login.jsp").forward(req, resp);
     }
 
     private void showMyProfile(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
@@ -209,7 +207,7 @@ public class UserServlet extends HttpServlet {
             HttpSession session = req.getSession();
             session.removeAttribute("userId");
 
-            RequestDispatcher dispatchers = req.getRequestDispatcher("view/Login.jsp");
+            RequestDispatcher dispatchers = req.getRequestDispatcher("authenticate/Login.jsp");
             dispatchers.forward(req, resp);
         } else {
             System.out.println("disable failed");
@@ -394,7 +392,7 @@ public class UserServlet extends HttpServlet {
 
         session.removeAttribute("userId");
 
-        RequestDispatcher dispatchers = req.getRequestDispatcher("view/Login.jsp");
+        RequestDispatcher dispatchers = req.getRequestDispatcher("authenticate/Login.jsp");
         dispatchers.forward(req, resp);
     }
 

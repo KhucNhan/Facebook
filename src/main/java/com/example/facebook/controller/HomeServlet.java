@@ -1,7 +1,7 @@
 package com.example.facebook.controller;
 
 import com.example.facebook.model.*;
-import com.example.facebook.service.*;
+import com.example.facebook.service.dao.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -126,7 +126,7 @@ public class HomeServlet extends HttpServlet {
             req.getRequestDispatcher("/user/Home.jsp").forward(req, resp);
         } else {
             req.setAttribute("user", user);
-            req.getRequestDispatcher("/view/Disable.jsp").forward(req, resp);
+            req.getRequestDispatcher("/authenticate/Disable.jsp").forward(req, resp);
         }
     }
 }
