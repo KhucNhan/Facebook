@@ -33,7 +33,7 @@ public class NotificationDAO implements INotification {
             "JOIN activities ON activities.activityId = notifications.activityId\n" +
             "WHERE notifications.userId = ? \n" +
             "  AND notifications.isRead = 0 \n" +
-            "  AND activities.type IN ('comment', 'like_comment', 'like_post', 'friendship_request');\n";
+            "  AND activities.type IN ('comment', 'like_comment', 'like_post', 'friendship_request','accepted');\n";
     private final static String conut_number_of_notification_message = "SELECT COUNT(*) AS count\n" +
             "FROM notifications\n" +
             "JOIN activities ON activities.activityId = notifications.activityId\n" +
