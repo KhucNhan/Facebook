@@ -227,11 +227,11 @@ public class UserServlet extends HttpServlet {
         // Lấy tên file hoặc gán ảnh mặc định
         String imageFileName = (imageFilePart != null && imageFilePart.getSubmittedFileName() != null && !imageFilePart.getSubmittedFileName().isEmpty())
                 ? Paths.get(imageFilePart.getSubmittedFileName()).getFileName().toString()
-                : "default_avt.jpg";
+                : user.getImage();
 
         String bannerFileName = (bannerFilePart != null && bannerFilePart.getSubmittedFileName() != null && !bannerFilePart.getSubmittedFileName().isEmpty())
                 ? Paths.get(bannerFilePart.getSubmittedFileName()).getFileName().toString()
-                : "default_banner.jpg";
+                : user.getBanner();
 
         // Thư mục lưu ảnh trong webapp
         File uploadDirImg = new File(System.getenv("imgFolderUrl") + "avatars");
