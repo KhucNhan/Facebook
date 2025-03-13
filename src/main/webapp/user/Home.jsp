@@ -884,6 +884,12 @@
         font-size: 18px;
     }
 
+    .message-right, .message-left {
+        max-width: 70%; /* Giới hạn độ rộng tối đa để tin nhắn không tràn màn hình */
+        overflow-wrap: anywhere; /* Đảm bảo chữ dài (như URL) cũng xuống dòng */
+        display: flex; /* Đảm bảo tin nhắn có độ rộng phù hợp */
+    }
+
     .message-right {
         background-color: #0084ff;
         color: white;
@@ -894,6 +900,7 @@
     .message-left {
         background-color: #e4e6eb;
         color: black;
+        justify-self: left;
         width: fit-content;
     }
 

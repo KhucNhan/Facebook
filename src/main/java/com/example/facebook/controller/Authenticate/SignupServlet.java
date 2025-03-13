@@ -35,8 +35,8 @@ public class SignupServlet extends HttpServlet {
         boolean gender = genderStr.equals("male");
 
         try {
-            String sql = "INSERT INTO users (name, email, phone, password, dateOfBirth, gender, role, createAt, status) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, 'user', CURRENT_TIMESTAMP, true)";
+            String sql = "INSERT INTO users (name, email, phone, password, dateOfBirth, gender, role, createAt) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, 'user', CURRENT_TIMESTAMP)";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, name);
             ps.setString(2, email);
