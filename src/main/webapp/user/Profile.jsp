@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="/css/Post.css">
     <link rel="stylesheet" href="/css/PostModal.css">
     <script src="/js/PostModal.js"></script>
+    <script src="${pageContext.request.contextPath}/js/Notification.js"></script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -165,19 +167,20 @@
                     <p class="text-muted">${user.bio}</p>
                 </div>
                 <c:choose>
-                    <c:when test="${friendShip.status == '' && user.userId == sessionScope.userId}">
+                    <c:when test="${user.userId == sessionScope.userId}">
                         <div class="profile-actions">
                             <button onclick="openEditModal()" class="btn btn-primary">Chỉnh sửa thông tin</button>
                         </div>
                     </c:when>
                     <c:when test="${friendShip.status == 'accepted'}">
                         <div class="profile-actions">
-                            <button class="btn btn-primary">Nhắn tin</button>
+                            <button class="btn btn-primary" data-id="${user.userId}" data-name="${user.name}" data-avatar="${user.image}" onclick="messagesFromButton(this)">Nhắn tin</button>
+
                         </div>
                     </c:when>
                     <c:when test="${friendShip.status == 'pending' && user.userId == friendShip.userId_2}">
                         <div class="profile-actions">
-                            <button class="btn btn-warning" style="background: rgb(128, 128, 128) ;color: white"  onclick="cancelFriend(${user.userId})">Hủy lời mời kết
+                            <button class="btn btn-warning" style="background: rgb(128, 128, 128) ;color: white"  onclick="cancelFriendProfile(${user.userId})">Hủy lời mời kết
                                 bạn
                             </button>
                         </div>
@@ -201,7 +204,7 @@
 
                     <c:otherwise>
                         <div class="profile-actions" data-id="${user.userId}">
-                            <button class="btn btn-primary"   onclick="addFriend(${user.userId})">Kết bạn</button>
+                            <button class="btn btn-primary"   onclick="addFriendProfile(${user.userId})">Kết bạn</button>
                         </div>
                     </c:otherwise>
                 </c:choose>
@@ -343,6 +346,12 @@
 </html>
 
 <script>
+    function addFriendProfile(userId){
+        console.log(userId);
+    }
+    function cancelFriendProfile(userId){
+        console.log(userId);
+    }
     // Mở modal
     function openEditModal() {
         document.getElementById("editProfileModal").style.display = "flex";

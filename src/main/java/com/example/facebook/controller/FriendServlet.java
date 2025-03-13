@@ -72,6 +72,13 @@ public class FriendServlet extends HttpServlet {
 
         String value = req.getParameter("value");
         List<User> searchInRequests = friendShipDAO.searchUsersInRequests(value, user.getUserId());
+
+
+        int count = notificationDAO.countNumberOfNotification(Integer.parseInt(userIdStr));
+        int count_message = notificationDAO.countNumberOfNotificationMessage(Integer.parseInt(userIdStr));
+
+        req.setAttribute("count",count);
+        req.setAttribute("count_message",count_message);
         req.setAttribute("user", user);
         req.setAttribute("friends", searchInRequests);
         req.setAttribute("action", "requests");
@@ -84,6 +91,13 @@ public class FriendServlet extends HttpServlet {
         User user = userDAO.selectUserById(Integer.parseInt(userIdStr));
 
         List<User> friends = friendShipDAO.getAllFriendsAdded(user.getUserId());
+
+        int count = notificationDAO.countNumberOfNotification(Integer.parseInt(userIdStr));
+        int count_message = notificationDAO.countNumberOfNotificationMessage(Integer.parseInt(userIdStr));
+
+        req.setAttribute("count",count);
+        req.setAttribute("count_message",count_message);
+
         req.setAttribute("user", user);
         req.setAttribute("friends", friends);
         req.getRequestDispatcher("user/AllFriends.jsp").forward(req, resp);
@@ -95,6 +109,11 @@ public class FriendServlet extends HttpServlet {
         User user = userDAO.selectUserById(Integer.parseInt(userIdStr));
 
         List<User> friends = friendShipDAO.getAllFriendsRequest(user.getUserId());
+        int count = notificationDAO.countNumberOfNotification(Integer.parseInt(userIdStr));
+        int count_message = notificationDAO.countNumberOfNotificationMessage(Integer.parseInt(userIdStr));
+
+        req.setAttribute("count",count);
+        req.setAttribute("count_message",count_message);
         req.setAttribute("user", user);
         req.setAttribute("friends", friends);
         req.getRequestDispatcher("user/FriendRequests.jsp").forward(req, resp);

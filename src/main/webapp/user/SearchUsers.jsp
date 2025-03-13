@@ -61,14 +61,14 @@
                         <div style="box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);margin-block: 10px;"
                              class="user-card d-flex align-items-center p-3 border-bottom">
                             <!-- Avatar -->
-                            <div class="avatar" onclick="sendProfile(event, ${user.userId})">
+                            <div class="avatar" style="cursor: pointer;" onclick="sendProfile(event, ${user.userId})">
                                 <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
                                      alt="Avatar"
                                      class="rounded-circle" width="50" height="50">
                             </div>
 
                             <!-- Thông tin -->
-                            <div class="info flex-grow-1 ms-3" onclick="sendProfile(event, ${user.userId})">
+                            <div class="info flex-grow-1 ms-3" style="cursor: pointer;" onclick="sendProfile(event, ${user.userId})">
                                 <strong class="d-block fs-5">${user.name}</strong>
                                 <span class="status-text text-muted">
                     <c:choose>

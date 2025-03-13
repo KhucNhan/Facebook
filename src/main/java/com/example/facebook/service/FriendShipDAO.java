@@ -147,7 +147,7 @@ public class FriendShipDAO implements IFriendShipDAO {
             preparedStatement.setInt(4,user1);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()){
+            while (resultSet.next()){
                 int friendId = resultSet.getInt(1);
                 int senderId = resultSet.getInt(2);
                 int receiverId = resultSet.getInt(3);

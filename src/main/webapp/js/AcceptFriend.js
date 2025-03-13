@@ -111,6 +111,7 @@ function deleteFriend(userID) {
 }
 
 function addFriend(userID) {
+    console.log("ígafs" + userID)
     fetch(`/friends?action=addFriend&friendId=${encodeURIComponent(userID)}`, {
         method: "POST"
     })

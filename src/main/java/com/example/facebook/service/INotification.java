@@ -12,6 +12,9 @@ public interface INotification {
     boolean new_notification(int userId,int activityId);
 
     boolean updateIsReadNotification(int notificationId);
+    boolean updateIsReadNotificationMessage(int senderId, int receiverId);
+
+
 
     int checkNotificationMessage(int senderId,int receiverId);
 
@@ -22,4 +25,8 @@ public interface INotification {
     User getAllUserId(int notification);
 
     int countNumberOfNotification(int userId);
+
+    Boolean getIsReadMessageFromMessageId(int messageId);
+
+
 }
