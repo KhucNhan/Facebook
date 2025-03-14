@@ -289,7 +289,6 @@
         </div>
     </div>
 </div>
-
 <div id="chat-modal" style="height: 325px" class="modal">
     <div class="modal-content" style="height: 100%">
         <div id="chat-header" style="height: 15%;padding: 5px"></div>
@@ -311,6 +310,7 @@
     </button>
 </div>
 <div id="emoji-picker" class="emoji-picker"></div>
+
 
 <div id="createGroupModal" class="modal">
     <form class="modal-group-content" action="/groups?action=create" method="post">
