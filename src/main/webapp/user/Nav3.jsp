@@ -141,6 +141,45 @@
 
         <script>
             document.addEventListener("DOMContentLoaded", function () {
+                attachAccountActions();
+
+                function attachAccountActions() {
+                    const disableLink = document.querySelector("#privacy-menu a[href*='disableAccount']");
+                    const deleteLink = document.querySelector("#privacy-menu a[href*='delete']");
+
+                    if (disableLink) {
+                        disableLink.addEventListener("click", function (event) {
+                            event.preventDefault();
+                            confirmAction(this.href, "Bạn có chắc chắn muốn vô hiệu hóa tài khoản?");
+                        });
+                    }
+
+                    if (deleteLink) {
+                        deleteLink.addEventListener("click", function (event) {
+                            event.preventDefault();
+                            confirmAction(this.href, "Bạn có chắc chắn muốn xóa tài khoản? Hành động này không thể hoàn tác!");
+                        });
+                    }
+                }
+
+                function confirmAction(actionUrl, message) {
+                    Swal.fire({
+                        title: message,
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Có, tiếp tục",
+                        cancelButtonText: "Hủy",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = actionUrl;
+                        }
+                    });
+                }
+            });
+
+
+
+            document.addEventListener("DOMContentLoaded", function () {
                 var notificationCount = document.getElementById("notificationCount");
                 var notificationCounts = document.getElementById("notificationCounts");
 
