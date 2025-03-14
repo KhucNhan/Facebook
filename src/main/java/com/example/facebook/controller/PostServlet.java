@@ -183,7 +183,7 @@ public class PostServlet extends HttpServlet {
 
         // Nội dung bình luận bên phải
         String backgroundColor = "#f0f2f5";
-        if(comment.getContent().equalsIgnoreCase("Bình luận này đã bị xóa do vi phạm tiêu chuẩn cộng đồng.")) {
+        if (comment.getContent().equalsIgnoreCase("Bình luận này đã bị xóa do vi phạm tiêu chuẩn cộng đồng.")) {
             backgroundColor = "#ebebeb";
         }
         out.println("<div class='comment-body' style='background: " + backgroundColor + "; padding: 10px; border-radius: 10px; max-width: 85%; position: relative;'>");
@@ -362,7 +362,7 @@ public class PostServlet extends HttpServlet {
         System.out.println(postDAO.updatePost(postId, "Bài viết này đã vi phạm tiêu chuẩn cộng đồng.", post.getPrivacy()));
     }
 
-    private void likeComment(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void likeComment(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException {
         HttpSession session = req.getSession();
         int userIdStr = (int) session.getAttribute("userId");
 
@@ -370,21 +370,25 @@ public class PostServlet extends HttpServlet {
 
         boolean checkComment = likeDAO.checkLikeComment(userIdStr, commentID);
 
-        boolean isLiked;
+        boolean isLiked = false;
 
         if (checkComment) {
             likeDAO.deleteLikeComment(userIdStr, commentID);
             isLiked = false;
         } else {
-
             int commentUserID = likeDAO.addLikeToComment(commentID, userIdStr);
-
             int userIdNotification = commentDAO.selectUserIdToComment(commentID);
-            int activitiId = activityDAO.newActivities(userIdStr, commentID, "like_comment");
 
-            notificationDAO.new_notification(userIdNotification, activitiId);
+            Comment comment = commentDAO.selectCommentById(commentID);
+            int commentUsetIDs = comment.getUser().getUserId();
 
+            if (commentUsetIDs != userIdStr) {
+                int activitiId = activityDAO.newActivities(userIdStr, commentID, "like_comment");
+
+                notificationDAO.new_notification(userIdNotification, activitiId);
+            }
             isLiked = true;
+
         }
 
         resp.setContentType("application/json");
@@ -503,7 +507,7 @@ public class PostServlet extends HttpServlet {
             mediaDAO.insertPostMedia(postId, "picture", fileName);
         }
 
-        activityDAO.newActivities(Integer.parseInt(userIdStr),postId, "post");
+        activityDAO.newActivities(Integer.parseInt(userIdStr), postId, "post");
 
         session.setAttribute("successMessage", "Đăng bài thành công!");
         resp.sendRedirect(req.getContextPath() + "/home");

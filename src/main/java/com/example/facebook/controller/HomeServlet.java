@@ -92,7 +92,6 @@ public class HomeServlet extends HttpServlet {
             List<Notification> notifications = notificationDAO.getAllNotifictionAddFriend(Integer.parseInt(userIdStrs));
             List<Activity> activities = new ArrayList<>();
             List<User> users = new ArrayList<>();
-            List<Message> messageNotification = new ArrayList<>();
 
             for (Notification notification : notifications) {
                 Activity activity = notificationDAO.getNotificationInformation(notification.getActivityId());

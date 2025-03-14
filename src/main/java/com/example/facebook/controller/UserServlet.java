@@ -1,12 +1,7 @@
 package com.example.facebook.controller;
 
-import com.example.facebook.model.FriendShip;
-import com.example.facebook.model.Post;
-import com.example.facebook.model.User;
-import com.example.facebook.service.dao.FriendShipDAO;
-import com.example.facebook.service.dao.NotificationDAO;
-import com.example.facebook.service.dao.PostDAO;
-import com.example.facebook.service.dao.UserDAO;
+import com.example.facebook.model.*;
+import com.example.facebook.service.dao.*;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -20,6 +15,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "UserServlet", value = "/users")
@@ -29,6 +25,7 @@ import java.util.List;
         maxRequestSize = 1024 * 1024 * 50    // 50MB
 )
 public class UserServlet extends HttpServlet {
+    MessageDAO messageDAO = new MessageDAO();
     NotificationDAO notificationDAO = new NotificationDAO();
     UserDAO userDAO = new UserDAO();
     PostDAO postDAO = new PostDAO();
@@ -109,13 +106,33 @@ public class UserServlet extends HttpServlet {
         int count = notificationDAO.countNumberOfNotification(Integer.parseInt(userIdStr));
         int count_message = notificationDAO.countNumberOfNotificationMessage(Integer.parseInt(userIdStr));
 
+        List<Notification> notifications = notificationDAO.getAllNotifictionAddFriend(Integer.parseInt(userIdStr));
+        List<Activity> activities = new ArrayList<>();
+        List<User> users = new ArrayList<>();
+
+        for (Notification notification : notifications) {
+            Activity activity = notificationDAO.getNotificationInformation(notification.getActivityId());
+            activities.add(activity);
+
+            User user_1 = activity.getUser();
+            users.add(user_1);
+        }
+
+        List<Message> messageNotifications = messageDAO.selectContentMessage(Integer.parseInt(userIdStr));
+
+
+        req.setAttribute("messageNotifications",messageNotifications);
+        req.setAttribute("notifications", notifications);
+        req.setAttribute("usersNotification", users);
+        req.setAttribute("activities", activities);
+
+
         req.setAttribute("count",count);
         req.setAttribute("count_message",count_message);
-
         req.setAttribute("user", user);
         req.setAttribute("friendShip", friendShip);
         req.setAttribute("posts", myPosts);
-        req.getRequestDispatcher("user/Profile.jsp").forward(req, resp);
+        req.getRequestDispatcher("/user/Profile.jsp").forward(req, resp);
     }
 
     private void showUserUpdateInformation(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {

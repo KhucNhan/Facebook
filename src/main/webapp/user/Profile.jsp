@@ -30,6 +30,9 @@
     <script src="${pageContext.request.contextPath}/js/Notification.js"></script>
     <title></title>
     <style>
+        .like-button{
+            border: 0px;
+        }
         body {
             background-color: #f0f2f5;
         }
