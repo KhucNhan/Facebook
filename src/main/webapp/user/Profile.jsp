@@ -217,6 +217,26 @@
             background-color: #28a745;
             color: white;
         }
+
+        .emoji-picker {
+            display: none;
+            position: absolute;
+            bottom: 80px;
+            right: 130px;
+            background: white;
+            border: 1px solid #ccc;
+            padding: 10px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            width: 200px;
+            z-index: 10005;
+        }
+
+        .emoji {
+            font-size: 22px;
+            cursor: pointer;
+            margin: 5px;
+        }
     </style>
 </head>
 <body>
