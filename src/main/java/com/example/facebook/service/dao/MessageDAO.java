@@ -15,15 +15,11 @@ public class MessageDAO implements IMessageDAO {
     private static final String insert_new_message = "INSERT INTO messages (senderId, receiverId, content) VALUES (?, ?, ?)";
     private static final String delete_message = "UPDATE messages SET content = 'Tin nhắn đã bị gỡ' WHERE messageId = ?";
 
-    private static final String select_content_message = "SELECT m.*\n" +
-            "FROM messages m\n" +
-            "JOIN (\n" +
-            "    SELECT senderId, MAX(createAt) AS latestMessageTime\n" +
-            "    FROM messages\n" +
-            "    WHERE receiverId = ?\n" +
-            "    GROUP BY senderId\n" +
-            ") latestMsg ON m.senderId = latestMsg.senderId AND m.createAt = latestMsg.latestMessageTime\n" +
-            "WHERE m.receiverId = ? order by m.createAt DESC";
+    private static final String select_content_message = "SELECT *\n" +
+            "FROM messages\n" +
+            "WHERE senderId = ? or receiverId = ?\n" +
+            "ORDER BY createAt DESC\n" +
+            "LIMIT 1;";
     @Override
     public List<Message> selectAllMessages(int currentUserId, int otherUserId) throws SQLException {
         List<Message> messages = new ArrayList<>();

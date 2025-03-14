@@ -1,10 +1,10 @@
 package com.example.facebook.controller;
 
+import com.example.facebook.model.Activity;
+import com.example.facebook.model.Message;
+import com.example.facebook.model.Notification;
 import com.example.facebook.model.User;
-import com.example.facebook.service.dao.ActivityDAO;
-import com.example.facebook.service.dao.FriendShipDAO;
-import com.example.facebook.service.dao.NotificationDAO;
-import com.example.facebook.service.dao.UserDAO;
+import com.example.facebook.service.dao.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/friends")
@@ -22,6 +23,7 @@ public class FriendServlet extends HttpServlet {
     NotificationDAO notificationDAO = new NotificationDAO();
     FriendShipDAO friendShipDAO = new FriendShipDAO();
     UserDAO userDAO = new UserDAO();
+    MessageDAO messageDAO = new MessageDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -94,11 +96,31 @@ public class FriendServlet extends HttpServlet {
         int count = notificationDAO.countNumberOfNotification(Integer.parseInt(userIdStr));
         int count_message = notificationDAO.countNumberOfNotificationMessage(Integer.parseInt(userIdStr));
 
+        List<Message> messageNotifications = messageDAO.selectContentMessage(Integer.parseInt(userIdStr));
+
+        List<Notification> notifications = notificationDAO.getAllNotifictionAddFriend(Integer.parseInt(userIdStr));
+        List<Activity> activities = new ArrayList<>();
+        List<User> users = new ArrayList<>();
+
+        for (Notification notification : notifications) {
+            Activity activity = notificationDAO.getNotificationInformation(notification.getActivityId());
+            activities.add(activity);
+
+            User user_1 = activity.getUser();
+            users.add(user_1);
+        }
+
         req.setAttribute("count",count);
         req.setAttribute("count_message",count_message);
 
         req.setAttribute("user", user);
         req.setAttribute("friends", friends);
+
+        req.setAttribute("notifications", notifications);
+        req.setAttribute("usersNotification", users);
+        req.setAttribute("activities", activities);
+        req.setAttribute("messageNotifications",messageNotifications);
+
         req.getRequestDispatcher("user/AllFriends.jsp").forward(req, resp);
     }
 
@@ -110,7 +132,24 @@ public class FriendServlet extends HttpServlet {
         List<User> friends = friendShipDAO.getAllFriendsRequest(user.getUserId());
         int count = notificationDAO.countNumberOfNotification(Integer.parseInt(userIdStr));
         int count_message = notificationDAO.countNumberOfNotificationMessage(Integer.parseInt(userIdStr));
+        List<Message> messageNotifications = messageDAO.selectContentMessage(Integer.parseInt(userIdStr));
 
+        List<Notification> notifications = notificationDAO.getAllNotifictionAddFriend(Integer.parseInt(userIdStr));
+        List<Activity> activities = new ArrayList<>();
+        List<User> users = new ArrayList<>();
+
+        for (Notification notification : notifications) {
+            Activity activity = notificationDAO.getNotificationInformation(notification.getActivityId());
+            activities.add(activity);
+
+            User user_1 = activity.getUser();
+            users.add(user_1);
+        }
+
+        req.setAttribute("notifications", notifications);
+        req.setAttribute("usersNotification", users);
+        req.setAttribute("activities", activities);
+        req.setAttribute("messageNotifications",messageNotifications);
         req.setAttribute("count",count);
         req.setAttribute("count_message",count_message);
         req.setAttribute("user", user);
