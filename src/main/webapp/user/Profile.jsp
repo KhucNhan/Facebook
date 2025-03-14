@@ -401,7 +401,7 @@
 </div>
 
 <!-- Modal chỉnh sửa thông tin -->
-<div id="editProfileModal" class="modal">
+<div id="editProfileModal">
     <div class="modal-content">
         <span class="close" onclick="closeEditModal()">&times;</span>
         <h2>Chỉnh sửa trang cá nhân</h2>
