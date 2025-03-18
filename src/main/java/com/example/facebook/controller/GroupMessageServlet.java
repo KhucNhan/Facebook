@@ -54,6 +54,7 @@ public class GroupMessageServlet extends HttpServlet {
 
         for (GroupMessage msg : groupMessages) {
             boolean isSender = msg.getSenderId() == user.getUserId();
+            String senderImg = userDAO.selectUserById(msg.getSenderId()).getImage();
             String senderName = userDAO.selectUserById(msg.getSenderId()).getName();
 
             if (isSender) {
@@ -63,9 +64,12 @@ public class GroupMessageServlet extends HttpServlet {
                 out.println("</div>");
             } else {
                 // Tin nhắn của người khác trong nhóm (hiển thị bên trái)
-                out.println("<div class='message message-left'>");
-                out.println("<strong>" + senderName + ":</strong>"); // Hiển thị tên người gửi
-                out.println("<span class='text'>" + msg.getContent() + "</span>");
+                out.println("<div style='display:flex; align-items: self-end; padding:0; background-color:inherit' class='message message-left'>");
+                out.println("<img style='width:42px; height:42px;border-radius: 50%; margin-right:5px' src='/uploads/avatars/" + senderImg + "'/>");
+                out.println("<div style='display:flex;flex-direction:column'>");
+                out.println("<span style='font-size:11px'>" + senderName + "</span>");
+                out.println("<span class='text' style='background-color: #e4e6eb; border-radius:8px; padding-inline:7px; padding-block:3px'>" + msg.getContent() + "</span>");
+                out.println("</div>");
                 out.println("</div>");
             }
         }

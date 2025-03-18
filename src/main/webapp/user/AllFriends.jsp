@@ -74,10 +74,10 @@
         .message {
             display: flex;
             margin: 5px;
-            padding: 10px;
+            padding: 7px;
             max-width: 60%;
             border-radius: 10px;
-            font-size: 18px;
+            font-size: 13px;
         }
 
         .message-right, .message-left {
