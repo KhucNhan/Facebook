@@ -62,8 +62,14 @@
             border-radius: 10px;
         }
 
+        #chat-modal {
+            top: 46% !important;
+            height: 450px !important;
+            width: 350px !important;
+        }
+
         #chat-messages {
-            height: 75%;
+            height: 79%;
             overflow-y: auto;
             margin-bottom: 5px;
             scrollbar-width: none;
@@ -74,10 +80,10 @@
         .message {
             display: flex;
             margin: 5px;
-            padding: 10px;
+            padding: 7px;
             max-width: 60%;
             border-radius: 10px;
-            font-size: 18px;
+            font-size: 15px;
         }
 
         .message-right, .message-left {
@@ -188,7 +194,7 @@
                                      class="card-img-top" alt="Avatar">
                                 <div class="card-body">
                                     <h6 style="cursor: pointer;"  onclick="sendProfile(event, ${friend.userId})" class="card-title">${friend.name}</h6>
-                                    <button style="width: 100%;" class="btn btn-primary btn-sm friend" onclick="unFriend(${friend.userId})" data-id="${friend.userId}">Hủy kết bạn</button>
+                                    <button style="width: 100%;" class="btn btn-secondary btn-sm friend" onclick="unFriend(${friend.userId})" data-id="${friend.userId}">Hủy kết bạn</button>
                                     <button class="unFiend" data-id="${friend.userId}"  style="display: none; width: 100%;
                                             pointer-events: none; opacity: 0.5; background-color: #ccc;height: 30px;border-radius: 5px;
                                             border: 1px solid #999; cursor: default;">Đã hủy kết bạn
