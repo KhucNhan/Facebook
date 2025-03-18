@@ -291,17 +291,17 @@
 </div>
 <div id="chat-modal" style="height: 325px" class="modal">
     <div class="modal-content" style="height: 100%">
-        <div id="chat-header" style="height: 15%;padding: 5px"></div>
+        <div id="chat-header" style="padding: 5px"></div>
         <div id="chat-messages"></div>
         <input type="hidden" id="receiverId">
-        <div style="height: 15%;display: flex;padding: 5px 10px 5px 10px ; justify-content: space-between; position: relative;">
+        <div style="display: flex;padding: 5px 10px 5px 10px ; justify-content: space-between; position: relative;">
             <button style="width: fit-content;background: none;padding: 0" id="emoji-btn">😀</button>
             <input style="border-radius: 24px; padding-left: 10px; border: 1px solid grey; width: 65%;" type="text"
                    id="chat-input" placeholder="Nhập tin nhắn..." onfocus="updateNotificationStatus()">
             <button style="width: fit-content; padding-block: 1px" class="btn btn-primary" id="send-btn">Gửi</button>
         </div>
     </div>
-    <a style=" cursor: pointer;font-size: x-large;position: absolute; bottom: 295px; left: 275px; border-radius: 50%; width: 24px;height: 24px;"
+    <a style="cursor: pointer;font-size: xx-large;position: absolute; bottom: 400px; left: 315px; border-radius: 50%;"
        onclick="closeChat()">x</a>
 </div>
 <div style="border-radius: 5px" id="message-menu" class="message-menu">
@@ -866,8 +866,14 @@
         border-radius: 10px;
     }
 
+    #chat-modal {
+        top: 46% !important;
+        height: 450px !important;
+        width: 350px !important;
+    }
+
     #chat-messages {
-        height: 75%;
+        height: 79%;
         overflow-y: auto;
         margin-bottom: 5px;
         scrollbar-width: none;
@@ -878,7 +884,7 @@
     .message {
         display: flex;
         margin: 5px;
-        font-size: 13px;
+        font-size: 15px;
         padding: 7px;
         max-width: 60%;
         border-radius: 10px;
