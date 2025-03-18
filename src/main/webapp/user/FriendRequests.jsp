@@ -61,8 +61,14 @@
             border-radius: 10px;
         }
 
+        #chat-modal {
+            top: 46% !important;
+            height: 450px !important;
+            width: 350px !important;
+        }
+
         #chat-messages {
-            height: 75%;
+            height: 79%;
             overflow-y: auto;
             margin-bottom: 5px;
             scrollbar-width: none;
@@ -76,7 +82,7 @@
             padding: 7px;
             max-width: 60%;
             border-radius: 10px;
-            font-size: 13px;
+            font-size: 15px;
         }
 
         .message-right, .message-left {
