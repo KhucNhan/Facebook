@@ -303,6 +303,18 @@
     </div>
     <a style="cursor: pointer;font-size: xx-large;position: absolute; bottom: 400px; left: 315px; border-radius: 50%;"
        onclick="closeChat()">x</a>
+<%--    <div class="dropdown" style="position: absolute;bottom: 400px; left: 275px; cursor: pointer">--%>
+<%--        <a style="font-size: xx-large;background: none;color: black;border: none" class="btn btn-secondary" href="#" role="button" id="dropdownGroup" data-bs-toggle="dropdown" aria-expanded="false">--%>
+<%--            ...--%>
+<%--        </a>--%>
+
+<%--        <ul style="position: relative; top: 150px; right: 130px;" class="dropdown-menu" aria-labelledby="dropdownGroup">--%>
+<%--            <li><a class="dropdown-item" href="#">Thay đổi tên nhóm</a></li>--%>
+<%--            <li><a class="dropdown-item" href="#">Thay đổi ảnh nhóm</a></li>--%>
+<%--            <li><a class="dropdown-item" href="#">Thành viên</a></li>--%>
+<%--            <li><a class="dropdown-item" href="#">Xóa nhóm</a></li>--%>
+<%--        </ul>--%>
+<%--    </div>--%>
 </div>
 <div style="border-radius: 5px" id="message-menu" class="message-menu">
     <button style="width: fit-content;font-size: 12px;padding: 0;background-color: white" onclick="deleteMessage()">Gỡ

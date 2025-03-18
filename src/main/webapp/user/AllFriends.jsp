@@ -194,7 +194,7 @@
                                      class="card-img-top" alt="Avatar">
                                 <div class="card-body">
                                     <h6 style="cursor: pointer;"  onclick="sendProfile(event, ${friend.userId})" class="card-title">${friend.name}</h6>
-                                    <button style="width: 100%;" class="btn btn-primary btn-sm friend" onclick="unFriend(${friend.userId})" data-id="${friend.userId}">Hủy kết bạn</button>
+                                    <button style="width: 100%;" class="btn btn-secondary btn-sm friend" onclick="unFriend(${friend.userId})" data-id="${friend.userId}">Hủy kết bạn</button>
                                     <button class="unFiend" data-id="${friend.userId}"  style="display: none; width: 100%;
                                             pointer-events: none; opacity: 0.5; background-color: #ccc;height: 30px;border-radius: 5px;
                                             border: 1px solid #999; cursor: default;">Đã hủy kết bạn
