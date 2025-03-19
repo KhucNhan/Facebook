@@ -18,8 +18,7 @@ public class MessageDAO implements IMessageDAO {
     private static final String select_content_message = "SELECT *\n" +
             "FROM messages\n" +
             "WHERE senderId = ? or receiverId = ?\n" +
-            "ORDER BY createAt DESC\n" +
-            "LIMIT 1;";
+            "ORDER BY createAt DESC\n";
     @Override
     public List<Message> selectAllMessages(int currentUserId, int otherUserId) throws SQLException {
         List<Message> messages = new ArrayList<>();
