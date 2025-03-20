@@ -565,14 +565,24 @@
             const selectedUsers = Array.from(document.querySelectorAll('.select-user:checked'))
                 .map(checkbox => checkbox.getAttribute('data-userid'));
 
+            function showWarning(message) {
+                Swal.fire({
+                    title: message,
+                    icon: "warning",
+                    draggable: true,
+                    showConfirmButton: true
+                });
+            }
+
             if (!groupName) {
-                alert("Vui lòng nhập tên nhóm.");
+                showWarning("Vui lòng nhập tên nhóm.");
                 return;
             }
             if (selectedUsers.length <= 1) {
-                alert("Vui lòng chọn ít nhất 2 thành viên.");
+                showWarning("Vui lòng chọn ít nhất 2 thành viên.");
                 return;
             }
+
 
             const membersInput = document.createElement("input");
             membersInput.type = "hidden";
