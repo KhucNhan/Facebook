@@ -9,15 +9,15 @@ public class LikeDAO implements ILike {
     private ConnectDatabase connectDatabase = new ConnectDatabase();
     private Connection connection = connectDatabase.connection();
 
-    private static final String checkLikePost = "select count(*) from postemotions where postId = ? and userId = ?";
-    private static final String checkLikeComment= "select count(*) from commentemotions where commentId = ? and userId = ?";
+    private static final String checkLikePost = "select count(*) from post_emotions where postId = ? and userId = ?";
+    private static final String checkLikeComment= "select count(*) from comment_emotions where commentId = ? and userId = ?";
 
-    private static final String totalLikePost = "select count(*) from postemotions where postId =?";
-    private static final String deleteLikePost = "delete from postemotions where userId = ? and postId = ?";
-    private static final String deleteLikeComment = "delete from commentemotions where userId = ? and commentId = ?";
+    private static final String totalLikePost = "select count(*) from post_emotions where postId =?";
+    private static final String deleteLikePost = "delete from post_emotions where userId = ? and postId = ?";
+    private static final String deleteLikeComment = "delete from comment_emotions where userId = ? and commentId = ?";
 
-    private static final String addLikeToPost = "insert into postemotions (postId, userId) values (?,?) ";
-    private static final String addLikeToComment = "insert into commentemotions (commentId, userId) values (?,?) ";
+    private static final String addLikeToPost = "insert into post_emotions (postId, userId) values (?,?) ";
+    private static final String addLikeToComment = "insert into comment_emotions (commentId, userId) values (?,?) ";
 
     @Override
     public boolean checkLikePost(int userId, int postId) {

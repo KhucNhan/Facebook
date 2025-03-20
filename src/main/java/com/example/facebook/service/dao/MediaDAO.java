@@ -15,9 +15,9 @@ public class MediaDAO implements IMediaDAO {
     ConnectDatabase connectDatabase = new ConnectDatabase();
     Connection connection = ConnectDatabase.connection();
 
-    private static final String delete_all_image_post_by_id = "DELETE FROM PostMedias WHERE postId = ?";
-    private static final String select_all_postmedia = "select * from postmedias where postId = ?";
-    private static final String insert_post_media = "insert into postmedias (postId, type, url) values (?, ?, ?)";
+    private static final String delete_all_image_post_by_id = "DELETE FROM post_medias WHERE postId = ?";
+    private static final String select_all_postmedia = "select * from post_medias where postId = ?";
+    private static final String insert_post_media = "insert into post_medias (postId, type, url) values (?, ?, ?)";
 
 
     @Override

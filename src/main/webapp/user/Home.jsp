@@ -69,7 +69,7 @@
         <div class="leftIcon" style="justify-content: left" onclick="goToMyProfile(${user.userId})">
             <div>
                 <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
-                     alt="User Icon" width="50" height="50" style="border-radius: 50%;">
+                     alt="User Icon" width="50" height="50" style="object-fit: cover;border-radius: 50%;">
             </div>
             <div>
                 <b>
@@ -104,7 +104,7 @@
             <div class="addPost">
                 <div>
                     <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
-                         alt="User Icon" width="60" height="60" style="border-radius: 50%">
+                         alt="User Icon" width="60" height="60" style="object-fit: cover;border-radius: 50%">
                 </div>
                 <div class="addPostInput" style="width: 100%">
                     <input type="button" style="text-align: left;padding-left: 15px" id="postInput" onclick="newPost()"
@@ -119,7 +119,7 @@
                     <div class="introduce" style="display: flex; justify-content: space-between">
                         <div style="display: flex">
                             <img src="${pageContext.request.contextPath}/uploads/avatars/${post.user.image}"
-                                 style="height: 50px;width: 50px; border-radius: 50%">
+                                 style="object-fit: cover;height: 50px;width: 50px; border-radius: 50%">
                             <div style="display: flex; flex-direction: column; margin-left: 10px">
                                 <div style="height: 20px;">
                                     <a style="font-weight: bold; color: black">${post.user.name}</a>
@@ -240,7 +240,7 @@
                     <div class="left_bottom">
                         <div>
                             <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
-                                 alt="User Icon" width="50" height="50" style="border-radius: 50%;">
+                                 alt="User Icon" width="50" height="50" style="object-fit: cover;border-radius: 50%;">
                         </div>
                         <div style="margin-left: 20px;width: 100%">
                             <label>${user.name}</label>
@@ -269,11 +269,11 @@
                 <c:when test="${groups.size() > 0}">
                     <c:forEach items="${groups}" var="group">
                         <a class="groups"
-                           onclick="loadMessages(${group.groupId}, 'group', '${group.name}', '${pageContext.request.contextPath}/img/group_avatars/default_group_avt.jpg')">
+                           onclick="loadMessages(${group.groupId}, 'group', '${group.name}', '${pageContext.request.contextPath}/img/group_avatars/${group.image}')">
                             <div class="left_bottom">
                                 <div>
-                                    <img src="${pageContext.request.contextPath}/img/group_avatars/default_group_avt.jpg"
-                                         alt="Group Icon" width="50" height="50" style="border-radius: 50%;">
+                                    <img src="${pageContext.request.contextPath}/img/group_avatars/${group.image}"
+                                         alt="Group Icon" width="50" height="50" style="object-fit: cover;border-radius: 50%;">
                                 </div>
                                 <div style="margin-left: 20px;width: 100%">
                                     <label>${group.name}</label>
@@ -303,18 +303,12 @@
     </div>
     <a style="cursor: pointer;font-size: xx-large;position: absolute; bottom: 400px; left: 315px; border-radius: 50%;"
        onclick="closeChat()">x</a>
-<%--    <div class="dropdown" style="position: absolute;bottom: 400px; left: 275px; cursor: pointer">--%>
-<%--        <a style="font-size: xx-large;background: none;color: black;border: none" class="btn btn-secondary" href="#" role="button" id="dropdownGroup" data-bs-toggle="dropdown" aria-expanded="false">--%>
-<%--            ...--%>
-<%--        </a>--%>
-
-<%--        <ul style="position: relative; top: 150px; right: 130px;" class="dropdown-menu" aria-labelledby="dropdownGroup">--%>
-<%--            <li><a class="dropdown-item" href="#">Thay đổi tên nhóm</a></li>--%>
-<%--            <li><a class="dropdown-item" href="#">Thay đổi ảnh nhóm</a></li>--%>
-<%--            <li><a class="dropdown-item" href="#">Thành viên</a></li>--%>
-<%--            <li><a class="dropdown-item" href="#">Xóa nhóm</a></li>--%>
-<%--        </ul>--%>
-<%--    </div>--%>
+    <a id="settingGroup" onclick="groupSetting()" style="position: absolute;bottom: 408px; left: 275px; cursor: pointer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
+            <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0"/>
+            <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z"/>
+        </svg>
+    </a>
 </div>
 <div style="border-radius: 5px" id="message-menu" class="message-menu">
     <button style="width: fit-content;font-size: 12px;padding: 0;background-color: white" onclick="deleteMessage()">Gỡ
@@ -349,11 +343,132 @@
     </form>
 </div>
 
+<div id="modalOverlay"></div>
+
+<form method="post" enctype="multipart/form-data" id="editGroupModal" style="display: none;" onsubmit="return editGroup(event)">
+    <button type="button" class="close-btn" onclick="closeModal()">✖</button>
+    <h3>Chỉnh sửa nhóm</h3>
+    <input type="text" id="editGroupName" placeholder="Nhập tên nhóm mới">
+    <input style="display:block;" name="editGroupImg" type="file" id="editGroupImg">
+    <img style="display: none; width: 100px; height: 100px; border-radius: 50%; justify-self: center" id="editGroupImgPreview">
+    <button type="submit">Lưu thay đổi</button>
+</form>
+
+
 </body>
 </html>
 
 
 <script>
+    document.getElementById("editGroupImg").addEventListener("change", function(event) {
+        let file = event.target.files[0]; // Lấy file đã chọn
+        if (file) {
+            let reader = new FileReader(); // Tạo FileReader để đọc file
+            reader.onload = function(e) {
+                document.getElementById("editGroupImgPreview").src = e.target.result; // Gán ảnh vào thẻ img
+                document.getElementById("editGroupImgPreview").style.display = "block"; // Hiển thị ảnh
+            };
+            reader.readAsDataURL(file); // Đọc file dưới dạng URL
+        }
+    });
+
+
+    function closeModal() {
+        document.getElementById("modalOverlay").style.display = "none";
+        document.getElementById("editGroupModal").style.display = "none";
+    }
+
+    function groupSetting() {
+        let groupId = document.getElementById("settingGroup").getAttribute("data-group-id");
+
+        if (!groupId) {
+            alert("Không có nhóm nào để chỉnh sửa!");
+            return;
+        }
+
+        // Hiển thị modal chỉnh sửa nhóm
+        document.getElementById("editGroupModal").style.display = "block";
+        document.getElementById("modalOverlay").style.display = "block";
+
+        let nameInput = document.querySelector("input[name='groupNameHidden']");
+        let imgInput = document.querySelector("input[name='groupImgHidden']");
+
+        // Điền dữ liệu nhóm hiện tại vào input
+        document.getElementById("editGroupName").value = nameInput.value;
+        document.getElementById("editGroupImgPreview").src = '/img/group_avatars/' + imgInput.value;
+    }
+
+    function editGroup() {
+        event.preventDefault(); // Ngăn form gửi request tự động
+
+        let groupId = document.getElementById("settingGroup").getAttribute("data-group-id");
+        let groupNameInput = document.getElementById("editGroupName").value;
+        let groupImgInput = document.getElementById("editGroupImg").files[0]; // Lấy file ảnh
+
+        if (!groupId || !groupNameInput) {
+            alert("Vui lòng nhập đầy đủ thông tin!");
+            return;
+        }
+
+        let formData = new FormData();
+        formData.append("action", "edit");
+        formData.append("groupId", groupId);
+        formData.append("name", groupNameInput);
+        if (groupImgInput) {
+            formData.append("editGroupImg", groupImgInput);
+        }
+
+        fetch('/groups', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                console.log("Response object:", response);
+                return response.text();
+            })  // Nhận phản hồi dạng text
+            .then(data => {
+                console.log("Server response:", data);
+                let parts = data.split('|'); // Phân tách dữ liệu thành mảng
+
+                let chatHeader = document.getElementById("chat-header");
+                if (parts[0] === "success") {
+                    chatHeader.innerHTML = `
+                    <img src="/img/group_avatars/` + parts[1] + `" alt="Avatar" width="40" height="40" style="border-radius: 50%; margin-right: 10px;">
+                    <span>` + groupNameInput + `</span>
+                    `;
+
+                    let groupElements = document.querySelectorAll(".groups");
+                    groupElements.forEach(el => {
+                        if (el.onclick.toString().includes(groupId)) {
+                            let imgEl = el.querySelector("img");
+                            let nameEl = el.querySelector("label");
+
+                            let newImgSrc = '/img/group_avatars/' + parts[1]; // Ảnh mới
+                            let newGroupName = groupNameInput; // Tên nhóm mới
+
+                            if (imgEl) imgEl.src = newImgSrc;
+                            if (nameEl) nameEl.textContent = newGroupName;
+
+                            // Lấy nội dung hiện tại của `onclick`
+                            let oldOnclick = el.getAttribute("onclick");
+
+                            // Cập nhật lại `onclick` với ảnh và tên mới
+                            let updatedOnclick = oldOnclick
+                                .replace(/'([^']*\/img\/group_avatars\/[^']*)'/, `'` + newImgSrc + `'`) // Cập nhật ảnh
+                                .replace(/'[^']*', 'group', '[^']*'/, `'` + groupId + `', 'group', '` + newGroupName + `'`); // Cập nhật tên
+
+                            el.setAttribute("onclick", updatedOnclick);
+                        }
+                    });
+
+
+
+                    closeModal();
+                }
+            })
+            .catch(error => console.error("Lỗi:", error));
+    }
+
     function reportComment(commentId, event) {
         fetch('/reports?action=report&type=Comment&commentId=' + encodeURIComponent(commentId), {
             method: 'POST',
@@ -568,6 +683,26 @@
                 document.getElementById("receiverId").value = id;
                 document.getElementById("receiverId").setAttribute("data-type", type);
 
+                if(type === 'group') {
+                    let ownerIdInput = document.querySelector("input[name='ownerId']");
+                    let currentUserId = document.querySelector("input[name='currentUserId']");
+
+                    if (ownerIdInput) {
+                        let ownerId = ownerIdInput.value;
+                        let settingGroup = document.getElementById("settingGroup");
+
+                        if (ownerId === currentUserId.value) {
+                            console.log("is owner");
+                            if (settingGroup) {
+                                settingGroup.style.display = "block"; // Hiển thị thẻ <a> nếu là chủ nhóm
+                            }
+                        } else {
+                            console.log("not owner");
+                            settingGroup.style.display = "none";
+                        }
+                    }
+                }
+
                 // Cập nhật header với tên và ảnh
                 let chatHeader = document.getElementById("chat-header");
                 chatHeader.innerHTML = `
@@ -575,7 +710,14 @@
                 <span>` + name + `</span>
             `;
 
+
                 document.getElementById('chat-modal').style.display = 'inherit';
+
+                if (type === 'group') {
+                    document.getElementById("settingGroup").setAttribute("data-group-id", id);
+                } else {
+                    document.getElementById("settingGroup").removeAttribute("data-group-id");
+                }
 
                 // Nếu có tin nhắn mới, cuộn xuống dưới
                 if (chatBox.scrollHeight > previousHeight) {
@@ -793,6 +935,67 @@
 
 </script>
 <style>
+    /* Overlay làm mờ nền */
+    #modalOverlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5); /* Màu đen trong suốt */
+        backdrop-filter: blur(5px); /* Hiệu ứng mờ */
+        z-index: 999;
+    }
+
+    /* Căn giữa modal */
+    #editGroupModal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        width: 300px;
+        text-align: center;
+        z-index: 1000;
+    }
+
+    #editGroupModal h3 {
+        margin-top: 0;
+    }
+
+    #editGroupModal input {
+        width: 100%;
+        padding: 8px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    #editGroupModal button {
+        padding: 8px 15px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    #editGroupModal .close-btn {
+        position: absolute;
+        top: -10px;
+        right: -130px;
+        font-size: 18px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        color: #333;
+    }
+
+
     .removeMessage {
         font-style: italic;
         background-color: lightgrey !important;

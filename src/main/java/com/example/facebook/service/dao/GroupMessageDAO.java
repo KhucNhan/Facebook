@@ -12,9 +12,9 @@ public class GroupMessageDAO implements IGroupMessageDAO {
     ConnectDatabase connectDatabase = new ConnectDatabase();
     Connection connection = connectDatabase.connection();
 
-    private static final String insert_message = "INSERT INTO groupmessages (groupId, senderId, content, createAt) VALUES (?, ?, ?, NOW())";
-    private static final String select_messages_by_group = "SELECT * FROM groupmessages WHERE groupId = ? ORDER BY createAt ASC";
-    private static final String delete_message = "UPDATE groupmessages SET content = 'Tin nhắn đã bị gỡ' WHERE groupMessageId = ?";
+    private static final String insert_message = "INSERT INTO group_messages (groupId, senderId, content, createAt) VALUES (?, ?, ?, NOW())";
+    private static final String select_messages_by_group = "SELECT * FROM group_messages WHERE groupId = ? ORDER BY createAt ASC";
+    private static final String delete_message = "UPDATE group_messages SET content = 'Tin nhắn đã bị gỡ' WHERE groupMessageId = ?";
 
     // Thêm tin nhắn vào nhóm
     @Override

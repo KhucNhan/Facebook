@@ -7,15 +7,25 @@ public class Group {
     private String name;
     private int createBy;
     private Timestamp createAt;
+    private String image;
 
     public Group(){
 
     }
-    public Group(int groupId, String name, int createBy, Timestamp createAt){
+    public Group(int groupId, String name, String image, int createBy, Timestamp createAt){
         this.groupId = groupId;
         this.name = name;
+        this.image = image;
         this.createBy = createBy;
         this.createAt = createAt;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public int getGroupId() {

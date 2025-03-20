@@ -85,7 +85,7 @@ public class PostServlet extends HttpServlet {
         // Thông tin người dùng
         out.println("<div class='introduce' style='display: flex; justify-content: space-between'>");
         out.println("<div style='display: flex'>");
-        out.println("<img src='/uploads/avatars/" + post.getUser().getImage() + "' style='height: 50px;width: 50px; border-radius: 50%'>");
+        out.println("<img src='/uploads/avatars/" + post.getUser().getImage() + "' style='object-fit: cover;height: 50px;width: 50px; border-radius: 50%'>");
         out.println("<div style='display: flex; flex-direction: column; margin-left: 10px'>");
         out.println("<div style='height: 20px;'><a style='font-weight: bold; color: black'>" + post.getUser().getName() + "</a></div>");
         out.println("<div><p style='color: lightgrey'>" + post.getCreateAt() + "</p></div>");
@@ -149,7 +149,7 @@ public class PostServlet extends HttpServlet {
             out.println("<div class='comment-input-section' style='position: sticky; bottom: 0; background: white; display: flex; align-items: center; padding: 10px; border-top: 1px solid lightgray;'>");
 
 // Avatar của người dùng hiện tại
-            out.println("<img src='/uploads/avatars/" + user.getImage() + "' style='width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;'>");
+            out.println("<img src='/uploads/avatars/" + user.getImage() + "' style='object-fit: cover;width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;'>");
 
 // Ô nhập bình luận
             out.println("<input id='comment-input-" + post.getPostId() + "' type='text' placeholder='Viết bình luận...' style='flex: 1; padding: 8px; border-radius: 20px; border: 1px solid #ddd;'>");
@@ -178,7 +178,7 @@ public class PostServlet extends HttpServlet {
 
         // Avatar bên trái
         out.println("<div class='comment-avatar'>");
-        out.println("<img style='width:50px;height:50px;border-radius:50%;' src='/uploads/avatars/" + comment.getUser().getImage() + "' class='avatar'>");
+        out.println("<img style='object-fit: cover;width:50px;height:50px;border-radius:50%;' src='/uploads/avatars/" + comment.getUser().getImage() + "' class='avatar'>");
         out.println("</div>");
 
         // Nội dung bình luận bên phải

@@ -18,8 +18,8 @@ public class PostDAO implements IPostDAO {
     UserDAO userDAO = new UserDAO();
 
     private static final String select_userId_to_post = "SELECT posts.userId FROM posts\n" +
-            "                   JOIN postemotions ON posts.postId = postemotions.postId \n" +
-            "                   WHERE postemotions.emotionId = ?";
+            "                   JOIN post_emotions ON posts.postId = post_emotions.postId \n" +
+            "                   WHERE post_emotions.emotionId = ?";
 
     private static final String get_userId_to_post = "SELECT userId from posts where postId = ?";
 
@@ -34,15 +34,15 @@ public class PostDAO implements IPostDAO {
             "    pm.url\n" +
             "FROM posts p\n" +
             "LEFT JOIN (\n" +
-            "    SELECT postId, COUNT(*) AS total_emotions FROM postemotions GROUP BY postId\n" +
+            "    SELECT postId, COUNT(*) AS total_emotions FROM post_emotions GROUP BY postId\n" +
             ") e ON p.postId = e.postId\n" +
             "LEFT JOIN (\n" +
             "    SELECT postId, COUNT(*) AS total_comments FROM comments GROUP BY postId\n" +
             ") c ON p.postId = c.postId\n" +
-            "LEFT JOIN postmedias pm ON p.postId = pm.postId  \n" +
+            "LEFT JOIN post_medias pm ON p.postId = pm.postId  \n" +
             "WHERE p.postId = ?";
 
-    private static final String get_all_image_links_post = "SELECT * FROM postmedias WHERE postId = ?";
+    private static final String get_all_image_links_post = "SELECT * FROM post_medias WHERE postId = ?";
 
     private static final String select_all_post = "SELECT \n" +
             "    p.postId, p.userId, p.content, p.privacy, p.createAt, p.updateAt, \n" +
@@ -56,12 +56,12 @@ public class PostDAO implements IPostDAO {
             "    OR (p.userId = f.receiverId AND f.senderId = ?)\n" +
             ")\n" +
             "LEFT JOIN (\n" +
-            "    SELECT postId, COUNT(*) AS total_emotions FROM postemotions GROUP BY postId\n" +
+            "    SELECT postId, COUNT(*) AS total_emotions FROM post_emotions GROUP BY postId\n" +
             ") e ON p.postId = e.postId\n" +
             "LEFT JOIN (\n" +
             "    SELECT postId, COUNT(*) AS total_comments FROM comments GROUP BY postId\n" +
             ") c ON p.postId = c.postId\n" +
-            "LEFT JOIN postmedias pm ON p.postId = pm.postId  \n" +
+            "LEFT JOIN post_medias pm ON p.postId = pm.postId  \n" +
             "WHERE p.userId = ?  \n" +
             "   OR (p.privacy != 'Private'\n" +
             "       AND (\n" +
@@ -79,12 +79,12 @@ public class PostDAO implements IPostDAO {
             "    pm.url\n" +
             "FROM posts p\n" +
             "LEFT JOIN (\n" +
-            "    SELECT postId, COUNT(*) AS total_emotions FROM postemotions GROUP BY postId\n" +
+            "    SELECT postId, COUNT(*) AS total_emotions FROM post_emotions GROUP BY postId\n" +
             ") e ON p.postId = e.postId\n" +
             "LEFT JOIN (\n" +
             "    SELECT postId, COUNT(*) AS total_comments FROM comments GROUP BY postId\n" +
             ") c ON p.postId = c.postId\n" +
-            "LEFT JOIN postmedias pm ON p.postId = pm.postId  \n" +
+            "LEFT JOIN post_medias pm ON p.postId = pm.postId  \n" +
             "WHERE p.userId = ?\n" +
             "ORDER BY p.createAt DESC;";
 
