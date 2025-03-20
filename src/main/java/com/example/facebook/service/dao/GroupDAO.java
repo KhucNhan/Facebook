@@ -12,8 +12,8 @@ public class GroupDAO implements IGroupDAO {
     ConnectDatabase connectDatabase = new ConnectDatabase();
     Connection connection = connectDatabase.connection();
     private static final String insert_group = "INSERT INTO `groups` (name, createdBy) VALUES (?, ?)";
-    private static final String select_all_group = "select g.* from `groups` g join groupmembers gm on g.groupId = gm.groupId where gm.userId = ?";
-    private static final String update_group = "update `groups` set name = ? where groupId = ?";
+    private static final String select_all_group = "select g.* from `groups` g join group_members gm on g.groupId = gm.groupId where gm.userId = ?";
+    private static final String update_group = "update `groups` set name = ?, image = ? where groupId = ?";
     private static final String delete_group = "delete from `groups` where groupId = ?";
     private static final String select_group_by_id = "select * from `groups` where groupId = ?";
     @Override
@@ -42,6 +42,7 @@ public class GroupDAO implements IGroupDAO {
             groups.add(new Group(
                     resultSet.getInt("groupId"),
                     resultSet.getString("name"),
+                    resultSet.getString("image"),
                     resultSet.getInt("createdBy"),
                     resultSet.getTimestamp("createAt")
             ));
@@ -54,7 +55,8 @@ public class GroupDAO implements IGroupDAO {
     public boolean updateGroup(Group group, int groupId) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement(update_group);
         preparedStatement.setString(1, group.getName());
-        preparedStatement.setInt(2, groupId);
+        preparedStatement.setString(2, group.getImage());
+        preparedStatement.setInt(3, groupId);
 
         int row = preparedStatement.executeUpdate();
         return row > 0;
@@ -69,6 +71,7 @@ public class GroupDAO implements IGroupDAO {
             return new Group(
                     resultSet.getInt("groupId"),
                     resultSet.getString("name"),
+                    resultSet.getString("image"),
                     resultSet.getInt("createdBy"),
                     resultSet.getTimestamp("createAt")
             );

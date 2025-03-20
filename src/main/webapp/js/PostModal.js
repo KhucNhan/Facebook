@@ -38,7 +38,7 @@ function submitComment(postId) {
             newComment.innerHTML = `
             <div class='comment-item' id='comment-${response.commentId}' style='display: flex; align-items: flex-start; gap: 10px;'>
                 <div class='comment-avatar'>
-                    <img style='width:50px;height:50px;border-radius:50%;' src='/uploads/avatars/${response.image}' class='avatar'>
+                    <img style='object-fit: cover;width:50px;height:50px;border-radius:50%;' src='/uploads/avatars/${response.image}' class='avatar'>
                 </div>
                 <div class='comment-body' style='background: #f0f2f5; padding: 10px; border-radius: 10px; max-width: 85%; position: relative;'>
                     <div class='comment-info' style='display: flex; align-items: center; gap: 8px; margin-bottom: 5px;'>
@@ -258,7 +258,7 @@ function submitReply(commentId) {
                 newReply.innerHTML = `
                     <div class='comment-item' id='comment-${response.commentId}' style='display: flex; align-items: flex-start; gap: 10px;'>
                 <div class='comment-avatar'>
-                    <img style='width:50px;height:50px;border-radius:50%;' src='/uploads/avatars/${response.image}' class='avatar'>
+                    <img style='object-fit: cover;width:50px;height:50px;border-radius:50%;' src='/uploads/avatars/${response.image}' class='avatar'>
                 </div>
                 <div class='comment-body' style='background: #f0f2f5; padding: 10px; border-radius: 10px; max-width: 85%; position: relative;'>
                     <div class='comment-info' style='display: flex; align-items: center; gap: 8px; margin-bottom: 5px;'>

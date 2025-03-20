@@ -11,9 +11,9 @@ import java.util.List;
 public class GroupMemberDAO implements IGroupMemberDAO {
     ConnectDatabase connectDatabase = new ConnectDatabase();
     Connection connection = connectDatabase.connection();
-    private static final String insert_member = "INSERT INTO groupmembers (groupId, userId, role) VALUES (?, ?, ?)";
-    private static final String select_all_member = "select * from groupmembers where groupId = ?";
-    private static final String delete_member = "delete from groupmembers where groupId = ? and userId = ?";
+    private static final String insert_member = "INSERT INTO group_members (groupId, userId, role) VALUES (?, ?, ?)";
+    private static final String select_all_member = "select * from group_members where groupId = ?";
+    private static final String delete_member = "delete from group_members where groupId = ? and userId = ?";
     @Override
     public int insertMember(int groupId, int userId, String role) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement(insert_member, Statement.RETURN_GENERATED_KEYS);

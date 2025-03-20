@@ -25,7 +25,7 @@
              onclick="updateIsReadNotification(event, ${notification.getNotificationId()},${notification.getIsRead()},${activity.targetId},'${activity.type}')"
              data-id="${notification.getNotificationId()}">
             <div class="notification-item">
-                <img src="${pageContext.request.contextPath}/uploads/avatars/${userNotification.image}"
+                <img style="object-fit: cover" src="${pageContext.request.contextPath}/uploads/avatars/${userNotification.image}"
                      alt="Avatar">
 
                 <c:choose>

@@ -104,7 +104,7 @@
                            aria-expanded="false" id="userDropdown">
                             <img src="${pageContext.request.contextPath}/uploads/avatars/${user.image}"
                                  alt="User Icon" width="37" height="37"
-                                 style="border-radius: 50%;margin-top: -10px;margin-right: -20px;position: relative">
+                                 style="object-fit: cover;border-radius: 50%;margin-top: -10px;margin-right: -20px;position: relative">
                         </a>
                         <ul class="dropdown-menu" id="dropdown-menu" data-bs-auto-close="outside">
                             <div id="default-menu">

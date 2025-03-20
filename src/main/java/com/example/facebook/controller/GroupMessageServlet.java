@@ -1,7 +1,9 @@
 package com.example.facebook.controller;
 
+import com.example.facebook.model.Group;
 import com.example.facebook.model.GroupMessage;
 import com.example.facebook.model.User;
+import com.example.facebook.service.dao.GroupDAO;
 import com.example.facebook.service.dao.GroupMessageDAO;
 import com.example.facebook.service.dao.UserDAO;
 
@@ -20,6 +22,7 @@ import java.util.List;
 public class GroupMessageServlet extends HttpServlet {
     UserDAO userDAO = new UserDAO();
     GroupMessageDAO groupMessageDAO = new GroupMessageDAO();
+    GroupDAO groupDAO = new GroupDAO();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
@@ -45,6 +48,7 @@ public class GroupMessageServlet extends HttpServlet {
 
     private void showMessage(User user, HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
         String groupId = req.getParameter("groupId");
+        Group group = groupDAO.selectGroupById(Integer.parseInt(groupId));
 
         List<GroupMessage> groupMessages = groupMessageDAO.selectAllMessageByGroup(Integer.parseInt(groupId));
 
@@ -65,14 +69,19 @@ public class GroupMessageServlet extends HttpServlet {
             } else {
                 // Tin nhắn của người khác trong nhóm (hiển thị bên trái)
                 out.println("<div style='display:flex; align-items: self-end; padding:0; background-color:inherit' class='message message-left'>");
-                out.println("<img style='width:44px; height:44px;border-radius: 50%; margin-right:5px' src='/uploads/avatars/" + senderImg + "'/>");
+                out.println("<img style='width:44px; height:44px;border-radius: 50%; margin-right:5px;object-fit: cover' src='/uploads/avatars/" + senderImg + "'/>");
                 out.println("<div style='display:flex;flex-direction:column'>");
                 out.println("<span style='font-size:11px'>" + senderName + "</span>");
                 out.println("<span class='text' style='background-color: #e4e6eb; border-radius:8px; padding-inline:7px; padding-block:3px'>" + msg.getContent() + "</span>");
                 out.println("</div>");
                 out.println("</div>");
             }
+
         }
+        out.println("<input type='hidden' name='ownerId' value='" + group.getCreateBy() + "'></input>");
+        out.println("<input type='hidden' name='currentUserId' value='" + user.getUserId() + "'></input>");
+        out.println("<input type='hidden' name='groupNameHidden' value='" + group.getName() + "'></input>");
+        out.println("<input type='hidden' name='groupImgHidden' value='" + group.getImage() + "'></input>");
     }
 
     @Override
