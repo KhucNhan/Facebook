@@ -872,7 +872,7 @@
 
         if (mediaList.length > 4) {
             let extraCount = mediaList.length - 4;
-            mediaHTML += `<div class="media extra">` + extraCount + `</div>`;
+            mediaHTML += `<div style="width: 200%; height: 200px;" class="media extra">` + extraCount + `</div>`;
         }
 
         return `<div class="media-grid">` + mediaHTML + `</div>`;
@@ -884,7 +884,7 @@
             2: ["half", "half"],
             3: ["large-left", "small-right-top", "small-right-bottom"],
             4: ["quarter", "quarter", "quarter", "quarter"],
-        }[count] || ["large-left", "small-right-top", "small-right-bottom", "extra"];
+        }[count] || ["dynamic", "dynamic", "dynamic", "dynamic"];
     }
 
     function createMediaElement(media, className) {
