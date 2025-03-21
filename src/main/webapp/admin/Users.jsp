@@ -212,6 +212,7 @@
             if (currentPage > 1) {
                 currentPage--;
                 displayUsers(currentPage);
+                setupPagination();
                 updateActivePage();
             }
         });
@@ -252,6 +253,7 @@
             if (currentPage < pageCount) {
                 currentPage++;
                 displayUsers(currentPage);
+                setupPagination();
                 updateActivePage();
             }
         });

@@ -405,8 +405,17 @@
         let groupNameInput = document.getElementById("editGroupName").value;
         let groupImgInput = document.getElementById("editGroupImg").files[0]; // Lấy file ảnh
 
+        function showWarning(message) {
+            Swal.fire({
+                title: message,
+                icon: "warning",
+                draggable: true,
+                showConfirmButton: true
+            });
+        }
+
         if (!groupId || !groupNameInput) {
-            alert("Vui lòng nhập đầy đủ thông tin!");
+            showWarning("Vui lòng nhập đầy đủ thông tin!");
             return;
         }
 
@@ -882,7 +891,7 @@
 
         if (mediaList.length > 4) {
             let extraCount = mediaList.length - 4;
-            mediaHTML += `<div class="media extra">` + extraCount + `</div>`;
+            mediaHTML += `<div style="width: 200%; height: 200px;" class="media extra">+` + extraCount + `</div>`;
         }
 
         return `<div class="media-grid">` + mediaHTML + `</div>`;
@@ -894,7 +903,7 @@
             2: ["half", "half"],
             3: ["large-left", "small-right-top", "small-right-bottom"],
             4: ["quarter", "quarter", "quarter", "quarter"],
-        }[count] || ["large-left", "small-right-top", "small-right-bottom", "extra"];
+        }[count] || ["dynamic", "dynamic", "dynamic", "dynamic"];
     }
 
     function createMediaElement(media, className) {

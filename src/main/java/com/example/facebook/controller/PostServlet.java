@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -97,22 +98,15 @@ public class PostServlet extends HttpServlet {
         // Khu vực media
         out.println("<div class='media-grid'>");
 
-        // Render tối đa 4 media
-        for (int i = 0; i < Math.min(4, mediaList.size()); i++) {
+        for (int i = 0; i < mediaList.size(); i++) {
             PostMedia media = mediaList.get(i);
-            String className = layoutType[i];
+            String className = layoutType[i % layoutType.length]; // Lặp lại class nếu cần
 
             if (media.getType().equals("picture")) {
                 out.println("<img src='/uploads/postMedias/" + media.getUrl() + "' class='media " + className + "'>");
             } else if (media.getType().equals("video")) {
                 out.println("<video src='/uploads/postMedias/" + media.getUrl() + "' class='media " + className + "' controls></video>");
             }
-        }
-
-        // Nếu có nhiều hơn 4 media, hiển thị số lượng còn lại
-        if (mediaList.size() > 4) {
-            int extraCount = mediaList.size() - 4;
-            out.println("<div class='media extra'>" + extraCount + "</div>");
         }
 
         out.println("</div>"); // Đóng media-grid
@@ -266,7 +260,9 @@ public class PostServlet extends HttpServlet {
             case 4:
                 return new String[]{"quarter", "quarter", "quarter", "quarter"};
             default:
-                return new String[]{"large-left", "small-right-top", "small-right-bottom", "extra"};
+                String[] layout = new String[count];
+                Arrays.fill(layout, "dynamic"); // Áp dụng class động cho ảnh vượt quá 4
+                return layout;
         }
     }
 

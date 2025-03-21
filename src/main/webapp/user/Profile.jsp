@@ -269,7 +269,7 @@
                 <c:choose>
                     <c:when test="${user.userId == sessionScope.userId}">
                         <div class="profile-actions">
-                            <button onclick="openEditModal()" class="btn btn-primary">Chỉnh sửa thông tin</button>
+                            <button onclick="openEditModal()" class="btn btn-primary">Chỉnh sửa trang cá nhân</button>
                         </div>
                     </c:when>
                     <c:when test="${friendShip.status == 'accepted'}">
