@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Language" content="vi">
     <title>Bạn quên mật khẩu ?</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="/css/ForgotPassword.css">
     <script src="/js/ForgotPassword.js"></script>
 </head>
@@ -41,7 +42,12 @@
     if (successMessage != null) {
 %>
 <script>
-    alert("<%= successMessage %>");
+    Swal.fire({
+        title: "Đổi mật khẩu thành công!",
+        icon: "success",
+        draggable: true,
+        showConfirmButton: true
+    });
 </script>
 <%
     }
