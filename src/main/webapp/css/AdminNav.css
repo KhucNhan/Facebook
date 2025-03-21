@@ -1,0 +1,64 @@
+.toggle-btn {
+    position: fixed;
+    top: 13px;
+    left: 20px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+/* Div xuất hiện bên trái */
+.side-panel {
+    position: fixed;
+    top: 0;
+    left: -350px; /* Ban đầu ẩn bên ngoài */
+    width: 350px;
+    height: 100vh;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    transition: left 0.3s ease-in-out; /* Hiệu ứng trượt */
+}
+
+/* Khi mở div */
+.side-panel.show {
+    left: 0;
+}
+
+/* Nút đóng */
+.close-btn {
+    position: absolute;
+    left: 300px;
+    background: inherit;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    float: right;
+    font-size: x-large;
+}
+
+.side-panel > nav > a {
+    color:white;
+}
+
+.container-fluid {
+    height: 100%;
+    font-size: large;
+}
+
+.container-fluid > .row > div:first-child {
+    border-radius: 8px;
+    background-color: #d3d3d373;
+    margin: 5px;
+}
+
+.container-fluid > .row > div:last-child > .row {
+    border-radius: 8px;
+    background-color: #d3d3d373;
+    margin: 5px;
+}

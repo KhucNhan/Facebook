@@ -1,0 +1,252 @@
+.notification-container {
+    width: 350px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+    padding: 10px;
+    font-family: Arial, sans-serif;
+    z-index: 9999;
+    overflow-y: auto;
+}
+.notification-container::-webkit-scrollbar {
+    width: 10px; /* Điều chỉnh độ rộng của thanh cuộn */
+}
+.notification-container::-webkit-scrollbar-thumb {
+    padding: 5px;
+    background-color: #cccccc; /* Màu thanh cuộn */
+    border-radius: 5px; /* Bo tròn góc */
+}
+
+
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #eee;
+}
+
+.notification-header b {
+    font-size: 1.2em;
+    color: #333;
+}
+
+.notification-content {
+    background: #fafafa;
+    padding: 12px 4px;
+    border-radius: 8px;
+    margin-top: 12px;
+}
+
+.notification-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.notification-item img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+    margin-right: 12px;
+}
+.notification-text {
+    width: 225px;
+    margin-left: 70px;
+    margin-top: -55px;
+    flex-grow: 1;
+    font-size: 0.95em;
+    /*color: #444;*/
+    font-weight: 500;
+}
+
+.notification-actions {
+    margin-left: 60px;
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.notification-actions a {
+    padding: 7px 14px;
+    font-size: 0.9em;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    color: #fff;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.accept-search {
+    background: #0866ff;
+}
+
+
+
+.notification-content.read {
+    background-color: white;
+    color: #716f6f;
+}
+
+.notification-content.unread {
+    cursor: pointer;
+    background-color: #f0f0f0;
+
+}
+.notification-content.read:hover {
+    cursor: pointer;
+    background-color: #e1e1e1;
+}
+.notification-content.unread:hover {
+    cursor: pointer;
+    background-color: #e1e1e1;
+}
+
+.notification-content.unread .notification-time {
+    color: #007bff;
+    font-weight: bold;
+}
+.notification-content.read .notification-time {
+    color: #adadad;
+    font-weight: normal;
+}
+/*mess*/
+.notificationMess-container {
+    width: 350px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+    padding: 10px;
+    font-family: Arial, sans-serif;
+    z-index: 9999;
+    overflow-y: auto;
+}
+.notificationMess-container::-webkit-scrollbar {
+    width: 10px; /* Điều chỉnh độ rộng của thanh cuộn */
+}
+.notificationMess-container::-webkit-scrollbar-thumb {
+    padding: 5px;
+    background-color: #cccccc; /* Màu thanh cuộn */
+    border-radius: 5px; /* Bo tròn góc */
+}
+
+
+.notificationMess-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #eee;
+}
+
+.notificationMess-header b {
+    font-size: 1.2em;
+    color: #333;
+}
+
+.notificationMess-content {
+    background: #fafafa;
+    padding: 12px 4px;
+    border-radius: 8px;
+    margin-top: 12px;
+}
+
+.notificationMess-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 5px;
+}
+
+.notificationMess-item img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+    margin-right: 12px;
+}
+.notificationMess-text {
+    height: 30px;
+    width: 225px;
+    margin-left: 65px;
+    margin-top: -57px;
+    flex-grow: 1;
+    color: black;
+    font-weight: 500;
+}
+
+.notificationMess-actions {
+    margin-left: 60px;
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.notificationMess-actions a {
+    padding: 7px 14px;
+    font-size: 0.9em;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    color: #fff;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.accept-search {
+    background: #0866ff;
+}
+
+.notificationMess-content.read {
+    height: 68px;
+    padding: 0px;
+    background-color: white;
+    color: #716f6f;
+}
+
+.notificationMess-content.unread {
+    height: 68px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    padding: 0px;
+}
+
+.message-text{
+    display: inline-block; /* Giữ các phần tử inline */
+    max-width: 170px; /* Giới hạn chiều rộng */
+    white-space: nowrap; /* Không cho xuống dòng */
+    overflow: hidden; /* Ẩn phần bị tràn */
+    text-overflow: ellipsis;
+    margin-left: 65px;
+    margin-top: -5px;
+}
+
+.message-text.unread{
+    font-weight: normal;
+    color: black;
+}
+
+.message-text.read {
+    color: #adadad;
+    font-weight: normal;
+}
+
+
+.notificationMess-content.read:hover {
+    cursor: pointer;
+    background-color: #f0f0f0;
+}
+.notificationMess-content.unread:hover {
+    cursor: pointer;
+    background-color: #e1e1e1;
+
+}
+.notificationMess-time{
+    margin-left: 160px;
+    margin-top: -10px;
+}
